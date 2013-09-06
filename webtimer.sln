@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebRole", "WebRole\WebRole.csproj", "{90C50186-543C-441B-9CCA-176F5B2A8A72}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebRole.Tests", "WebRole.Tests\WebRole.Tests.csproj", "{DE2E73E3-4D2F-4367-A919-ED5490ADA66C}"
+EndProject
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "Azure", "Azure\Azure.ccproj", "{E99D413B-E465-4AB6-A451-4811A86F2229}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceHost", "ServiceHost\ServiceHost.csproj", "{6F88F47F-3542-442F-95DA-60BE368053E1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{90C50186-543C-441B-9CCA-176F5B2A8A72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90C50186-543C-441B-9CCA-176F5B2A8A72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90C50186-543C-441B-9CCA-176F5B2A8A72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90C50186-543C-441B-9CCA-176F5B2A8A72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE2E73E3-4D2F-4367-A919-ED5490ADA66C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE2E73E3-4D2F-4367-A919-ED5490ADA66C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE2E73E3-4D2F-4367-A919-ED5490ADA66C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE2E73E3-4D2F-4367-A919-ED5490ADA66C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E99D413B-E465-4AB6-A451-4811A86F2229}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E99D413B-E465-4AB6-A451-4811A86F2229}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E99D413B-E465-4AB6-A451-4811A86F2229}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E99D413B-E465-4AB6-A451-4811A86F2229}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F88F47F-3542-442F-95DA-60BE368053E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F88F47F-3542-442F-95DA-60BE368053E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F88F47F-3542-442F-95DA-60BE368053E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F88F47F-3542-442F-95DA-60BE368053E1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = SharpPcap\SharpPcap.csproj
+		Policies = $0
+		$0.TextStylePolicy = $3
+		$1.inheritsSet = null
+		$1.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $2
+		$2.inheritsSet = Mono
+		$2.inheritsScope = text/x-csharp
+		$2.scope = text/x-csharp
+		$3.FileWidth = 120
+		$3.NoTabsAfterNonTabs = True
+		$3.RemoveTrailingWhitespace = True
+		$3.inheritsSet = VisualStudio
+		$3.inheritsScope = text/plain
+		$3.scope = text/plain
+	EndGlobalSection
+EndGlobal
