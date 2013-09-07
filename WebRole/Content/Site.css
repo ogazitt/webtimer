@@ -10,6 +10,12 @@ body {
     margin: 1em auto;
 }
 
+/* from BS site.css */
+body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+
 button, input[type=submit] {
     border: 1px solid #dedede;
     -moz-border-radius: 5px;
@@ -250,7 +256,7 @@ ol.round {
 
 footer {
     clear: both;
-    margin: 5em 5em .7em 0;
+    margin: 1em 1em .7em 0;
 }
 
 /*#endregion */

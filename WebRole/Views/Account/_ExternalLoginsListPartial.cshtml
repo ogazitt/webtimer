@@ -17,7 +17,16 @@ else
         <p>
         @foreach (AuthenticationClientData p in Model)
         {
+            <!--
+            <a href="#" name="provider" title="Log in using your @p.DisplayName account">
+                <img class="socialLoginButton" width="32" src="Content/images/@String.Concat(p.DisplayName, "_32.png")" />
+            </a>
             <button type="submit" name="provider" value="@p.AuthenticationClient.ProviderName" title="Log in using your @p.DisplayName account">@p.DisplayName</button>
+                -->
+            <button class="socialLoginButton" type="submit" name="provider" value="@p.AuthenticationClient.ProviderName" title="Log in using your @p.DisplayName account">
+                <img width="32" src="Content/images/@String.Concat(p.DisplayName, "_32.png")" />
+            </button>
+
         }
         </p>
     </fieldset>

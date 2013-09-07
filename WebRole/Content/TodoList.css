@@ -15,6 +15,7 @@
     vertical-align: top;
 }
 
+/*
     .todoList:before {
         content: "";
         position: absolute;
@@ -24,6 +25,7 @@
         border-style: solid;
         border-color: #f6f6c7 #fff;
     }
+    */
 
     .todoList header input, .todoList header input:focus,
     .todoList ul input, .todoList ul input:focus, .addTodo {
@@ -63,12 +65,14 @@
         text-decoration: line-through;
     }
 
+    /*
     .todoList a {
         color: silver;
         cursor: pointer;
         text-decoration: none;
         font: .8em verdana;
     }
+        */
 
         .todoList a.deletelist {
             position: absolute;
@@ -107,3 +111,18 @@ a.pageLink {
         margin: 0;
         padding: 0;
     }
+
+.todoList label {
+    display: inline-block;
+}
+
+.socialLoginButton {
+    margin: 10px;
+    background: none;
+    border: none;
+    padding: 0px;
+}
+
+.signup-button {
+    margin-top: 75px;
+}
