@@ -19,6 +19,8 @@
     <ConfigurationSettings>
       <Setting name="ConnectionStringName" />
       <Setting name="MONGOLAB_URI" />
+      <Setting name="AzureLoggingEnabled" />
+      <Setting name="SplunkLoggingEnabled" />
     </ConfigurationSettings>
   </WebRole>
   <WorkerRole name="WorkerRole" vmsize="Small">
@@ -31,6 +33,8 @@
       <Setting name="MONGOLAB_URI" />
       <Setting name="CollectorWorkerCount" />
       <Setting name="CollectorWorkerTimeout" />
+      <Setting name="AzureLoggingEnabled" />
+      <Setting name="SplunkLoggingEnabled" />
     </ConfigurationSettings>
   </WorkerRole>
 </ServiceDefinition>

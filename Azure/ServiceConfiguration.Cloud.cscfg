@@ -11,6 +11,8 @@
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteForwarder.Enabled" value="true" />
       <Setting name="ConnectionStringName" value="SqlAzureConnection" />
       <Setting name="MONGOLAB_URI" value="mongodb://MongoLab-km:bcG3jbXUK8Uiv0NcEqlmfxsVyAsNsKl.KqHSQvFVabo-@ds041177.mongolab.com:41177/MongoLab-km" />
+      <Setting name="AzureLoggingEnabled" value="1" />
+      <Setting name="SplunkLoggingEnabled" value="0" />
     </ConfigurationSettings>
     <Certificates>
       <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="55632FA563B57A3F4D3ED555FBEB7FA5BD4F1220" thumbprintAlgorithm="sha1" />
@@ -28,6 +30,8 @@
       <Setting name="MONGOLAB_URI" value="mongodb://MongoLab-km:bcG3jbXUK8Uiv0NcEqlmfxsVyAsNsKl.KqHSQvFVabo-@ds041177.mongolab.com:41177/MongoLab-km" />
       <Setting name="CollectorWorkerCount" value="1" />
       <Setting name="CollectorWorkerTimeout" value="60" />
+      <Setting name="AzureLoggingEnabled" value="1" />
+      <Setting name="SplunkLoggingEnabled" value="0" />
     </ConfigurationSettings>
     <Certificates>
       <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="55632FA563B57A3F4D3ED555FBEB7FA5BD4F1220" thumbprintAlgorithm="sha1" />
