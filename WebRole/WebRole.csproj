@@ -255,13 +255,10 @@
     <Compile Include="Models\Collector\SiteLookupRecord.cs" />
     <Compile Include="Models\UserRepository.cs" />
     <Compile Include="Models\UserContext.cs" />
-    <Compile Include="Models\Person.cs" />
-    <Compile Include="Models\Device.cs" />
     <Compile Include="Models\TodoList.cs" />
     <Compile Include="Models\TodoItem.cs" />
     <Compile Include="Models\TodoItemContext.cs" />
     <Compile Include="Models\TodoRepository.cs" />
-    <Compile Include="Models\WebSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -368,6 +365,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ServiceEntities\ServiceEntities.csproj">
+      <Project>{4949bfdf-c2d0-45c7-8c87-5c0f31bd1eea}</Project>
+      <Name>ServiceEntities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ServiceHost\ServiceHost.csproj">
       <Project>{6f88f47f-3542-442f-95da-60be368053e1}</Project>
       <Name>ServiceHost</Name>

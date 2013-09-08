@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
-namespace WebRole.Models
+namespace ServiceHost
 {
     // You can add custom code to this file. Changes will not be overwritten.
     // 
@@ -21,6 +21,9 @@ namespace WebRole.Models
             : base("name=" + HostEnvironment.ConnectionStringName)
         {
         }
+        public UserContext(string connection) : base(connection) { }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder) { }
 
         public DbSet<Device> Devices { get; set; }
         public DbSet<Person> People { get; set; }

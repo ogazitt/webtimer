@@ -4,6 +4,7 @@ using System.Data.Entity.Infrastructure;
 using System.Security;
 using System.Security.Principal;
 using Breeze.WebApi;
+using ServiceEntities;
 
 // ReSharper disable InconsistentNaming
 namespace WebRole.Models

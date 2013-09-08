@@ -21,4 +21,16 @@
       <Setting name="MONGOLAB_URI" />
     </ConfigurationSettings>
   </WebRole>
+  <WorkerRole name="WorkerRole" vmsize="Small">
+    <Imports>
+      <Import moduleName="Diagnostics" />
+      <Import moduleName="RemoteAccess" />
+    </Imports>
+    <ConfigurationSettings>
+      <Setting name="ConnectionStringName" />
+      <Setting name="MONGOLAB_URI" />
+      <Setting name="CollectorWorkerCount" />
+      <Setting name="CollectorWorkerTimeout" />
+    </ConfigurationSettings>
+  </WorkerRole>
 </ServiceDefinition>

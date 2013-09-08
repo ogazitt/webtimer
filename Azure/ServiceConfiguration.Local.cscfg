@@ -16,4 +16,21 @@
       <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="55632FA563B57A3F4D3ED555FBEB7FA5BD4F1220" thumbprintAlgorithm="sha1" />
     </Certificates>
   </Role>
+  <Role name="WorkerRole">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="Omri" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBnQYJKoZIhvcNAQcDoIIBjjCCAYoCAQAxggFOMIIBSgIBADAyMB4xHDAaBgNVBAMME1dpbmRvd3MgQXp1cmUgVG9vbHMCEBcWHwUP+LOxSaC5OghdAtkwDQYJKoZIhvcNAQEBBQAEggEAdm+XwnLdkiodC4xvwGS7uksTs5yd4w1ZMsSkSZuyLrnTbjzAtp7p/b+4eGYsroVVvPWFRl9PwY+7G0ErMtL/U7/9zvxe0oy4+6HToqWQGOUy7k+gJx3Nxl+IrrWgX7UdO9djBI54K26hFcy4KNJFLrmsA6JHdaAnsvLs7j1cgr+cqiS6DuxmFFEtFkGA/8+UAgUdKCCJ7bnQZqIPLoiz2mB1DJgyWqh8oJALdnS2BXWR5VCIrwxG+bmaYOqaUx3US+vX/smtx0wS3IT7rL3roJ8NfvTWLBjUZYlZ/AsNWfN4V4XTpU2i2U7SGi6z2GdrGJQK1GioqD18T2Tw1yCJTzAzBgkqhkiG9w0BBwEwFAYIKoZIhvcNAwcECETKFWHLOyP4gBC36CA1lOiU4fDRwXNMCQmL" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2014-09-06T23:59:59.0000000-07:00" />
+      <Setting name="ConnectionStringName" value="SqlAzureConnection" />
+      <Setting name="MONGOLAB_URI" value="mongodb://MongoLab-km:bcG3jbXUK8Uiv0NcEqlmfxsVyAsNsKl.KqHSQvFVabo-@ds041177.mongolab.com:41177/MongoLab-km" />
+      <Setting name="CollectorWorkerCount" value="1" />
+      <Setting name="CollectorWorkerTimeout" value="60" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="55632FA563B57A3F4D3ED555FBEB7FA5BD4F1220" thumbprintAlgorithm="sha1" />
+    </Certificates>
+  </Role>
 </ServiceConfiguration>
