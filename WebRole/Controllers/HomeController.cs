@@ -13,5 +13,19 @@ namespace WebRole.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
+
+        public ActionResult About()
+        {
+            ViewBag.Message = "About WebTimer";
+
+            return View();
+        }
+
+        public ActionResult Contact()
+        {
+            ViewBag.Message = "Contact";
+
+            return View();
+        }
     }
 }

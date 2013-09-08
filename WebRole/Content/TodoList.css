@@ -11,7 +11,7 @@
     -moz-box-shadow: 10px 10px 9px rgba(0, 0, 0, 0.22);
     -webkit-box-shadow: 10px 10px 9px rgba(0, 0, 0, 0.22);
     box-shadow: 10px 10px 9px rgba(0, 0, 0, 0.22);
-    background-color: #ffc;
+    background-color: rgba(0, 85, 128, 0.12);
     vertical-align: top;
 }
 
@@ -29,7 +29,7 @@
 
     .todoList header input, .todoList header input:focus,
     .todoList ul input, .todoList ul input:focus, .addTodo {
-        font-family: 'Bradley Hand ITC';
+        /* font-family: 'Bradley Hand ITC'; */
         outline: none;
     }
 

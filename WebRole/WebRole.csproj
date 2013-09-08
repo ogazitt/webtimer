@@ -253,10 +253,15 @@
     <Compile Include="Models\Collector\Record.cs" />
     <Compile Include="Models\Collector\RecordRepository.cs" />
     <Compile Include="Models\Collector\SiteLookupRecord.cs" />
+    <Compile Include="Models\UserRepository.cs" />
+    <Compile Include="Models\UserContext.cs" />
+    <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\Device.cs" />
     <Compile Include="Models\TodoList.cs" />
     <Compile Include="Models\TodoItem.cs" />
     <Compile Include="Models\TodoItemContext.cs" />
     <Compile Include="Models\TodoRepository.cs" />
+    <Compile Include="Models\WebSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -266,6 +271,16 @@
     <Content Include="Content\bootstrap\bootstrap.css" />
     <Content Include="Content\bootstrap\bootstrap.min.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\images\facebook.png" />
+    <Content Include="Content\images\facebook_32.png" />
+    <Content Include="Content\images\glyphicons-halflings-white.png" />
+    <Content Include="Content\images\glyphicons-halflings.png" />
+    <Content Include="Content\images\google.png" />
+    <Content Include="Content\images\google_32.png" />
+    <Content Include="Content\images\linkedin_32.png" />
+    <Content Include="Content\images\linkedin_signin.png" />
+    <Content Include="Content\images\twitter.png" />
+    <Content Include="Content\images\twitter_32.png" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
@@ -343,6 +358,8 @@
     <Content Include="Views\Home\_Login.cshtml" />
     <Content Include="Views\Home\_Register.cshtml" />
     <Content Include="Views\Records\Index.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

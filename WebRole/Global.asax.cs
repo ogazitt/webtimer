@@ -23,6 +23,9 @@ namespace WebRole
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+
+            // BUGBUG: remove this when starting to deploy real production data
+            System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<WebRole.Models.UserContext>());
         }
     }
 }

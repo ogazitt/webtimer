@@ -42,16 +42,16 @@
     };
 
     $("#showRegister").click(function () {
-        $("#loginPanel").hide("slide", function () {
-            $("#registerPanel").show("slide", function () {
+        $("#loginPanel").fadeOut("fast", function () {
+            $("#registerPanel").fadeIn("fast", function () {
                 $("#registerName").focus();
             });
         });
     });
 
     $("#showLogin").click(function () {
-        $("#registerPanel").hide("slide", function () {
-            $("#loginPanel").show("slide", function () {
+        $("#registerPanel").fadeOut("fast", function () {
+            $("#loginPanel").fadeIn("fast", function () {
                 $("#loginName").focus();
             });
         });
