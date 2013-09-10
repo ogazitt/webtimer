@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Web.Helpers;
+using System.Web;
 using System.Web.Http.Controllers;
-using System.Web.Http.Filters;
-using System.Web.Mvc;
 using System.Web.Security;
 using WebMatrix.WebData;
-// See http://aspnet13.orcsweb.com/web-api/overview/security/preventing-cross-site-request-forgery-(csrf)-attacks
+using WebRole.Controllers;
+
 namespace WebRole.Filters
 {
     public class BasicAuthAttribute : System.Web.Http.AuthorizeAttribute
@@ -38,6 +36,18 @@ namespace WebRole.Filters
                     if (WebSecurity.Login(creds.Name, creds.Password, persistCookie: true))
                     {
                         FormsAuthentication.SetAuthCookie(creds.Name, true);
+                        HttpCookie authCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
+                        if (authCookie != null)
+                        {
+                            FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+
+                            // set up a surrogate IPrincipal
+                            var principal = new RolePrincipal(new FormsIdentity(authTicket));
+                            HttpContext.Current.User = principal;
+                            var controller = actionContext.ControllerContext.Controller as CollectorController;
+                            if (controller != null)
+                                controller.CurrentUser = principal;
+                        }
                         return;
                     }
                 }

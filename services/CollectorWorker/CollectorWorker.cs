@@ -77,12 +77,12 @@ namespace CollectorWorker
                             }
                             UserContext.SaveChanges();
 
-                            // mark the records as processed
+                            // mark the records as processed using UPSERT semantics
                             foreach (var record in newRecords)
-                            {
                                 record.State = RecordState.Processed;
-                                CollectorContext.Update(record);
-                            }
+                            CollectorContext.Update(newRecords);
+
+                            TraceLog.TraceInfo(string.Format("Processed {0} records for user {1}", newRecords.Count(), userId));
                         }
                         catch (Exception ex)
                         {

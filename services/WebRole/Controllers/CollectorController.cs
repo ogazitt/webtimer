@@ -1,25 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Collections.Generic;
 using System.Net.Http;
+using System.Security.Principal;
 using System.Web.Http;
 using Newtonsoft.Json.Linq;
-using ServiceHost;
 using ServiceEntities.Collector;
+using ServiceHost;
 using WebRole.Filters;
 
-namespace WebCollector.Controllers
+namespace WebRole.Controllers
 {
     [BasicAuth]
     public class CollectorController : ApiController
     {
-        //private RecordRepository repository = new RecordRepository();
-        private CollectorContext repository;
+        /// <summary>
+        /// CurrentUser is the replacement for ApiController.User for the CollectorController
+        /// </summary>
+        public IPrincipal CurrentUser { get; set; }
 
         public CollectorController()
         {
-            repository = new CollectorContext(User);
+            // initialize the CurrentUser "intrinsic"
+            CurrentUser = User;
+        }
+
+        //private RecordRepository repository = new RecordRepository();
+        private CollectorContext _repository;
+
+        public CollectorContext Repository
+        {
+            get
+            {
+                if (_repository == null)
+                    _repository = new CollectorContext(CurrentUser);
+                return _repository;
+            }
         }
 
         // POST colapi/collector
@@ -44,12 +58,13 @@ namespace WebCollector.Controllers
                         HostName = (string)r["HostName"],
                         WebsiteName = (string)r["WebsiteName"],
                         Timestamp = (string)r["Timestamp"],
-                        UserId = repository.UserId
+                        UserId = Repository.UserId,
+                        State = RecordState.New
                     });
                 }
 
                 // add all records at once
-                repository.AddRecords(list);
+                Repository.AddRecords(list);
             }
              
             return value;
