@@ -25,30 +25,31 @@ namespace WebCollector.Controllers
         // POST colapi/collector
         public JToken Post(HttpRequestMessage req, JToken value)
         {
-            //BUGBUG - clean up repository context?
+            //BUGBUG - need to do something about CSRF 
+
+            //BUGBUG - clean up repository context? apparently no need to with MongoRepository
             //req.RegisterForDispose(repository);
-            var array = value as JArray;
+
+            // extract each object out of the array and create a SiteLookupRecord for each
+            var array = value as JArray;            
             if (array != null)
             {
+                var list = new List<SiteLookupRecord>();
                 foreach (JObject r in array)
                 {
-                    /*
-                    repository.CreateRecord(new SiteLookupRecord()
-                    {
-                        HostMacAddress = (string)r["Host"],
-                        Sitename = (string)r["Destination"],
-                        Timestamp = (string)r["Timestamp"]
-                    });
-                     */
-                    repository.Add(new SiteLookupRecord()
+                    list.Add(new SiteLookupRecord()
                     {
                         HostMacAddress = (string)r["HostMacAddress"],
                         HostIpAddress = (string)r["HostIpAddress"],
                         HostName = (string)r["HostName"],
                         WebsiteName = (string)r["WebsiteName"],
-                        Timestamp = (string)r["Timestamp"]
+                        Timestamp = (string)r["Timestamp"],
+                        UserId = repository.UserId
                     });
                 }
+
+                // add all records at once
+                repository.AddRecords(list);
             }
              
             return value;
