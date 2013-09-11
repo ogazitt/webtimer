@@ -70,19 +70,28 @@ namespace WebRole.Controllers
             return value;
         }
 
-#if KILL
+#if DEBUG
         // GET colapi/collector
-        public IEnumerable<string> Get()
+        [AllowAnonymous]
+        public int Get()
         {
-            return new string[] { "value1", "value2" };
+            // THIS API IS FOR TESTING ONLY - it is for creating synthetic records            
+            // create 100 new records
+            return Get(100);
         }
 
         // GET colapi/collector/5
-        public string Get(int id)
+        [AllowAnonymous]
+        public int Get(int count)
         {
-            return "value";
+            // THIS API IS FOR TESTING ONLY - it is for creating synthetic records
+            var list = Repository.MockRecords(count);
+            Repository.AddRecords(list);
+            return count;
         }
+#endif
 
+#if KILL
         // PUT colapi/collector/5
         public void Put(int id, [FromBody]string value)
         {

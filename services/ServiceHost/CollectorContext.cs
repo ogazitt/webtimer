@@ -13,9 +13,12 @@ namespace ServiceHost
 {
     public class CollectorContext : MongoRepository<SiteLookupRecord>
     {
-        public CollectorContext() : base() {}
-        
-        public CollectorContext(IPrincipal user)
+        public CollectorContext() : base(HostEnvironment.MongoUri, HostEnvironment.MongoCollectionName) { }
+        //public CollectorContext() : base(HostEnvironment.MongoUri, HostEnvironment.MongoCollectionName) { }
+
+        public CollectorContext(IPrincipal user) : base(HostEnvironment.MongoUri, HostEnvironment.MongoCollectionName)
+        //public CollectorContext(IPrincipal user)
+
         {
             UserId = user.Identity.Name;
         }
@@ -105,6 +108,35 @@ namespace ServiceHost
             }
         }
 
+        public List<SiteLookupRecord> MockRecords(int count)
+        {
+            var rand = new Random(DateTime.Now.Millisecond);
+            var now = DateTime.Now;
+
+            var sites = new List<string>()
+            { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j" };
+
+            // create <count> records
+            var list = new List<SiteLookupRecord>();
+            for (int i = 0; i < count; i++)
+            {
+                list.Add(new SiteLookupRecord()
+                {
+                    HostMacAddress = "000000000000",
+                    HostIpAddress = "0.0.0.0",
+                    HostName = "dummy",
+                    WebsiteName = sites[rand.Next(sites.Count)],
+                    Timestamp = now.ToString("s"),
+                    UserId = "",
+                    State = RecordState.New
+                });
+                now += TimeSpan.FromSeconds(30d);
+            }
+            return list;
+        }
+
+#region Helpers
+
         private bool ValidateRecord(SiteLookupRecord record)
         {
             if (string.IsNullOrEmpty(record.UserId))
@@ -124,5 +156,7 @@ namespace ServiceHost
             
             return true;
         }
+
+#endregion
     }
 }

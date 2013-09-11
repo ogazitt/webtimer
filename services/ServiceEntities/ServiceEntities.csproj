@@ -34,13 +34,13 @@
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="MongoDB.Bson">
-      <HintPath>..\packages\mongocsharpdriver.1.8.2\lib\net35\MongoDB.Bson.dll</HintPath>
+      <HintPath>..\..\packages\MongoRepository.1.5.2\lib\MongoDB.Bson.dll</HintPath>
     </Reference>
     <Reference Include="MongoDB.Driver">
-      <HintPath>..\packages\mongocsharpdriver.1.8.2\lib\net35\MongoDB.Driver.dll</HintPath>
+      <HintPath>..\..\packages\MongoRepository.1.5.2\lib\MongoDB.Driver.dll</HintPath>
     </Reference>
     <Reference Include="MongoRepository">
-      <HintPath>..\packages\MongoRepository.1.5.2\lib\MongoRepository.dll</HintPath>
+      <HintPath>..\..\packages\MongoRepository.1.5.2\lib\MongoRepository.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />

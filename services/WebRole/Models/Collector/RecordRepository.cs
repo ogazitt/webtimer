@@ -14,7 +14,7 @@ namespace WebRole.Collector.Models
         private bool disposed = false;
 
         // private string connectionString = System.Environment.GetEnvironmentVariable("MONGOLAB_URI");
-        private string connectionString = HostEnvironment.MongoLabUri;
+        private string connectionString = HostEnvironment.MongoUri;
 
         private string dbName = "MongoLab-km";
         private string collectionName = "records";

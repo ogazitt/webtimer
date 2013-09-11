@@ -14,7 +14,8 @@ namespace ServiceHost
 
     public static class HostEnvironment
     {
-        public const string MongoLabUriConfigKey = "MONGOLAB_URI";
+        public const string MongoUriConfigKey = "MongoUri";
+        public const string MongoCollectionNameConfigKey = "MongoCollectionName";
         public const string ConnectionStringNameConfigKey = "ConnectionStringName";
 
         public const string AzureStorageAccountConfigKey = "AzureStorageAccount";
@@ -48,7 +49,8 @@ namespace ServiceHost
         static bool? isSplunkLoggingEnabled;
         static int?  splunkLocalPort;
         static RoleSize? azureRoleSize;
-        static string mongoLabUri;
+        static string mongoUri;
+        static string mongoCollectionName;
         static string deploymentName;
         static string connectionStringName;
         static string userDataConnection;
@@ -177,15 +179,27 @@ namespace ServiceHost
         }
          */
 
-        public static string MongoLabUri
+        public static string MongoUri
         {
             get
             {
-                if (mongoLabUri == null)
+                if (mongoUri == null)
                 {
-                    mongoLabUri = ConfigurationSettings.Get(MongoLabUriConfigKey);
+                    mongoUri = ConfigurationSettings.Get(MongoUriConfigKey);
                 }
-                return mongoLabUri;
+                return mongoUri;
+            }
+        }
+
+        public static string MongoCollectionName
+        {
+            get
+            {
+                if (mongoCollectionName == null)
+                {
+                    mongoCollectionName = ConfigurationSettings.Get(MongoCollectionNameConfigKey);
+                }
+                return mongoCollectionName;
             }
         }
 

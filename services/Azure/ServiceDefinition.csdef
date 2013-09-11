@@ -18,7 +18,8 @@
     </Imports>
     <ConfigurationSettings>
       <Setting name="ConnectionStringName" />
-      <Setting name="MONGOLAB_URI" />
+      <Setting name="MongoUri" />
+      <Setting name="MongoCollectionName" />
       <Setting name="AzureLoggingEnabled" />
       <Setting name="SplunkLoggingEnabled" />
     </ConfigurationSettings>
@@ -30,7 +31,8 @@
     </Imports>
     <ConfigurationSettings>
       <Setting name="ConnectionStringName" />
-      <Setting name="MONGOLAB_URI" />
+      <Setting name="MongoUri" />
+      <Setting name="MongoCollectionName" />
       <Setting name="CollectorWorkerCount" />
       <Setting name="CollectorWorkerTimeout" />
       <Setting name="AzureLoggingEnabled" />
