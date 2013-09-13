@@ -73,9 +73,10 @@ namespace CollectorWorker
                                     var device = UserContext.Devices.FirstOrDefault(d => d.UserId == userId && d.DeviceId == session.DeviceId);
                                     if (device == null)
                                     {
-                                        // create a new device
+                                        // create a new device and save it immediately
                                         device = UserDataContext.CreateDeviceFromSession(session);
                                         UserContext.Devices.Add(device);
+                                        UserContext.SaveChanges();
                                     }
 
                                     // create a new session with the correct device
@@ -89,6 +90,8 @@ namespace CollectorWorker
                                     sessionToModify.InProgress = session.InProgress;
                                 }
                             }
+                            
+                            // save all the sessions 
                             UserContext.SaveChanges();
 
                             // mark the records as processed using batch semantics
