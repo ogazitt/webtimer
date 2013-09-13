@@ -44,7 +44,7 @@ namespace CollectorWorker
             //   sleep for the timeout period
             while (true)
             {
-                var UserContext = Storage.NewUserContext;
+                var UserContext = Storage.NewUserDataContext;
                 var CollectorContext = Storage.NewCollectorContext;
 
                 try
@@ -58,7 +58,7 @@ namespace CollectorWorker
                         {
                             // get all the in-progress sessions belonging to the userid
                             var userId = newRecords.First().UserId;
-                            var sessions = UserContext.WebSessions.Where(ws => ws.Device.UserId == userId);
+                            var sessions = UserContext.WebSessions.Where(ws => ws.Device.UserId == userId).OrderBy(ws => ws.Start);
 
                             // process the records against the existing sessions
                             var workingSessions = RecordProcessor.ProcessRecords(sessions.ToList<WebSession>(), newRecords.ToList<ISiteLookupRecord>());
@@ -67,7 +67,21 @@ namespace CollectorWorker
                             foreach (var session in workingSessions)
                             {
                                 if (session.WebSessionId == 0)
+                                {   // new session
+
+                                    // find out whether the device already exists
+                                    var device = UserContext.Devices.FirstOrDefault(d => d.UserId == userId && d.DeviceId == session.DeviceId);
+                                    if (device == null)
+                                    {
+                                        // create a new device
+                                        device = UserDataContext.CreateDeviceFromSession(session);
+                                        UserContext.Devices.Add(device);
+                                    }
+
+                                    // create a new session with the correct device
+                                    session.Device = device;
                                     UserContext.WebSessions.Add(session);
+                                }
                                 else
                                 {
                                     var sessionToModify = sessions.Single(s => s.WebSessionId == session.WebSessionId);
@@ -77,7 +91,7 @@ namespace CollectorWorker
                             }
                             UserContext.SaveChanges();
 
-                            // mark the records as processed using UPSERT semantics
+                            // mark the records as processed using batch semantics
                             foreach (var record in newRecords)
                                 record.State = RecordState.Processed;
                             CollectorContext.Update(newRecords);
@@ -87,7 +101,17 @@ namespace CollectorWorker
                         catch (Exception ex)
                         {
                             TraceLog.TraceException("Could not save session changes", ex);
+#if DEBUG                   // if still debugging this codepath, reset the collector records to New.  BUGBUG - need to harden this with poison message semantics
+
+                            // mark the records as new using batch semantics
+                            foreach (var record in newRecords)
+                                record.State = RecordState.New;
+                            CollectorContext.Update(newRecords);
+#endif
                         }
+
+                        // keep reading records until they are all processed
+                        continue;
                     }
                 }
                 catch (Exception ex)

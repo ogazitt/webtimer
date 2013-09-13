@@ -14,10 +14,6 @@ namespace ServiceHost
 
     public static class HostEnvironment
     {
-        public const string MongoUriConfigKey = "MongoUri";
-        public const string MongoCollectionNameConfigKey = "MongoCollectionName";
-        public const string ConnectionStringNameConfigKey = "ConnectionStringName";
-
         public const string AzureStorageAccountConfigKey = "AzureStorageAccount";
         public const string MailWorkerTimeoutConfigKey = "MailWorkerTimeout";
         public const string MailWorkerCountConfigKey = "MailWorkerCount";
@@ -28,11 +24,11 @@ namespace ServiceHost
         public const string CollectorWorkerTimeoutConfigKey = "CollectorWorkerTimeout";
         public const string CollectorWorkerCountConfigKey = "CollectorWorkerCount";
 
-
         const string DeploymentNameConfigKey = "DeploymentName";
-        const string UserDataConnectionConfigKey = "UsersConnection";
-        const string UserAccountConnectionConfigKey = "UsersConnection";
-        const string SuggestionsConnectionConfigKey = "SuggestionsConnection";
+        const string MongoUriConfigKey = "MongoUri";
+        const string MongoCollectionNameConfigKey = "MongoCollectionName";
+        const string UserDataConnectionStringConfigKey = "UserDataConnectionString";
+        const string UserProfileConnectionStringConfigKey = "UserProfileConnectionString";
         const string DataServicesConnectionConfigKey = "DataServicesConnection";
         const string DataServicesEndpointConfigKey = "DataServicesEndpoint";
         const string AzureDiagnosticsConnectionString = "Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString";
@@ -54,7 +50,7 @@ namespace ServiceHost
         static string deploymentName;
         static string connectionStringName;
         static string userDataConnection;
-        static string userAccountConnection;
+        static string userProfileConnection;
         static string suggestionsConnection;
         static string dataServicesConnection;
         static string dataServicesEndpoint;
@@ -142,7 +138,7 @@ namespace ServiceHost
             if (versionCheckStatus == null)
             {
                 versionCheckStatus = string.Empty;
-                UserStorageContext userStorage = Storage.NewUserContext;
+                UserStorageContext userStorage = Storage.NewUserDataContext;
                 var dbSchemaVersion = userStorage.Versions.FirstOrDefault(v => v.VersionType == DatabaseVersion.Schema);
                 var dbConstantsVersion = userStorage.Versions.FirstOrDefault(v => v.VersionType == DatabaseVersion.Constants);
                 if (dbSchemaVersion == null || dbSchemaVersion.VersionString != UserConstants.SchemaVersion)
@@ -215,52 +211,27 @@ namespace ServiceHost
             }
         }
 
-        public static string ConnectionStringName
-        {
-            get
-            {
-                if (connectionStringName == null)
-                {
-                    connectionStringName = ConfigurationSettings.Get(ConnectionStringNameConfigKey);
-                }
-                return connectionStringName;
-            }
-        }
-
-
         public static string UserDataConnection
         {
             get
             {
                 if (userDataConnection == null)
                 {
-                    userDataConnection = ConfigurationSettings.GetConnection(UserDataConnectionConfigKey);
+                    userDataConnection = ConfigurationSettings.Get(UserDataConnectionStringConfigKey);
                 }
                 return userDataConnection;
             }
         }
 
-        public static string UserAccountConnection
+        public static string UserProfileConnection
         {
             get
             {
-                if (userAccountConnection == null)
+                if (userProfileConnection == null)
                 {
-                    userAccountConnection = ConfigurationSettings.GetConnection(UserAccountConnectionConfigKey);
+                    userProfileConnection = ConfigurationSettings.Get(UserProfileConnectionStringConfigKey);
                 }
-                return userAccountConnection;
-            }
-        }
-
-        public static string SuggestionsConnection
-        {
-            get
-            {
-                if (suggestionsConnection == null)
-                {
-                    suggestionsConnection = ConfigurationSettings.GetConnection(SuggestionsConnectionConfigKey);
-                }
-                return suggestionsConnection;
+                return userProfileConnection;
             }
         }
 

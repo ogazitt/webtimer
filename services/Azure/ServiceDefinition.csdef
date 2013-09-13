@@ -17,7 +17,8 @@
       <Import moduleName="RemoteForwarder" />
     </Imports>
     <ConfigurationSettings>
-      <Setting name="ConnectionStringName" />
+      <Setting name="UserDataConnectionString" />
+      <Setting name="UserProfileConnectionString" />
       <Setting name="MongoUri" />
       <Setting name="MongoCollectionName" />
       <Setting name="AzureLoggingEnabled" />
@@ -30,13 +31,14 @@
       <Import moduleName="RemoteAccess" />
     </Imports>
     <ConfigurationSettings>
-      <Setting name="ConnectionStringName" />
+      <Setting name="UserDataConnectionString" />
+      <Setting name="UserProfileConnectionString" />
       <Setting name="MongoUri" />
       <Setting name="MongoCollectionName" />
-      <Setting name="CollectorWorkerCount" />
-      <Setting name="CollectorWorkerTimeout" />
       <Setting name="AzureLoggingEnabled" />
       <Setting name="SplunkLoggingEnabled" />
+      <Setting name="CollectorWorkerCount" />
+      <Setting name="CollectorWorkerTimeout" />
     </ConfigurationSettings>
   </WorkerRole>
 </ServiceDefinition>

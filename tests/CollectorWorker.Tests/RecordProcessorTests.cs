@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using FluentAssertions;
 using Moq;
@@ -17,7 +18,7 @@ namespace CollectorWorker.Tests
     public class RecordProcessorTests : TestBase
     {
         [Test]
-        public void Session(
+        public void ValidateSessionProcessing(
             [Range(1,10)] int sessionCount, 
             [Values(10, 50, 100)] int recordCount)
         {
@@ -27,6 +28,44 @@ namespace CollectorWorker.Tests
 
             var sessions = RecordProcessor.ProcessRecords(null, list);
             sessions.Count.Should().Be(sessionCount);
+        }
+
+        [Test]
+        public void ValidateWebSession()
+        {
+            var macAddress = macAddresses[0];
+            var websiteName = websiteNames[0];
+            var list = CreateRecordList(macAddress, websiteName, 1, 1);
+            var sessions = RecordProcessor.ProcessRecords(null, list);
+            sessions.Count.Should().Be(1);
+
+            var session = sessions[0];
+            session.DeviceId.Should().Be(macAddress);
+            session.Duration.Should().BeGreaterOrEqualTo(0);
+            session.Start.Should().NotBeNullOrEmpty();
+            session.Site.Should().Be(websiteName);
+            session.UserId.Should().NotBeNullOrEmpty();
+
+            if (session.Device != null)
+            {
+                var device = session.Device;
+                device.DeviceId.Should().Be(macAddress);
+                device.UserId.Should().Be(session.UserId);
+            }
+        }
+
+        [Test]
+        public void OutOfOrderTimestamps()
+        {
+            var macAddress = macAddresses[0];
+            var websiteName = websiteNames[0];
+            var list = CreateRecordList(macAddress, websiteName, 1, 2);
+            list = list.OrderByDescending(r => r.Timestamp).ToList();
+            var sessions = RecordProcessor.ProcessRecords(null, list);
+            sessions.Count.Should().Be(1);
+
+            var session = sessions[0];
+            session.Duration.Should().BeGreaterOrEqualTo(0);
         }
 
         private List<ISiteLookupRecord> CreateRecordList(string macAddress, string websiteName, int sessionCount, int recordCount)
@@ -46,7 +85,8 @@ namespace CollectorWorker.Tests
                     HostIpAddress = ipAddress,
                     HostName = ipAddress,
                     WebsiteName = websiteName,
-                    Timestamp = now.ToString()
+                    Timestamp = now.ToString("s"),
+                    UserId = macAddress
                 });
                 if (i % sessionBreak == 0 && runningSessionCount < sessionCount)
                 {

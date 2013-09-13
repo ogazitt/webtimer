@@ -47,6 +47,13 @@ namespace WorkerRole
             // initialize splunk logging (we do this here instead of OnStart so that the Azure logger has time to really start)
             TraceLog.TraceInfo("WorkerRole started");
 
+            // the database must exist for the role to run
+            if (!UserDataContext.InitializeDatabase())
+            {
+                TraceLog.TraceFatal("Cannot initialize the UserData database");
+                return;
+            }
+
 #if DISABLE
             // check the database schema versions to make sure there is no version mismatch
             if (!Storage.NewUserContext.CheckSchemaVersion())

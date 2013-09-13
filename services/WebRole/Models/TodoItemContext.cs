@@ -17,7 +17,7 @@ namespace WebRole.Models
     public class TodoItemContext : DbContext
     {
         public TodoItemContext()
-            : base("name=" + HostEnvironment.ConnectionStringName)
+            : base("name=" + HostEnvironment.UserProfileConnection)
         {
         }
 

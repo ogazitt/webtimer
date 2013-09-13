@@ -44,11 +44,11 @@ namespace WebRole.Controllers
             //BUGBUG - clean up repository context? apparently no need to with MongoRepository
             //req.RegisterForDispose(repository);
 
-            // extract each object out of the array and create a SiteLookupRecord for each
-            var array = value as JArray;            
+            var list = new List<SiteLookupRecord>();
+            var array = value as JArray;
             if (array != null)
             {
-                var list = new List<SiteLookupRecord>();
+                // extract each object out of the array and create a SiteLookupRecord for each
                 foreach (JObject r in array)
                 {
                     list.Add(new SiteLookupRecord()
@@ -65,29 +65,35 @@ namespace WebRole.Controllers
 
                 // add all records at once
                 Repository.AddRecords(list);
+
+                TraceLog.TraceInfo(string.Format("Added {0} records for user {1}", list.Count, Repository.UserId));
             }
-             
-            return value;
+
+            return list.Count;
         }
 
 #if DEBUG
-        // GET colapi/collector
-        [AllowAnonymous]
-        public int Get()
-        {
-            // THIS API IS FOR TESTING ONLY - it is for creating synthetic records            
-            // create 100 new records
-            return Get(100);
-        }
-
         // GET colapi/collector/5
         [AllowAnonymous]
         public int Get(int count)
         {
             // THIS API IS FOR TESTING ONLY - it is for creating synthetic records
-            var list = Repository.MockRecords(count);
-            Repository.AddRecords(list);
+
+            var context = new CollectorContext("dummyuser");
+            var list = context.MockRecords(count);
+            context.AddRecords(list);
+            TraceLog.TraceInfo(string.Format("Added {0} records for user {1}", list.Count, Repository.UserId));
             return count;
+        }
+
+        // GET colapi/collector
+        [AllowAnonymous]
+        public int Get()
+        {
+            // THIS API IS FOR TESTING ONLY - it is for creating synthetic records  
+          
+            // create 100 new records
+            return Get(100);
         }
 #endif
 

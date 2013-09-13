@@ -9,17 +9,22 @@ namespace ServiceEntities
 {
     public class WebSession
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int  WebSessionId { get; set; }
 
-        [Required, MaxLength(30)]
+        [Required]
         public string Site       { get; set; }
 
         public string Start      { get; set; } // string rep of yyyy-mm-dd hh:MM:ss
         public int    Duration   { get; set; } // in seconds
         public bool   InProgress { get; set; } // is the session in progress or not
 
-        [ForeignKey("Device")]
-        public int    DeviceId   { get; set; }
+        [Required, ForeignKey("Device")]
+        public string  DeviceId  { get; set; }
         public virtual Device Device { get; set; }
+
+        // this is the account the person belongs to
+        [Required]
+        public string UserId { get; set; }        
     }
 }

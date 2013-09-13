@@ -4,11 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using WebRole.Collector.Models;
 
 namespace WebRole.Controllers
 {
-    public class RecordsController : Controller, IDisposable
+    public class RecordsController : Controller //, IDisposable
     {
         private CollectorContext repository = Storage.NewCollectorContext;
 

@@ -14,18 +14,18 @@
             get { return new CollectorContext(); }
         }
 
-        public static UserContext NewUserContext
+        public static UserDataContext NewUserDataContext
         {
-            get { return new UserContext(); }
+            get { return new UserDataContext(); }
         }
 
-        public static UserContext StaticUserContext
+        public static UserDataContext StaticUserDataContext
         {   // use a static context to access static data (serving values out of EF cache)
             get
             {
 #if DEBUG
                 // if in a debug build, always go to the database
-                return new UserContext();
+                return new UserDataContext();
 #else
                 if (staticUserContext == null)
                 {

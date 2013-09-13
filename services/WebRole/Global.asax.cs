@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ServiceHost;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -26,7 +27,17 @@ namespace WebRole
             AuthConfig.RegisterAuth();
 
             // BUGBUG: remove this when starting to deploy real production data
-            System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<ServiceHost.UserContext>());
+            //System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<WebRole.Models.TodoItemContext>());
+
+            /*
+            // the database must exist for the role to run
+            if (!UserDataContext.InitializeDatabase())
+            {
+                //System.Data.Entity.Database.SetInitializer<UserDataContext>(null);
+                //System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<ServiceHost.UserDataContext>());
+                TraceLog.TraceFatal("Application_Start: Cannot initialize the user database");
+            } 
+             */
         }
     }
 }

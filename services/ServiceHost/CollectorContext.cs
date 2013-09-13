@@ -14,13 +14,17 @@ namespace ServiceHost
     public class CollectorContext : MongoRepository<SiteLookupRecord>
     {
         public CollectorContext() : base(HostEnvironment.MongoUri, HostEnvironment.MongoCollectionName) { }
-        //public CollectorContext() : base(HostEnvironment.MongoUri, HostEnvironment.MongoCollectionName) { }
 
-        public CollectorContext(IPrincipal user) : base(HostEnvironment.MongoUri, HostEnvironment.MongoCollectionName)
-        //public CollectorContext(IPrincipal user)
-
+        public CollectorContext(IPrincipal user)
+            : base(HostEnvironment.MongoUri, HostEnvironment.MongoCollectionName)
         {
             UserId = user.Identity.Name;
+        }
+
+        public CollectorContext(string userName)
+            : base(HostEnvironment.MongoUri, HostEnvironment.MongoCollectionName)
+        {
+            UserId = userName;
         }
 
         public string UserId { get; private set; }
@@ -78,7 +82,7 @@ namespace ServiceHost
         /// </summary>
         /// <param name="workerName"></param>
         /// <returns></returns>
-        public IQueryable<SiteLookupRecord> GetRecordsToProcess(string workerName)
+        public List<SiteLookupRecord> GetRecordsToProcess(string workerName)
         {
             var lockString = string.Format("{0}: {1}", RecordState.Locked, workerName);
             try
@@ -88,7 +92,9 @@ namespace ServiceHost
                 var list = this.Where(r => 
                  // r.UserId == UserId &&   // NOTE THAT THIS DOES NOT FILTER BASED ON USERID
                     r.State == RecordState.New).
-                    Take(100);
+                    OrderBy(r => r.Timestamp).
+                    Take(100).
+                    ToList();
 
                 // lock the records
                 foreach (var record in list)
@@ -98,7 +104,7 @@ namespace ServiceHost
                 this.Update(list);
 
                 // now retrieve the records that we managed to lock
-                list = this.Where(r => r.State == lockString);
+                list = this.Where(r => r.State == lockString).ToList();
                 return list;                
             }
             catch (MongoConnectionException ex)
@@ -124,10 +130,10 @@ namespace ServiceHost
                 {
                     HostMacAddress = "000000000000",
                     HostIpAddress = "0.0.0.0",
-                    HostName = "dummy",
+                    HostName = "dummyhost",
                     WebsiteName = sites[rand.Next(sites.Count)],
                     Timestamp = now.ToString("s"),
-                    UserId = "",
+                    UserId = UserId,
                     State = RecordState.New
                 });
                 now += TimeSpan.FromSeconds(30d);

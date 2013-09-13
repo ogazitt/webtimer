@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ServiceHost;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -50,7 +51,10 @@ namespace WebRole.Filters
                         }
                         return;
                     }
+                    TraceLog.TraceError(string.Format("Collector API login failed for {0}", creds.Name));
                 }
+                else
+                    TraceLog.TraceError("Collector API authorization error: could not extract credentials from HTTP headers");
             }
             base.HandleUnauthorizedRequest(actionContext);
         }

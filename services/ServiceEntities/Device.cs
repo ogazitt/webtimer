@@ -9,18 +9,18 @@ namespace ServiceEntities
 {
     public class Device
     {
-        public int DeviceId { get; set; }
+        [Key, MaxLength(12)]
+        public string DeviceId { get; set; }
 
+        // user-assigned friendly name for the device
         [Required, MaxLength(30)]
         public string Name { get; set; }
-
-        public string MacId { get; set; }
 
         public string Hostname { get; set; }
         public string IpAddress { get; set; }
 
         [ForeignKey("Person")]
-        public int PersonId { get; set; }
+        public int? PersonId { get; set; }
         public virtual Person Person { get; set; }
 
         // this is the account the device belongs to

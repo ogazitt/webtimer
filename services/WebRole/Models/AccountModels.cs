@@ -12,7 +12,7 @@ namespace WebRole.Models
     public class UsersContext : DbContext
     {
         public UsersContext()
-            : base(HostEnvironment.ConnectionStringName)
+            : base(HostEnvironment.UserProfileConnection)
         {
         }
 

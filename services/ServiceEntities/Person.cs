@@ -9,6 +9,7 @@ namespace ServiceEntities
 {
     public class Person
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PersonId { get; set; }
 
         [Required, MaxLength(30)]

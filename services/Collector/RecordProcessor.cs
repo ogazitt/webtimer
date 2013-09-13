@@ -19,21 +19,24 @@ namespace Collector
 
             // set of WebSession references that have been modified or added
             var resultSessions = new List<WebSession>();
+            recordList = recordList.OrderBy(r => r.UserId).ThenBy(r => r.Timestamp).ToList();
 
             foreach (var record in recordList)
             {
                 var session = sessions.LastOrDefault(s =>
-                    s.Device.MacId == record.HostMacAddress &&
+                    s.Device.DeviceId == record.HostMacAddress &&
                     s.Site == record.WebsiteName && 
                     s.InProgress == true);
                 if (session == null)
                 {
                     var newSession = new WebSession()
                     {
+                        UserId = record.UserId,
+                        DeviceId = record.HostMacAddress,
+                        Device = new Device() { DeviceId = record.HostMacAddress, IpAddress = record.HostIpAddress, Hostname = record.HostName, UserId = record.UserId },
                         Site = record.WebsiteName,
                         Start = record.Timestamp,
                         Duration = 0,
-                        Device = new Device() { MacId = record.HostMacAddress, IpAddress = record.HostIpAddress, Hostname = record.HostName },
                         InProgress = true
                     };
                     sessions.Add(newSession);
@@ -56,10 +59,12 @@ namespace Collector
                         // create a new session
                         var newSession = new WebSession()
                         {
+                            UserId = record.UserId,
+                            DeviceId = record.HostMacAddress,
+                            Device = new Device() { DeviceId = record.HostMacAddress, IpAddress = record.HostIpAddress, Hostname = record.HostName, UserId = record.UserId },
                             Site = record.WebsiteName,
                             Start = record.Timestamp,
                             Duration = 0,
-                            Device = new Device() { MacId = record.HostMacAddress, IpAddress = record.HostIpAddress, Hostname = record.HostName },
                             InProgress = true
                         };
                         sessions.Add(newSession);

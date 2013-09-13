@@ -10,41 +10,40 @@ using WebRole.Models;
 namespace WebRole.Filters
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-    public sealed class InitializeSimpleMembershipAttribute : ActionFilterAttribute
+    public sealed class InitializeTodoSchemaAttribute : ActionFilterAttribute
     {
-        private static SimpleMembershipInitializer _initializer;
+        private static TodoSchemaInitializer _initializer;
         private static object _initializerLock = new object();
         private static bool _isInitialized;
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            // Ensure ASP.NET Simple Membership is initialized only once per app start
+            // Ensure Todo database is initialized only once per app start
             LazyInitializer.EnsureInitialized(ref _initializer, ref _isInitialized, ref _initializerLock);
         }
 
-        private class SimpleMembershipInitializer
+        private class TodoSchemaInitializer
         {
-            public SimpleMembershipInitializer()
+            public TodoSchemaInitializer()
             {
-                Database.SetInitializer<UsersContext>(null);
+                Database.SetInitializer<TodoItemContext>(null);
 
                 try
                 {
-                    using (var context = new UsersContext())
+                    using (var context = new TodoItemContext())
                     {
                         if (!context.Database.Exists())
                         {
-                            // Create the SimpleMembership database without Entity Framework migration schema
+                            // Create the Todo database without Entity Framework migration schema
                             ((IObjectContextAdapter)context).ObjectContext.CreateDatabase();
-                            TraceLog.TraceInfo("Created membership database");
+                            TraceLog.TraceInfo("Created Todo database");
                         }
                     }
-
-                    WebSecurity.InitializeDatabaseConnection(HostEnvironment.UserProfileConnection, "UserProfile", "UserId", "UserName", autoCreateTables: true);
                 }
                 catch (Exception ex)
                 {
-                    throw new InvalidOperationException("The ASP.NET Simple Membership database could not be initialized. For more information, please see http://go.microsoft.com/fwlink/?LinkId=256588", ex);
+                    TraceLog.TraceException("The Todo database could not be initialized", ex);
+                    throw new InvalidOperationException("The Todo database could not be initialized", ex);
                 }
             }
         }
