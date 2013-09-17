@@ -1,0 +1,19 @@
+﻿<!-- toolbar partial view -->
+<div data-ng-controller="ToolbarController" class="btn-toolbar well">
+    <div class="btn-group now-button">
+<!--        <button class="btn btn-default"><span data-ng-cloak="">{{settings.buttonTitle}}</span></button>-->
+        <button class="btn btn-default" data-ng-bind="settings.buttonTitle" data-ng-click="selectNow()"></button>
+    </div>
+    <div class="btn-group">
+        <button class="btn btn-default" data-ng-click="back()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+<!--        <button class="btn btn-default disabled"><span>{{ settings.value | date:'shortDate' }}</span></button>-->
+        <button class="btn btn-default disabled date-display" data-ng-bind="settings.value | date:settings.format"></button>
+        <button class="btn btn-default" data-ng-click="forward()"><span class="glyphicon glyphicon-chevron-right"></span></button>
+    </div>
+    <div class="btn-group pull-right">
+        <a href="#/" class="btn btn-default btn-active" data-ng-click="selectDay()">Day</a> 
+        <a href="#/week" class="btn btn-default" data-ng-click="selectWeek()">Week</a> 
+        <a href="#/month" class="btn btn-default" data-ng-click="selectMonth()">Month</a> 
+        <a data-ng-click="refresh()" class="btn btn-default" >Refresh</a>     
+    </div>  
+</div>

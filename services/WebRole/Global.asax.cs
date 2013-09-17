@@ -27,7 +27,7 @@ namespace WebRole
             AuthConfig.RegisterAuth();
 
             // BUGBUG: remove this when starting to deploy real production data
-            //System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<WebRole.Models.TodoItemContext>());
+            //System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<WebRole.Models.UserDataContext>());
 
             /*
             // the database must exist for the role to run

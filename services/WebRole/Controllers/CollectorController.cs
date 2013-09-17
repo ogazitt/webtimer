@@ -1,14 +1,18 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Principal;
 using System.Web.Http;
 using Newtonsoft.Json.Linq;
+
 using ServiceEntities.Collector;
+using ServiceEntities.UserData;
 using ServiceHost;
 using WebRole.Filters;
 
 namespace WebRole.Controllers
 {
+    //[InitializeSimpleMembership]
     [BasicAuth]
     public class CollectorController : ApiController
     {
@@ -17,7 +21,7 @@ namespace WebRole.Controllers
         /// </summary>
         public IPrincipal CurrentUser { get; set; }
 
-        public CollectorController()
+        public CollectorController() : base()
         {
             // initialize the CurrentUser "intrinsic"
             CurrentUser = User;
@@ -41,7 +45,7 @@ namespace WebRole.Controllers
         {
             //BUGBUG - need to do something about CSRF 
 
-            //BUGBUG - clean up repository context? apparently no need to with MongoRepository
+            //BUGBUG - clean up repository collectorContext? apparently no need to with MongoRepository
             //req.RegisterForDispose(repository);
 
             var list = new List<SiteLookupRecord>();
@@ -63,7 +67,7 @@ namespace WebRole.Controllers
                     });
                 }
 
-                // add all records at once
+                // add all sitemaps at once
                 Repository.AddRecords(list);
 
                 TraceLog.TraceInfo(string.Format("Added {0} records for user {1}", list.Count, Repository.UserId));
@@ -74,25 +78,27 @@ namespace WebRole.Controllers
 
 #if DEBUG
         // GET colapi/collector/5
-        [AllowAnonymous]
-        public int Get(int count)
+        public int Get(int id)
         {
-            // THIS API IS FOR TESTING ONLY - it is for creating synthetic records
+            // THIS API IS FOR TESTING ONLY - it is for creating synthetic sitemaps
 
-            var context = new CollectorContext("dummyuser");
-            var list = context.MockRecords(count);
-            context.AddRecords(list);
-            TraceLog.TraceInfo(string.Format("Added {0} records for user {1}", list.Count, Repository.UserId));
-            return count;
+            var userName = CurrentUser.Identity.Name;
+            var userDataContext = Storage.NewUserDataContext;
+            var device = userDataContext.Devices.FirstOrDefault(d => d.UserId == userName) ?? Device.CreateNewDevice(userName);
+
+            var collectorContext = Storage.CollectorContextFor(userName);
+            var list = collectorContext.MockRecords(device, id);
+            collectorContext.AddRecords(list);
+            TraceLog.TraceInfo(string.Format("Added {0} sitemaps for user {1}", list.Count, Repository.UserId));
+            return id;
         }
 
         // GET colapi/collector
-        [AllowAnonymous]
         public int Get()
         {
-            // THIS API IS FOR TESTING ONLY - it is for creating synthetic records  
+            // THIS API IS FOR TESTING ONLY - it is for creating synthetic sitemaps  
           
-            // create 100 new records
+            // create 100 new sitemaps
             return Get(100);
         }
 #endif

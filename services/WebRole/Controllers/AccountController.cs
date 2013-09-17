@@ -14,7 +14,7 @@ using ServiceHost;
 namespace WebRole.Controllers
 {
     [Authorize]
-    [InitializeSimpleMembership]
+    //[InitializeSimpleMembership]
     //[InitializeTodoSchema]
     public class AccountController : Controller
     {
@@ -73,6 +73,7 @@ namespace WebRole.Controllers
                     TraceLog.TraceInfo(string.Format("Created user {0}", model.UserName));
 
                     InitiateDatabaseForNewUser(model.UserName);
+                    UserDataContext.InitializeNewUserAccount(model.UserName);
 
                     FormsAuthentication.SetAuthCookie(model.UserName, createPersistentCookie: false);
                     return Json(new { success = true, redirect = returnUrl });

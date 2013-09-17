@@ -6,7 +6,7 @@
 body {
     background-color: #fff;
     color: #333;
-    max-width: 980px; /*Remove this to make it full screen*/
+    /* max-width: 980px; *//*Remove this to make it full screen*/
     margin: 1em auto;
 }
 

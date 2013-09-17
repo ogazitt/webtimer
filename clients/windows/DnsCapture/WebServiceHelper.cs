@@ -100,7 +100,8 @@ namespace DnsCapture
 
         public static void PostRecords(User user, List<Record> records, Delegate del, Delegate netOpInProgressDel)
         {
-            InvokeWebServiceRequest(user, BaseUrl + "/colapi/collector", "POST", records, del, netOpInProgressDel, new AsyncCallback(ProcessResponse<List<Record>>));
+            //InvokeWebServiceRequest(user, BaseUrl + "/colapi/collector", "POST", records, del, netOpInProgressDel, new AsyncCallback(ProcessResponse<List<Record>>));
+            InvokeWebServiceRequest(user, BaseUrl + "/colapi/collector", "POST", records, del, netOpInProgressDel, new AsyncCallback(ProcessResponse<int>));
         }
 
         #endregion
@@ -266,7 +267,17 @@ namespace DnsCapture
             if (state == null)
                 throw new Exception("Web Service State not found");
 
-            Stream stream = request.EndGetRequestStream(res);
+            Stream stream = null;
+            try
+            {
+                // this will throw if the connection can't be established
+                stream = request.EndGetRequestStream(res);
+            }
+            catch (Exception)
+            {
+                isRequestInProgress = false;
+                return;
+            }
 
             // serialize a request body if one was passed in (and the verb will take it)
             if (state.RequestBody != null && request.Method != "GET")
@@ -410,6 +421,8 @@ namespace DnsCapture
             catch (Exception ex)
             {
                 TraceHelper.AddMessage("ProcessResponse: exception from GetBody or DynamicInvoke; ex: " + ex.Message);
+                if (del == null)
+                    return;  // if no delegate was passed, the results can't be processed
                 del.DynamicInvoke(null);
             }
         }

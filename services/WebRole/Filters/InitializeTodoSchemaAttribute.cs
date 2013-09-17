@@ -26,11 +26,11 @@ namespace WebRole.Filters
         {
             public TodoSchemaInitializer()
             {
-                Database.SetInitializer<TodoItemContext>(null);
+                Database.SetInitializer<UserDataContext>(null);
 
                 try
                 {
-                    using (var context = new TodoItemContext())
+                    using (var context = new UserDataContext())
                     {
                         if (!context.Database.Exists())
                         {

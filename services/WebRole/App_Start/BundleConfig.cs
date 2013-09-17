@@ -22,7 +22,7 @@ namespace WebRole
                         "~/Scripts/angular.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/ajaxlogin").Include(
-                "~/app/ajaxlogin.js"));
+                        "~/app/ajaxlogin.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/breeze").Include(
                         "~/Scripts/q.js",
@@ -30,14 +30,22 @@ namespace WebRole
                         "~/Scripts/breeze.min.js",
                         "~/Scripts/breeze.savequeuing.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/highcharts").Include(
+                        "~/Scripts/highcharts/highstock.js",
+                        "~/Scripts/angular-highcharts.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/todo").Include(
-                "~/app/todo.main.js", // must be first
-                "~/app/todo.model.js",
-                "~/app/todo.datacontext.js",
-                "~/app/todo.controller.js",
-                "~/app/about.controller.js",
-                "~/app/about.logger.js"
-                ));
+                        "~/app/todo/todo.main.js", // must be first
+                        "~/app/todo/todo.model.js",
+                        "~/app/todo/todo.datacontext.js",
+                        "~/app/todo/todo.controller.js",
+                        "~/app/todo/about.controller.js",
+                        "~/app/todo/about.logger.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/dashboard").Include(
+                        "~/app/dashboard/toolbar.js",
+                        "~/app/dashboard/dashboard.js", // must be first
+                        "~/app/dashboard/day.controller.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
@@ -46,6 +54,7 @@ namespace WebRole
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/Site.css",
+                "~/Content/dashboard.css",
                 "~/Content/TodoList.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(

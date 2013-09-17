@@ -26,7 +26,7 @@ namespace CollectorWorker.Tests
             var websiteName = websiteNames[0];
             var list = CreateRecordList(macAddress, websiteName, sessionCount, recordCount);
 
-            var sessions = RecordProcessor.ProcessRecords(null, list);
+            var sessions = RecordProcessor.ProcessRecords(siteMapRepository, null, list);
             sessions.Count.Should().Be(sessionCount);
         }
 
@@ -36,7 +36,7 @@ namespace CollectorWorker.Tests
             var macAddress = macAddresses[0];
             var websiteName = websiteNames[0];
             var list = CreateRecordList(macAddress, websiteName, 1, 1);
-            var sessions = RecordProcessor.ProcessRecords(null, list);
+            var sessions = RecordProcessor.ProcessRecords(siteMapRepository, null, list);
             sessions.Count.Should().Be(1);
 
             var session = sessions[0];
@@ -61,7 +61,7 @@ namespace CollectorWorker.Tests
             var websiteName = websiteNames[0];
             var list = CreateRecordList(macAddress, websiteName, 1, 2);
             list = list.OrderByDescending(r => r.Timestamp).ToList();
-            var sessions = RecordProcessor.ProcessRecords(null, list);
+            var sessions = RecordProcessor.ProcessRecords(siteMapRepository, null, list);
             sessions.Count.Should().Be(1);
 
             var session = sessions[0];

@@ -1,13 +1,14 @@
-﻿using MongoDB.Driver;
-using MongoRepository;
-using ServiceEntities;
-using ServiceEntities.Collector;
-using ServiceHost;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Principal;
+using MongoDB.Driver;
+using MongoRepository;
+
+using ServiceEntities.Collector;
+using ServiceEntities.UserData;
+using ServiceHost;
 
 namespace ServiceHost
 {
@@ -30,9 +31,9 @@ namespace ServiceHost
         public string UserId { get; private set; }
 
         /// <summary>
-        /// Add a record to the database
+        /// Add a sitemap to the database
         /// </summary>
-        /// <param name="record">a SiteLookupRecord</param>
+        /// <param name="sitemap">a SiteLookupRecord</param>
         /// <returns>true for success, false for failure</returns>
         public bool AddRecord(SiteLookupRecord record)
         {
@@ -43,9 +44,9 @@ namespace ServiceHost
         }
 
         /// <summary>
-        /// Add multiple records at the same time using the same connection
+        /// Add multiple sitemaps at the same time using the same connection
         /// </summary>
-        /// <param name="records">a list of SiteLookupRecords</param>
+        /// <param name="sitemaps">a list of SiteLookupRecords</param>
         /// <returns>true for success, false for failure</returns>
         public bool AddRecords(List<SiteLookupRecord> records)
         {
@@ -57,7 +58,7 @@ namespace ServiceHost
         }
 
         /// <summary>
-        /// Get all the records belonging to this User
+        /// Get all the sitemaps belonging to this User
         /// </summary>
         /// <returns></returns>
         public List<SiteLookupRecord> GetAllRecords()
@@ -76,7 +77,7 @@ namespace ServiceHost
         }
 
         /// <summary>
-        /// Get all records belonging to this user that need to be processed
+        /// Get all sitemaps belonging to this user that need to be processed
         /// This method should only be called from a privileged worker because it
         /// does not filter its results based on a user context
         /// </summary>
@@ -87,8 +88,8 @@ namespace ServiceHost
             var lockString = string.Format("{0}: {1}", RecordState.Locked, workerName);
             try
             {
-                // get a chunk of new (unprocessed) records
-                // BUGBUG: make the record count come from config
+                // get a chunk of new (unprocessed) sitemaps
+                // BUGBUG: make the sitemap count come from config
                 var list = this.Where(r => 
                  // r.UserId == UserId &&   // NOTE THAT THIS DOES NOT FILTER BASED ON USERID
                     r.State == RecordState.New).
@@ -96,14 +97,14 @@ namespace ServiceHost
                     Take(100).
                     ToList();
 
-                // lock the records
+                // lock the sitemaps
                 foreach (var record in list)
                     record.State = lockString;  
 
                 // update entire list
                 this.Update(list);
 
-                // now retrieve the records that we managed to lock
+                // now retrieve the sitemaps that we managed to lock
                 list = this.Where(r => r.State == lockString).ToList();
                 return list;                
             }
@@ -114,7 +115,7 @@ namespace ServiceHost
             }
         }
 
-        public List<SiteLookupRecord> MockRecords(int count)
+        public List<SiteLookupRecord> MockRecords(Device device, int count)
         {
             var rand = new Random(DateTime.Now.Millisecond);
             var now = DateTime.Now;
@@ -122,18 +123,18 @@ namespace ServiceHost
             var sites = new List<string>()
             { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j" };
 
-            // create <count> records
+            // create <count> sitemaps
             var list = new List<SiteLookupRecord>();
             for (int i = 0; i < count; i++)
             {
                 list.Add(new SiteLookupRecord()
                 {
-                    HostMacAddress = "000000000000",
-                    HostIpAddress = "0.0.0.0",
-                    HostName = "dummyhost",
+                    HostMacAddress = device.DeviceId,
+                    HostIpAddress = device.IpAddress,
+                    HostName = device.Hostname,
                     WebsiteName = sites[rand.Next(sites.Count)],
                     Timestamp = now.ToString("s"),
-                    UserId = UserId,
+                    UserId = device.UserId,
                     State = RecordState.New
                 });
                 now += TimeSpan.FromSeconds(30d);
@@ -151,7 +152,7 @@ namespace ServiceHost
             if (UserId != record.UserId)
             {
                 TraceLog.TraceError(String.Format(
-                    "UserId in record {0} does not match current user {1}",
+                    "UserId in sitemap {0} does not match current user {1}",
                     record.UserId,
                     UserId));
                 return false;

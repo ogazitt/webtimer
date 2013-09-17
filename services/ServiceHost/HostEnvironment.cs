@@ -48,10 +48,8 @@ namespace ServiceHost
         static string mongoUri;
         static string mongoCollectionName;
         static string deploymentName;
-        static string connectionStringName;
         static string userDataConnection;
         static string userProfileConnection;
-        static string suggestionsConnection;
         static string dataServicesConnection;
         static string dataServicesEndpoint;
         static string lexiconFileName;

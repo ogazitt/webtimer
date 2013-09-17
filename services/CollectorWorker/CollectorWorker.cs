@@ -1,13 +1,15 @@
-﻿using Collector;
-using ServiceEntities;
-using ServiceEntities.Collector;
-using ServiceHost;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+
+using Collector;
+using ServiceEntities.Collector;
+using ServiceEntities.UserData;
+using ServiceHost;
+using System.Diagnostics;
 
 namespace CollectorWorker
 {
@@ -37,10 +39,23 @@ namespace CollectorWorker
 
         public void Start()
         {
+            // use a persistent site map repository for the duration of worker lifetime
+
+            TraceLog.TraceDetail("Initializing Site Map Repository");
+
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            var SiteMapRepository = Storage.NewSiteMapRepository;
+            SiteMapRepository.Initialize();
+
+            stopwatch.Stop();
+            TraceLog.TraceDetail("Initialized Site Map Repository: {0:.2} secs" + stopwatch.ElapsedMilliseconds / 1000);
+
             // run an infinite loop doing the following:
-            //   grab records from the collector database
-            //   process records into session records in the user database
-            //   mark the processed records
+            //   grab sitemaps from the collector database
+            //   process sitemaps into session sitemaps in the user database
+            //   mark the processed sitemaps
             //   sleep for the timeout period
             while (true)
             {
@@ -60,8 +75,11 @@ namespace CollectorWorker
                             var userId = newRecords.First().UserId;
                             var sessions = UserContext.WebSessions.Where(ws => ws.Device.UserId == userId).OrderBy(ws => ws.Start);
 
-                            // process the records against the existing sessions
-                            var workingSessions = RecordProcessor.ProcessRecords(sessions.ToList<WebSession>(), newRecords.ToList<ISiteLookupRecord>());
+                            // process the sitemaps against the existing sessions
+                            var workingSessions = RecordProcessor.ProcessRecords(
+                                SiteMapRepository, 
+                                sessions.ToList<WebSession>(), 
+                                newRecords.ToList<ISiteLookupRecord>());
 
                             // process the resultant sessions
                             foreach (var session in workingSessions)
@@ -70,13 +88,28 @@ namespace CollectorWorker
                                 {   // new session
 
                                     // find out whether the device already exists
-                                    var device = UserContext.Devices.FirstOrDefault(d => d.UserId == userId && d.DeviceId == session.DeviceId);
+                                    var device = UserContext.Devices.FirstOrDefault(d => d.DeviceId == session.DeviceId);
                                     if (device == null)
                                     {
                                         // create a new device and save it immediately
                                         device = UserDataContext.CreateDeviceFromSession(session);
                                         UserContext.Devices.Add(device);
                                         UserContext.SaveChanges();
+                                    }
+                                    else
+                                    {
+                                        // ensure device belongs to current user
+                                        if (device.UserId != userId)
+                                        {
+                                            TraceLog.TraceError(string.Format(
+                                                "Possible security issue: User {0} is trying to claim Device {0} that already belongs to User {2}",
+                                                userId,
+                                                session.DeviceId,
+                                                device.UserId));
+                                            
+                                            // TODO: do something smarter than ignoring the sitemap
+                                            continue;
+                                        }
                                     }
 
                                     // create a new session with the correct device
@@ -94,7 +127,7 @@ namespace CollectorWorker
                             // save all the sessions 
                             UserContext.SaveChanges();
 
-                            // mark the records as processed using batch semantics
+                            // mark the sitemaps as processed using batch semantics
                             foreach (var record in newRecords)
                                 record.State = RecordState.Processed;
                             CollectorContext.Update(newRecords);
@@ -104,7 +137,7 @@ namespace CollectorWorker
                         catch (Exception ex)
                         {
                             TraceLog.TraceException("Could not save session changes", ex);
-#if DEBUG                   // if still debugging this codepath, reset the collector records to New.  BUGBUG - need to harden this with poison message semantics
+#if KILL                    // if still debugging this codepath, reset the collector records to New.  BUGBUG - need to harden this with poison message semantics
 
                             // mark the records as new using batch semantics
                             foreach (var record in newRecords)
@@ -113,7 +146,7 @@ namespace CollectorWorker
 #endif
                         }
 
-                        // keep reading records until they are all processed
+                        // keep reading sitemaps until they are all processed
                         continue;
                     }
                 }

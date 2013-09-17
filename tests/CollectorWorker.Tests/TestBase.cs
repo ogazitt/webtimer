@@ -3,7 +3,10 @@ using System.Text;
 using System.Collections.Generic;
 using NUnit.Framework;
 using FluentAssertions;
+using Collector;
 using ServiceEntities.Collector;
+using ServiceEntities.SiteMap;
+using Shared = Tests.Shared;
 
 namespace CollectorWorker.Tests
 {
@@ -16,6 +19,10 @@ namespace CollectorWorker.Tests
         protected List<string> macAddresses = new List<string>();
         protected List<string> websiteNames = new List<string>();
         protected Dictionary<string, string> ipAddresses = new Dictionary<string, string>();
+        protected SiteMapRepository siteMapRepository = new SiteMapRepository(
+            new Shared.Mocks.MockMongoRepositority<SiteMapping>(),
+            new Shared.Mocks.MockMongoRepositority<SiteExpression>(),
+            new Shared.Mocks.MockMongoRepositority<UnknownSite>());
 
         const int macAddressCount = 10;
         const int websiteCount = 10;

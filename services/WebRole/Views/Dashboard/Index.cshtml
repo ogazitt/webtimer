@@ -1,0 +1,45 @@
+﻿@model IEnumerable<ServiceEntities.UserData.WebSession>
+
+@using WebRole.Helpers;
+
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<h2>Dashboard</h2>
+
+<!-- main dashboard div, which contains the charts -->
+<div data-ng-app="dashboard">
+    <!-- toolbar -->
+    @Html.Include("~/app/dashboard/toolbar.view.html")
+
+    <br />
+    <!--
+    <div data-ng-app="toolbar" class="btn-toolbar well">
+        <div class="btn-group">
+            <button class="btn btn-default"><span>Today</span></button>
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span></button>
+            <button class="btn btn-default disabled"><span>9/15/2013</span></button>
+            <button class="btn btn-default"><span class="glyphicon glyphicon-chevron-right"></span></button>
+        </div>
+        <div class="btn-group pull-right">
+            <a href="#/" class="btn btn-default btn-active">Day</a> 
+            <a href="#/week" class="btn btn-default">Week</a> 
+            <a href="#/month" class="btn btn-default">Month</a> 
+            <a data-ng-click="refresh()" class="btn btn-default" >Refresh</a>     
+        </div>  
+    </div>
+        -->
+
+    <!-- view -->
+    <div data-ng-view=""></div> 
+</div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/breeze")
+    @Scripts.Render("~/bundles/highcharts")
+    @Scripts.Render("~/bundles/dashboard")
+}

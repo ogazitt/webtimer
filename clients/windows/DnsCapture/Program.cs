@@ -49,42 +49,31 @@ namespace DnsCapture
 
             Console.WriteLine();
             Console.Write("-- Please choose a device to capture: ");
-            i = int.Parse( Console.ReadLine() );
+            //i = int.Parse( Console.ReadLine() );
+            //var device = devices[i];
 
-            var device = devices[i];
-
-            // Register our handler function to the 'packet arrival' event
-            device.OnPacketArrival +=
-                new PacketArrivalEventHandler(device_OnPacketArrival);
-            
-            // Open the device for capturing
-            int readTimeoutMilliseconds = 1000;
-            device.Open(DeviceMode.Promiscuous, readTimeoutMilliseconds);
-
-            Console.WriteLine();
-            Console.WriteLine("-- Listening on {0} {1}, hit 'Enter' to stop...",
-                device.Name, device.Description);
-
-            /*
-            RawCapture packet;
-
-            // Capture packets using GetNextPacket()
-            while( (packet = device.GetNextPacket()) != null )
+            foreach (var device in devices)
             {
-                // Prints the time and length of each received packet
-                var time = packet.Timeval.Date;
-                var len = packet.Data.Length;
-                Console.WriteLine("{0}:{1}:{2},{3} Len={4}", 
-                    time.Hour, time.Minute, time.Second, time.Millisecond, len);
+                // Register our handler function to the 'packet arrival' event
+                device.OnPacketArrival +=
+                    new PacketArrivalEventHandler(device_OnPacketArrival);
+
+                // Open the device for capturing
+                int readTimeoutMilliseconds = 1000;
+                device.Open(DeviceMode.Promiscuous, readTimeoutMilliseconds);
+
+                Console.WriteLine();
+                Console.WriteLine("-- Listening on {0} {1}, hit 'Enter' to stop...",
+                    device.Name, device.Description);
+
+                // DNS only
+                string filter = "udp dst port 53";
+                device.Filter = filter;
+
+                // Start the capturing process
+                device.StartCapture();
             }
-            */
 
-            // DNS only
-            string filter = "udp dst port 53";
-            device.Filter = filter;
-
-            // Start the capturing process
-            device.StartCapture();
 
             // start the uploader thread if running in production
             ThreadStart ts = new ThreadStart(Send);
@@ -95,16 +84,17 @@ namespace DnsCapture
             // Wait for 'Enter' from the user.
             Console.ReadLine();
 
-            // Stop the capturing process
-            device.StopCapture();
-
             Console.WriteLine("-- Capture stopped.");
 
-            // Print out the device statistics
-            Console.WriteLine(device.Statistics.ToString());
+            foreach (var device in devices)
+            {
+                // Stop the capturing process
+                device.StopCapture();
 
-            // Close the pcap device
-            device.Close();
+                // Print out the device statistics
+                Console.WriteLine(device.Statistics.ToString());
+
+            }
 
             uploadFlag = false;
 
@@ -217,22 +207,10 @@ namespace DnsCapture
 
                 if (sendQueue.Count > 0)
                 {
-                    WebServiceHelper.PostRecords(new User { Name = "ogazitt", Password = "zrc022.." }, sendQueue, null, null);
                     // send the queue to the web service
-                    /*
-                    var request = WebRequest.Create(new Uri("http://localhost:3212/api/values"));
-                    request.Method = "POST";
-                    request.ContentType = "application/json";
-                    //request.Accept = "application/json";
-                    var stream = request.GetRequestStream();
-                    var json = JsonConvert.SerializeObject(sendQueue);
-                    //JsonSerializer ser = new JsonSerializer();
-                    //ser.Serialize(new JsonTextWriter(new StreamWriter(stream)), sendQueue);
-                    new StreamWriter(stream).Write(json);
-                    stream.Flush();
-                    stream.Close();
-                    var response = request.GetResponse();
-                     */
+                    WebServiceHelper.PostRecords(new User { Name = "ogazitt", Password = "zrc022.." }, sendQueue, null, null);
+
+                    // BUGBUG: need to create a callback that handles failure modes - right now the records are lost if the service is down
                 }
                 Thread.Sleep(10000);
             }

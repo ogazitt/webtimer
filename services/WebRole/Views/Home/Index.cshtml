@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "WebTimer";
 }
+@using WebRole.Helpers;
 @functions{
     public string GetAntiForgeryToken()
     {
@@ -14,16 +15,22 @@
 <header>
     <h1>@ViewBag.Title</h1>
 </header>
-<div id="main-content" data-ng-app="todo">
+
 @if (@User.Identity.IsAuthenticated)
 {
-    <div data-ng-view></div> <!-- The SPA Views go here -->   
+<!-- main dashboard div, which contains the charts -->
+<div data-ng-app="dashboard">
+    <!-- toolbar -->
+    @Html.Include("~/app/dashboard/toolbar.view.html")
+    <br />
+    <!-- view -->
+    <div data-ng-view=""></div> 
+</div>
 }
 else
 {
     @Html.Partial("_Authentication")
 }
-</div>
 
 @if (@User.Identity.IsAuthenticated)
 {
@@ -32,6 +39,7 @@ else
     @section scripts {
         @Scripts.Render("~/bundles/angular")
         @Scripts.Render("~/bundles/breeze")
-        @Scripts.Render("~/bundles/todo")
+        @Scripts.Render("~/bundles/highcharts")
+        @Scripts.Render("~/bundles/dashboard")
     }
 }

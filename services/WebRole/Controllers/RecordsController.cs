@@ -7,16 +7,27 @@ using System.Web.Mvc;
 
 namespace WebRole.Controllers
 {
+    [Authorize]
     public class RecordsController : Controller //, IDisposable
     {
-        private CollectorContext repository = Storage.NewCollectorContext;
+        private CollectorContext _repository;
+
+        public CollectorContext Repository
+        {
+            get
+            {
+                if (_repository == null)
+                    _repository = new CollectorContext(User.Identity.Name);
+                return _repository;
+            }
+        }
 
         //
         // GET: /Records/
 
         public ActionResult Index()
         {
-            return View(repository.GetAllRecords());
+            return View(Repository.GetAllRecords());
         }
 
 

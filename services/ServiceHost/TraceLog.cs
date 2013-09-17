@@ -85,7 +85,8 @@ namespace ServiceHost
                     var config = DiagnosticMonitor.GetDefaultInitialConfiguration();
                     config.Logs.ScheduledTransferPeriod = TimeSpan.FromMinutes(1.0);
                     config.Logs.BufferQuotaInMB = 1000;
-                    config.Logs.ScheduledTransferLogLevelFilter = Microsoft.WindowsAzure.Diagnostics.LogLevel.Verbose;
+                    //config.Logs.ScheduledTransferLogLevelFilter = Microsoft.WindowsAzure.Diagnostics.LogLevel.Verbose;
+                    config.Logs.ScheduledTransferLogLevelFilter = Microsoft.WindowsAzure.Diagnostics.LogLevel.Information;
                     DiagnosticMonitor.Start("Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString", config);
                 }
             }
@@ -335,7 +336,7 @@ namespace ServiceHost
 
         public static void WriteLine(string message, string level)
         {
-            // create a json record
+            // create a json sitemap
             var record = new TraceRecord()
             {
                 Deployment = HostEnvironment.DeploymentName,
@@ -404,7 +405,7 @@ namespace ServiceHost
         
         public static void WriteLine(string message, string level)
         {
-            // create a json record
+            // create a json sitemap
             var record = new TraceRecord()
             { 
                 Deployment = HostEnvironment.DeploymentName, 
@@ -418,7 +419,7 @@ namespace ServiceHost
 
             lock (writeLock)
             {
-                // enter a retry loop writing the record to the trace file
+                // enter a retry loop writing the sitemap to the trace file
                 int retryCount = 2;
                 while (retryCount > 0)
                 {

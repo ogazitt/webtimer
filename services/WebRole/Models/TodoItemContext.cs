@@ -13,7 +13,7 @@ namespace WebRole.Models
     // code to the Application_Start method in your Global.asax file.
     // Note: this will destroy and re-create your database with every model change.
     // 
-    // System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<WebRole.Models.TodoItemContext>());
+    // System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<WebRole.Models.UserDataContext>());
     public class TodoItemContext : DbContext
     {
         public TodoItemContext()

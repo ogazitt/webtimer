@@ -1,10 +1,12 @@
-﻿using ServiceEntities;
-using ServiceEntities.Collector;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using ServiceEntities.Collector;
+using ServiceEntities.SiteMap;
+using ServiceEntities.UserData;
 
 namespace Collector
 {
@@ -12,7 +14,7 @@ namespace Collector
     {
         const int SessionThreshold = 300;
 
-        public static List<WebSession> ProcessRecords(List<WebSession> sessions, List<ISiteLookupRecord> recordList)
+        public static List<WebSession> ProcessRecords(SiteMapRepository siteMapRepository, List<WebSession> sessions, List<ISiteLookupRecord> recordList)
         {
             if (sessions == null)
                 sessions = new List<WebSession>();
@@ -23,9 +25,15 @@ namespace Collector
 
             foreach (var record in recordList)
             {
+                // get the sitemap for this site and skip if the site is suppressed
+                var siteMap = siteMapRepository.GetSiteMapping(record.WebsiteName);
+                if (siteMap == null)
+                    continue;
+
+                // find an in-progress session
                 var session = sessions.LastOrDefault(s =>
                     s.Device.DeviceId == record.HostMacAddress &&
-                    s.Site == record.WebsiteName && 
+                    s.Site == siteMap.Site && 
                     s.InProgress == true);
                 if (session == null)
                 {
@@ -34,7 +42,8 @@ namespace Collector
                         UserId = record.UserId,
                         DeviceId = record.HostMacAddress,
                         Device = new Device() { DeviceId = record.HostMacAddress, IpAddress = record.HostIpAddress, Hostname = record.HostName, UserId = record.UserId },
-                        Site = record.WebsiteName,
+                        Site = siteMap.Site,
+                        Category = siteMap.Category,
                         Start = record.Timestamp,
                         Duration = 0,
                         InProgress = true
@@ -62,7 +71,8 @@ namespace Collector
                             UserId = record.UserId,
                             DeviceId = record.HostMacAddress,
                             Device = new Device() { DeviceId = record.HostMacAddress, IpAddress = record.HostIpAddress, Hostname = record.HostName, UserId = record.UserId },
-                            Site = record.WebsiteName,
+                            Site = siteMap.Site,
+                            Category = siteMap.Category,
                             Start = record.Timestamp,
                             Duration = 0,
                             InProgress = true
