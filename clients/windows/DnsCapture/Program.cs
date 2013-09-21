@@ -13,9 +13,6 @@ namespace DnsCapture
 {
     class Program
     {
-        static List<Record> records = new List<Record>();
-        static bool uploadFlag = false;
-
         static void Main(string[] args)
         {
             TraceHelper.TraceDestination = TraceHelper.Destination.Console;
