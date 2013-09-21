@@ -29,15 +29,11 @@ namespace WebRole
             // BUGBUG: remove this when starting to deploy real production data
             //System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<WebRole.Models.UserDataContext>());
 
-            /*
             // the database must exist for the role to run
             if (!UserDataContext.InitializeDatabase())
             {
-                //System.Data.Entity.Database.SetInitializer<UserDataContext>(null);
-                //System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<ServiceHost.UserDataContext>());
                 TraceLog.TraceFatal("Application_Start: Cannot initialize the user database");
             } 
-             */
         }
     }
 }

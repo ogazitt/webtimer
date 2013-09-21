@@ -270,12 +270,15 @@
   <ItemGroup>
     <Content Include="angular-highcharts-demo.html" />
     <Content Include="app\dashboard\dashboard.datacontext.js" />
-    <Content Include="app\dashboard\dashboard.model.js" />
+    <Content Include="app\todo\todo.model.js" />
     <Content Include="app\dashboard\toolbar.view.html" />
     <Content Include="app\dashboard\toolbar.js" />
     <Content Include="app\dashboard\day.controller.js" />
     <Content Include="app\dashboard\dashboard.js" />
     <Content Include="app\dashboard\day.view.html" />
+    <Content Include="app\dashboard\log.view.html" />
+    <Content Include="app\dashboard\log.controller.js" />
+    <Content Include="app\dashboard\logger.js" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap\bootstrap-theme.css" />
     <Content Include="Content\bootstrap\bootstrap-theme.min.css" />
@@ -329,6 +332,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\breeze.debug.js" />
     <Content Include="Scripts\breeze.min.js" />
+    <Content Include="Scripts\date.js" />
     <Content Include="Scripts\highcharts\adapters\mootools-adapter.js" />
     <Content Include="Scripts\highcharts\adapters\mootools-adapter.src.js" />
     <Content Include="Scripts\highcharts\adapters\prototype-adapter.js" />
@@ -677,7 +681,7 @@
     <Content Include="app\todo\todo.controller.js" />
     <Content Include="app\todo\todo.datacontext.js" />
     <Content Include="app\todo\todo.main.js" />
-    <Content Include="app\todo\dashboard.model.js" />
+    <Content Include="app\dashboard\dashboard.model.js" />
     <Content Include="app\todo\todo.view.html" />
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
     <Content Include="Content\Site.css" />

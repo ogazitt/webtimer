@@ -1,66 +1,6 @@
 ﻿<!-- Day page partial view -->
-
-<!--
-<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <input data-ng-model="chartConfig.title.text">
-    <button data-ng-click="addSeries()">Add Series</button>
-    <button ng-click="addPoints()">Add Points to Random Series</button>
-    <button ng-click="removeRandomSeries()">Remove Random Series</button>
-    <button ng-click="swapChartType()">Line/Bar</button>
-    <button ng-click="toggleLoading()">Loading?</button>
-    <button ng-click="toggleHighCharts()">HighChart/HighStock</button>
-</div>
-    -->
 <div class="row">
     <highchart id="chart1" config="chartConfig" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ></highchart>
 </div>
 
-<div class="row">
-    <highchart config="chartConfig" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ></highchart>
-</div>
-
-<!--
-<div class="span6">
-    Min: <input type="number" ng-model="chartConfig.xAxis.currentMin">
-    Max: <input type="number" ng-model="chartConfig.xAxis.currentMax">
-</div>
-   -->
-<!--
 <p class="error" data-ng-show="error">{{error}}</p>
-<button data-ng-click="addTodoList()">Add Todo list</button>
-<br/>
-<article class="todoList" data-ng-repeat="list in todoLists">
-    <header>
-        <form data-ng-submit="endEdit(list)">
-            <input  data-ng-model="list.title" 
-                    data-selected-when="list.isEditingListTitle"
-                    data-ng-click="clearErrorMessage(list)" 
-                    data-on-blur="endEdit(list)"/>           
-        </form>
-    </header>
-
-    <a href="#" class="deletelist" data-ng-click="deleteTodoList(list)">X</a>
-
-    <ul>
-        <li data-ng-repeat="item in list.todos">
-            <input type="checkbox" 
-                    data-ng-model="item.isDone" 
-                    data-ng-change="endEdit(item)"/>
-            <input type="text" class="todoItemInput" 
-                    data-ng-model="item.title" 
-                    data-on-blur="endEdit(item)"
-                    data-on-enter="endEdit(item)"
-                    data-ng-click="clearErrorMessage(item)" 
-                    data-ng-disabled="item.isDone" />
-            <a data-ng-click="list.deleteTodo(item)">X</a>
-            <p class="error" data-ng-show="item.errorMessage">{{item.errorMessage}}</p>
-        </li>
-    </ul>
-    <form data-ng-submit="list.addTodo()">
-        <input data-ng-model="list.newTodoTitle" class="addTodo" 
-                placeholder = "Type here to add"
-                data-on-blur="list.addTodo()" />
-    </form>
-    <p class="error" data-ng-show="list.errorMessage">{{list.errorMessage}}</p>
-</article>
--->

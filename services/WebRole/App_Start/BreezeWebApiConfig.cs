@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System.Web.Http;
 
 [assembly: WebActivator.PreApplicationStartMethod(
@@ -19,4 +20,16 @@ namespace WebRole.App_Start {
       );
     }
   }
+}
+
+public class CustomBreezeConfig : Breeze.WebApi.BreezeConfig
+{
+
+    ///<summary> Enable sending of null values to the client. </summary>
+    protected override JsonSerializerSettings CreateJsonSerializerSettings()
+    {
+        var baseSettings = base.CreateJsonSerializerSettings();
+        baseSettings.NullValueHandling = NullValueHandling.Include; // SEND NULL VALUES
+        return baseSettings;
+    }
 }

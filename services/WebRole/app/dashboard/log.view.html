@@ -1,0 +1,10 @@
+﻿<!-- Log page partial view -->
+<h2>Log</h2>
+<div class="logEntries">
+	<p>The following events occured during this session:</p>
+	<ul>
+		<li data-ng-repeat="entry in logEntries | orderBy:id">
+			{{entry.id}}: [{{entry.type}}] {{entry.message}}
+		</li>
+	</ul>
+</div>

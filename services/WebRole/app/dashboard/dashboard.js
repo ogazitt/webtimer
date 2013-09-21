@@ -15,6 +15,7 @@ dashboard.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.
         when('/', { templateUrl: 'app/dashboard/day.view.html', controller: 'DayController' }).
         when('/week', { templateUrl: 'app/dashboard/week.view.html', controller: 'WeekController' }).
+        when('/log', { templateUrl: 'app/dashboard/log.view.html', controller: 'LogController' }).
         otherwise({ redirectTo: '/' });
 }]);
 

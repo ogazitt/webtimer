@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Principal;
@@ -61,7 +62,7 @@ namespace WebRole.Controllers
                         HostIpAddress = (string)r["HostIpAddress"],
                         HostName = (string)r["HostName"],
                         WebsiteName = (string)r["WebsiteName"],
-                        Timestamp = (string)r["Timestamp"],
+                        Timestamp = ((DateTime)r["Timestamp"]).ToString("s"),
                         UserId = Repository.UserId,
                         State = RecordState.New
                     });

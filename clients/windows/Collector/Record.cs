@@ -1,4 +1,4 @@
-﻿namespace DnsCapture
+﻿namespace Collector
 {
     public class Record
     {

@@ -20,6 +20,14 @@ namespace WebRole.Models
 
         public string UserId { get; private set; }
 
+        public DbQuery<Category> Categories
+        {
+            get
+            {
+                return (DbQuery<Category>)Context.Categories;
+            }
+        }
+
         public DbQuery<Device> Devices
         {
             get

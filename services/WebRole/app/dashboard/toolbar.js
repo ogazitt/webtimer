@@ -8,61 +8,56 @@ window.toolbar = angular.module('toolbar', []);
 //dashboard.value('breeze', window.breeze)
 //         .value('Q', window.Q);
 
-toolbar.controller('ToolbarController', function ($scope) {
-    $scope.settings = {
-        period: 'day',
-        value: new Date(),
-        format: 'shortDate',
-        buttonTitle: 'Today'
-    };
+toolbar.controller('ToolbarController',
+    ['$scope', 'datacontext', 
+    function ($scope, datacontext) {
+        $scope.settings = {
+            period: 'day',
+            value: datacontext.getCurrentDate(),
+            format: 'shortDate',
+            buttonTitle: 'Today'
+        };
 
-    $scope.selectDay = function () {
-        this.settings.period = 'day';
-        this.settings.format = 'shortDate';
-        this.settings.buttonTitle = 'Today';
-    };
+        $scope.selectDay = function () {
+            this.settings.period = 'day';
+            datacontext.setCurrentPeriod(this.settings.period);
+            this.settings.value = datacontext.getCurrentDate();
+            this.settings.format = 'shortDate';
+            this.settings.buttonTitle = 'Today';
+            datacontext.getCatTotals();
+        };
 
-    $scope.selectWeek = function () {
-        this.settings.period = 'week';
-        this.settings.format = 'shortDate';
-        this.settings.buttonTitle = 'This Week';
-    };
+        $scope.selectWeek = function () {
+            this.settings.period = 'week';
+            datacontext.setCurrentPeriod(this.settings.period);
+            this.settings.value = datacontext.getCurrentDate();
+            this.settings.format = 'shortDate';
+            this.settings.buttonTitle = 'This Week';
+            datacontext.getCatTotals();
+        };
 
-    $scope.selectMonth = function () {
-        this.settings.period = 'month';
-        this.settings.format = 'MMMM';
-        this.settings.buttonTitle = 'This Month';
-    };
+        $scope.selectMonth = function () {
+            this.settings.period = 'month';
+            datacontext.setCurrentPeriod(this.settings.period);
+            this.settings.value = datacontext.getCurrentDate();
+            this.settings.format = 'MMMM';
+            this.settings.buttonTitle = 'This Month';
+            datacontext.getCatTotals();
+        };
 
-    $scope.selectNow = function () {
-        this.settings.value = new Date();
-    };
+        $scope.selectNow = function () {
+            this.settings.value = Date.today();
+            datacontext.setCurrentDate(this.settings.value);
+            datacontext.getCatTotals();
+        };
 
-    $scope.forward = function () {
-        switch (this.settings.period) {
-            case 'day':
-                this.settings.value.setDate(this.settings.value.getDate() + 1);
-                break;
-            case 'week':
-                this.settings.value.setDate(this.settings.value.getDate() + 7);
-                break;
-            case 'month':
-                this.settings.value.setMonth(this.settings.value.getMonth() + 1);
-                break;
-        }
-    };
+        $scope.forward = function () {
+            datacontext.moveForward();
+            datacontext.getCatTotals();
+        };
 
-    $scope.back = function () {
-        switch (this.settings.period) {
-            case 'day':
-                this.settings.value.setDate(this.settings.value.getDate() - 1);
-                break;
-            case 'week':
-                this.settings.value.setDate(this.settings.value.getDate() - 7);
-                break;
-            case 'month':
-                this.settings.value.setMonth(this.settings.value.getMonth() - 1);
-                break;
-        }
-    };
-});
+        $scope.back = function () {
+            datacontext.moveBack();
+            datacontext.getCatTotals();
+        };
+    }]);

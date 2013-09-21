@@ -24,6 +24,9 @@ namespace WebRole
             bundles.Add(new ScriptBundle("~/bundles/ajaxlogin").Include(
                         "~/app/ajaxlogin.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/date").Include(
+                        "~/Scripts/date.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/breeze").Include(
                         "~/Scripts/q.js",
                         "~/Scripts/breeze.debug.js",
@@ -43,8 +46,12 @@ namespace WebRole
                         "~/app/todo/about.logger.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/dashboard").Include(
-                        "~/app/dashboard/toolbar.js",
                         "~/app/dashboard/dashboard.js", // must be first
+                        "~/app/dashboard/dashboard.datacontext.js", 
+                        "~/app/dashboard/dashboard.model.js", 
+                        "~/app/dashboard/logger.js",
+                        "~/app/dashboard/toolbar.js",
+                        "~/app/dashboard/log.controller.js",
                         "~/app/dashboard/day.controller.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're

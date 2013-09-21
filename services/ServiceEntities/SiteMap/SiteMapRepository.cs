@@ -76,7 +76,7 @@ namespace ServiceEntities.SiteMap
             if (siteMapping != null)
             {
                 // if the mapping is to suppress the site, return null
-                if (siteMapping.Category == SiteMapping.Categories.Suppressed)
+                if (siteMapping.Category == Category.Categories.Suppressed)
                     return null;
                 return siteMapping;
             }

@@ -4,47 +4,180 @@
 // constructor function relies on Ng injector
 // to provide service dependencies
 dashboard.factory('datacontext',
-    ['breeze', 'Q', 'model', 'logger', '$timeout',
-    function (breeze, Q, model, logger, $timeout) {
+    ['breeze', 'Q', 'model', 'logger', '$timeout', '$rootScope',
+    function (breeze, Q, model, logger, $timeout, $rootScope) {
 
         logger.log("creating datacontext");
         var initializedSessions, initializedPeople, initializedDevices;
+
+        // model variables
+        var currentDate = Date.today();
+        var currentPeriod = 'day';
+        var currentSeries = [];
 
         configureBreeze();
         var manager = new breeze.EntityManager("api/dashboard");
         manager.enableSaveQueuing(true);
 
         var datacontext = {
-            metadataStore:  manager.metadataStore,
-            getWebSessions: getWebSessions,
-            getDevices:     getDevices,
-            getPeople:      getPeople,
-            createPerson:   createPerson,
-            createDevice:   createDevice,
-            deleteDevice:   deleteDevice,
-            deletePerson:   deletePerson,
-            saveEntity:     saveEntity
+            addEventHandler:  addEventHandler,
+            metadataStore:    manager.metadataStore,
+            getCurrentDate:   getCurrentDate,
+            setCurrentDate:   setCurrentDate,
+            setCurrentPeriod: setCurrentPeriod,
+            moveForward:      moveForward,
+            moveBack:         moveBack,
+            getCurrentSeries: getCurrentSeries,
+            setCurrentSeries: setCurrentSeries,
+            getWebSessions:   getWebSessions,
+            getAggSessions:   getAggSessions,
+            getCatTotals:     getCatTotals,
+            getDevices:       getDevices,
+            getPeople:        getPeople,
+            createPerson:     createPerson,
+            createDevice:     createDevice,
+            deleteDevice:     deleteDevice,
+            deletePerson:     deletePerson,
+            saveEntity:       saveEntity
         };
         model.initialize(datacontext);
+        datacontext.getPeople();
         return datacontext;
 
         //#region private members
 
-        function getWebSessions(forceRefresh) {
+        function addEventHandler(handler) {
+            eventHandlers.push(handler);
+        }
+
+        function getCurrentDate() {
+            return currentDate;
+        }
+
+        function setCurrentDate(date) {
+            currentDate = date;
+        }
+
+        function setCurrentPeriod(period) {
+            currentPeriod = period;
+            switch (period) {
+                case 'day':
+                    break;
+                case 'week':
+                    // move to the previous Sunday
+                    currentDate.moveToDayOfWeek(0, -1);
+                    break;
+                case 'month':
+                    // move to the first day of the current month
+                    currentDate.moveToFirstDayOfMonth();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        function moveForward() {
+            switch (currentPeriod) {
+                case 'day':
+                    currentDate.addDays(1);
+                    break;
+                case 'week':
+                    currentDate.addDays(7);
+                    break;
+                case 'month':
+                    // move to the first day of the next month
+                    currentDate.addMonths(1).moveToFirstDayOfMonth();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        function moveBack() {
+            switch (currentPeriod) {
+                case 'day':
+                    currentDate.addDays(-1);
+                    break;
+                case 'week':
+                    currentDate.addDays(-7);
+                    break;
+                case 'month':
+                    // move to the first day of the next month
+                    currentDate.addMonths(-1).moveToFirstDayOfMonth();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        function getCurrentSeries() {
+            return currentSeries;
+        }
+
+        function setCurrentSeries(series) {
+            currentSeries = series;
+        }
+
+        function getWebSessions(start, end, personId) {
+            return getData("WebSessions", start, end, personId);
+        }
+
+        function getAggSessions(start, end, personId) {
+            return getData("ConsolidatedWebSessions", start, end, personId);
+        }
+
+        function getCatTotals() {
+            start = dateAsString(currentDate);
+            end = dateAsString(getEndDate(currentDate, currentPeriod));
 
             var query = breeze.EntityQuery
-                .from("WebSessions")
-                //.expand("Devices")
-                //.orderBy("personId desc");
-                .orderBy("timestamp");
+                .from("CategoryTotals")
+                .withParameters({ Start: start, End: end });
 
-            if (initializedSessions && !forceRefresh) {
-                query = query.using(breeze.FetchStrategy.FromLocalCache);
-            }
-            initializedSessions = true;
+            return manager.executeQuery(query)
+                .then(getCatTotalsSucceeded); // caller to handle failure
+        }
+
+        function getData(type, start, end, personId) {
+            start = dateAsString(start);
+            end = dateAsString(end);
+
+            var query = breeze.EntityQuery
+                .from(type)
+                .where(createPredicate(personId))
+                .withParameters({ Start: start, End: end });
 
             return manager.executeQuery(query)
                 .then(getSucceeded); // caller to handle failure
+        }
+
+        function dateAsString(date) {
+            if (date instanceof Date)
+                return date.toString("yyyy-MM-dd");
+            return date;
+        }
+
+        function getEndDate(date, period) {
+            switch (period) {
+                case 'day':
+                    return date.clone().addDays(1);
+                    break;
+                case 'week':
+                    return date.clone().addDays(7);
+                    break;
+                case 'month':
+                    return date.clone().moveToLastDayOfMonth().addDays(1);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        function createPredicate(personId) {
+            var predicate = breeze.Predicate("category", "!=", null);
+            if (personId)
+                predicate = predicate.and("personId", "==", personId);
+            return predicate;
         }
 
         function getDevices(forceRefresh) {
@@ -78,6 +211,14 @@ dashboard.factory('datacontext',
 
             return manager.executeQuery(query)
                 .then(getSucceeded); // caller to handle failure
+        }
+
+        function getCatTotalsSucceeded(data) {
+            var qType = data.XHR ? "remote" : "local";
+            logger.log(qType + " query succeeded");
+            setCurrentSeries(data.results);
+            $rootScope.$broadcast('seriesDataChange');
+            return data.results;
         }
 
         function getSucceeded(data) {

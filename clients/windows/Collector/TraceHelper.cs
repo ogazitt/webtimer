@@ -10,7 +10,7 @@ using System.Runtime.Serialization.Json;
 using System.Linq;
 using System.Reflection;
 
-namespace DnsCapture
+namespace Collector
 {
     public class TraceHelper
     {
@@ -37,6 +37,14 @@ namespace DnsCapture
             } 
         }
 
+        public enum Destination
+        {
+            Console,
+            File
+        };
+
+        public static Destination TraceDestination { get; set; }
+
         /// <summary>
         /// Add a message to the folder
         /// </summary>
@@ -52,6 +60,8 @@ namespace DnsCapture
 #endif
             string str = String.Format("  {0}: {1}", ms, msg);
             traceMessages.Add(str);
+
+            Output();
         }
 
         /// <summary>
@@ -72,6 +82,8 @@ namespace DnsCapture
 
             // trace app start
             traceMessages.Add(String.Format("  {0}: {1}", msg, startTime));
+
+            Output();
         }
 
         /// <summary>
@@ -93,14 +105,14 @@ namespace DnsCapture
             if (contents != null)
             {
                 contents = "Crash Report\n" + contents;
-                Send(user, contents, del, networkDel);
+                SendLoop(user, contents, del, networkDel);
             }
         }
  
         public static void SendMessages(User user)
         {
             string msgs = GetMessages();
-            Send(user, msgs, null, null);
+            SendLoop(user, msgs, null, null);
         }
 
         public static void StoreCrashReport()
@@ -127,8 +139,22 @@ namespace DnsCapture
             return buffer;
         }
 
+        private static void Output()
+        {
+            switch (TraceDestination)
+            {
+                case Destination.Console:
+                    foreach (var m in traceMessages)
+                        Console.WriteLine(m);
+                    ClearMessages();
+                    break;
+                case Destination.File:
+                    break;
+            }
+        }
+
         /*
-        private static void Send(User user, string msgs, Delegate del, Delegate networkDel)
+        private static void SendLoop(User user, string msgs, Delegate del, Delegate networkDel)
         {
 #if IOS
             WebServiceHelper.SendTrace(user, msgs, del, networkDel);

@@ -27,6 +27,7 @@ namespace ServiceHost
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder) { }
 
+        public DbSet<Category> Categories { get; set; }
         public DbSet<Device> Devices { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<WebSession> WebSessions { get; set; }
@@ -39,6 +40,17 @@ namespace ServiceHost
             device.Hostname = device.Hostname ?? device.IpAddress;
             device.Name = device.Name ?? device.Hostname;
             device.UserId = device.UserId ?? session.UserId;
+
+            if (!device.PersonId.HasValue)
+            {
+                // associate the device with the "shared" bucket
+                using (var context = new UserDataContext())
+                {
+                    var shared = context.People.FirstOrDefault(p => p.UserId == device.UserId && p.Name == "Shared");
+                    if (shared != null)
+                        device.PersonId = shared.PersonId;
+                }
+            }
             return device;
         }
 
@@ -56,6 +68,10 @@ namespace ServiceHost
                         // Create the database without Entity Framework migration schema
                         ((IObjectContextAdapter)context).ObjectContext.CreateDatabase();
                         TraceLog.TraceInfo("Created UserData database");
+
+                        foreach (var cat in Category.GetCategories())
+                            context.Categories.Add(cat);
+                        context.SaveChanges();
                     }
                     else
                     {
@@ -86,8 +102,16 @@ namespace ServiceHost
             {
                 var context = new UserDataContext();
 
-                // add the user
+                // add the user and the "uncategorized" person
                 var person = new Person()
+                {
+                    Name = "Shared",
+                    UserId = userName,
+                    Birthdate = null,
+                    IsChild = false
+                };
+                context.People.Add(person);
+                person = new Person()
                 {
                     Name = userName,
                     UserId = userName,

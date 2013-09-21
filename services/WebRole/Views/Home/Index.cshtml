@@ -12,10 +12,6 @@
     }
 }
 
-<header>
-    <h1>@ViewBag.Title</h1>
-</header>
-
 @if (@User.Identity.IsAuthenticated)
 {
 <!-- main dashboard div, which contains the charts -->
@@ -39,6 +35,7 @@ else
     @section scripts {
         @Scripts.Render("~/bundles/angular")
         @Scripts.Render("~/bundles/breeze")
+        @Scripts.Render("~/bundles/date")
         @Scripts.Render("~/bundles/highcharts")
         @Scripts.Render("~/bundles/dashboard")
     }

@@ -1,10 +1,11 @@
 ﻿/* model: extend server-supplied metadata with client-side entity model members */
-todo.factory('model', function () {
+dashboard.factory('model', function () {
 
     var datacontext;
     
-    extendTodoList();
-    
+    //extendDevice();
+    extendPerson();
+
     var model = {
         initialize: initialize
     };
@@ -15,40 +16,40 @@ todo.factory('model', function () {
     function initialize(context) {
         datacontext = context;
         var store = datacontext.metadataStore;
-        store.registerEntityTypeCtor("TodoItem", null, todoItemInitializer);
-        store.registerEntityTypeCtor("TodoList", TodoList, todoListInitializer);
+        store.registerEntityTypeCtor("Device", null, deviceInitializer);
+        store.registerEntityTypeCtor("Person", Person, personInitializer);
     }
     
-    function todoItemInitializer(todoItem) {
-        todoItem.errorMessage = "";
+    function deviceInitializer(device) {
+        device.errorMessage = "";
     }
 
-    function todoListInitializer(todoList) {
-        todoList.errorMessage = "";
-        todoList.newTodoTitle = "";
-        todoList.isEditingListTitle = false;
+    function personInitializer(person) {
+        person.errorMessage = "";
+        person.newDeviceTitle = "";
+        person.isEditingListTitle = false;
     }
 
-    function TodoList() {
-        this.title = "My todos"; // defaults
+    function Person() {
+        this.title = "New Person"; // defaults
         this.userId = "to be replaced";
     }
     
-    function extendTodoList() {
-        TodoList.prototype.addTodo = function () {
-            var todoList = this;
-            var title = todoList.newTodoTitle;
+    function extendPerson() {
+        Person.prototype.addDevice = function () {
+            var person = this;
+            var title = person.newDeviceTitle;
             if (title) { // need a title to save
-                var todoItem = datacontext.createTodoItem();
-                todoItem.title = title;
-                todoItem.todoList = todoList;
-                datacontext.saveEntity(todoItem);
-                todoList.newTodoTitle = ""; // clear UI title box
+                var device = datacontext.createDevice();
+                device.title = title;
+                device.person = person;
+                datacontext.saveEntity(device);
+                person.newDeviceTitle = ""; // clear UI title box
             }
         };
 
-        TodoList.prototype.deleteTodo = function (todo) {
-            return datacontext.deleteTodoItem(todo);
+        Person.prototype.deleteDevice = function (device) {
+            return datacontext.deleteDevice(device);
         };
     }
     //#endregion
