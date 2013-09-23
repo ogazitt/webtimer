@@ -7,8 +7,8 @@
     <ProjectGuid>{918559BD-5449-4AC9-9035-4F07B8976898}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Collector</RootNamespace>
-    <AssemblyName>Collector</AssemblyName>
+    <RootNamespace>Processor</RootNamespace>
+    <AssemblyName>Processor</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

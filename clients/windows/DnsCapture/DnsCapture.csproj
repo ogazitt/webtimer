@@ -67,7 +67,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Collector\Collector.csproj">
       <Project>{21c885f0-b610-4028-8522-255fcbadb98d}</Project>
-      <Name>Collector %28clients\windows\Collector%29</Name>
+      <Name>Collector</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

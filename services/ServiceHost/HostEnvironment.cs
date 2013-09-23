@@ -21,8 +21,8 @@ namespace ServiceHost
         public const string SpeechWorkerCountConfigKey = "SpeechWorkerCount";
         public const string WorkflowWorkerTimeoutConfigKey = "WorkflowWorkerTimeout";
         public const string WorkflowWorkerCountConfigKey = "WorkflowWorkerCount";
-        public const string CollectorWorkerTimeoutConfigKey = "CollectorWorkerTimeout";
-        public const string CollectorWorkerCountConfigKey = "CollectorWorkerCount";
+        public const string ProcessorWorkerTimeoutConfigKey = "ProcessorWorkerTimeout";
+        public const string ProcessorWorkerCountConfigKey = "ProcessorWorkerCount";
 
         const string DeploymentNameConfigKey = "DeploymentName";
         const string MongoUriConfigKey = "MongoUri";

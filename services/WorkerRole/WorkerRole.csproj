@@ -76,9 +76,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CollectorWorker\CollectorWorker.csproj">
+    <ProjectReference Include="..\ProcessorWorker\ProcessorWorker.csproj">
       <Project>{c0869811-376a-47a9-86b5-385901b12905}</Project>
-      <Name>CollectorWorker</Name>
+      <Name>ProcessorWorker</Name>
     </ProjectReference>
     <ProjectReference Include="..\ServiceHost\ServiceHost.csproj">
       <Project>{6f88f47f-3542-442f-95da-60be368053e1}</Project>

@@ -6,7 +6,7 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 
-using Collector;
+using Processor;
 using ServiceEntities.Collector;
 
 namespace CollectorWorker.Tests

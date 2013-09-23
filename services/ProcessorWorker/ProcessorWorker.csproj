@@ -7,8 +7,8 @@
     <ProjectGuid>{C0869811-376A-47A9-86B5-385901B12905}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CollectorWorker</RootNamespace>
-    <AssemblyName>CollectorWorker</AssemblyName>
+    <RootNamespace>ProcessorWorker</RootNamespace>
+    <AssemblyName>ProcessorWorker</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -54,13 +54,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CollectorWorker.cs" />
+    <Compile Include="ProcessorWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Collector\Collector.csproj">
+    <ProjectReference Include="..\Processor\Processor.csproj">
       <Project>{918559bd-5449-4ac9-9035-4f07b8976898}</Project>
-      <Name>Collector</Name>
+      <Name>Processor</Name>
     </ProjectReference>
     <ProjectReference Include="..\ServiceEntities\ServiceEntities.csproj">
       <Project>{4949bfdf-c2d0-45c7-8c87-5c0f31bd1eea}</Project>

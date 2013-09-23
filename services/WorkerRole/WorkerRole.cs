@@ -92,8 +92,8 @@ namespace WorkerRole
             speechWorkerCount = speechWorkerCount > 0 ? 1 : 0;  // maximum number of speech worker threads is 1
             var speechWorkerArray = new SpeechWorker.SpeechWorker[speechWorkerCount];
 #endif
-            int collectorWorkerCount = ConfigurationSettings.GetAsNullableInt(HostEnvironment.CollectorWorkerCountConfigKey) ?? 0;
-            var collectorWorkerArray = new CollectorWorker.CollectorWorker[collectorWorkerCount];
+            int processorWorkerCount = ConfigurationSettings.GetAsNullableInt(HostEnvironment.ProcessorWorkerCountConfigKey) ?? 0;
+            var processorWorkerArray = new ProcessorWorker.ProcessorWorker[processorWorkerCount];
 
             // run an infinite loop doing the following:
             //   check whether the worker services have stopped (indicated by a null reference)
@@ -112,8 +112,8 @@ namespace WorkerRole
                 if (!HostEnvironment.IsAzureDevFabric)
                     RestartWorkerThreads<SpeechWorker.SpeechWorker>(speechWorkerArray);
 #endif
-                // start collector worker in both dev and deployed Azure fabric
-                RestartWorkerThreads<CollectorWorker.CollectorWorker>(collectorWorkerArray);
+                // start Processor worker in both dev and deployed Azure fabric
+                RestartWorkerThreads<ProcessorWorker.ProcessorWorker>(processorWorkerArray);
 
                 // sleep for the timeout period
                 Thread.Sleep(timeout);

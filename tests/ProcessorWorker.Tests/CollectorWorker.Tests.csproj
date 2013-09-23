@@ -6,8 +6,8 @@
     <ProjectGuid>{BC98039C-E440-4789-9A92-FCCABBAB65F1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CollectorWorker.Tests</RootNamespace>
-    <AssemblyName>CollectorWorker.Tests</AssemblyName>
+    <RootNamespace>ProcessorWorker.Tests</RootNamespace>
+    <AssemblyName>ProcessorWorker.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -83,9 +83,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\services\Collector\Collector.csproj">
+    <ProjectReference Include="..\..\services\Processor\Processor.csproj">
       <Project>{918559bd-5449-4ac9-9035-4f07b8976898}</Project>
-      <Name>Collector</Name>
+      <Name>Processor</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\services\ServiceEntities\ServiceEntities.csproj">
       <Project>{4949bfdf-c2d0-45c7-8c87-5c0f31bd1eea}</Project>

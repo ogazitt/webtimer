@@ -3,7 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using NUnit.Framework;
 using FluentAssertions;
-using Collector;
+using Processor;
 using ServiceEntities.Collector;
 using ServiceEntities.SiteMap;
 using Shared = Tests.Shared;

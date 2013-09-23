@@ -32,8 +32,8 @@
       <Setting name="UserProfileConnectionString" value="SqlAzureUserProfile" />
       <Setting name="MongoUri" value="mongodb://ogazitt:zrc022..@ds041177.mongolab.com:41177/MongoLab-km" />
       <Setting name="MongoCollectionName" value="CollectorRecords-Cloud" />
-      <Setting name="CollectorWorkerCount" value="1" />
-      <Setting name="CollectorWorkerTimeout" value="60" />
+      <Setting name="ProcessorWorkerCount" value="1" />
+      <Setting name="ProcessorWorkerTimeout" value="60" />
       <Setting name="AzureLoggingEnabled" value="1" />
       <Setting name="SplunkLoggingEnabled" value="0" />
     </ConfigurationSettings>

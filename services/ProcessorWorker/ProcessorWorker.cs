@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Collector;
+using Processor;
 using ServiceEntities.Collector;
 using ServiceEntities.UserData;
 using ServiceHost;
-using System.Diagnostics;
 
-namespace CollectorWorker
+namespace ProcessorWorker
 {
-    public class CollectorWorker : IWorker
+    public class ProcessorWorker : IWorker
     {
         public static string Me
         {
@@ -27,7 +27,7 @@ namespace CollectorWorker
             {
                 if (!timeout.HasValue)
                 {
-                    timeout = ConfigurationSettings.GetAsNullableInt(HostEnvironment.CollectorWorkerTimeoutConfigKey);
+                    timeout = ConfigurationSettings.GetAsNullableInt(HostEnvironment.ProcessorWorkerTimeoutConfigKey);
                     if (timeout == null)
                         timeout = 5 * 60 * 1000;  // default to 5 minutes
                     else

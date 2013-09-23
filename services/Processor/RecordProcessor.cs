@@ -8,7 +8,7 @@ using ServiceEntities.Collector;
 using ServiceEntities.SiteMap;
 using ServiceEntities.UserData;
 
-namespace Collector
+namespace Processor
 {
     public class RecordProcessor
     {

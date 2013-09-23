@@ -37,8 +37,8 @@
       <Setting name="MongoCollectionName" />
       <Setting name="AzureLoggingEnabled" />
       <Setting name="SplunkLoggingEnabled" />
-      <Setting name="CollectorWorkerCount" />
-      <Setting name="CollectorWorkerTimeout" />
+      <Setting name="ProcessorWorkerCount" />
+      <Setting name="ProcessorWorkerTimeout" />
     </ConfigurationSettings>
   </WorkerRole>
 </ServiceDefinition>
