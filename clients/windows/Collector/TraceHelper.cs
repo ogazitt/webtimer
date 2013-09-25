@@ -20,9 +20,6 @@ namespace Collector
         // start time
         private static DateTime startTime = DateTime.Now;
 
-        // file to store messages in
-        const string filename = "trace.txt";
-
         private static string sessionToken;
         public static string SessionToken 
         { 
@@ -149,6 +146,9 @@ namespace Collector
                     ClearMessages();
                     break;
                 case Destination.File:
+                    foreach (var m in traceMessages)
+                        TraceFile.WriteLine(m);
+                    ClearMessages();
                     break;
             }
         }
@@ -165,6 +165,77 @@ namespace Collector
 #endif
         }
         */
+
+        public class TraceFile
+        {
+            const int MaxFileSize = 1024 * 1024; // 1MB max file size
+            static object writeLock = new object();
+
+            private static string traceFilename;
+            public static string TraceFilename
+            {
+                get
+                {
+                    if (traceFilename == null)
+                    {
+                        // trace filename format: "trace-2012-06-16-23-12-45-123.txt";
+                        DateTime now = DateTime.UtcNow;
+                        traceFilename = Path.Combine(
+                            Directory.GetCurrentDirectory(),
+                            String.Format("trace-{0}.txt", now.ToString("yyyy-MM-dd-HH-mm-ss-fff")));
+                    }
+                    return traceFilename;
+                }
+            }
+
+            public static void WriteLine(string message)
+            {
+                lock (writeLock)
+                {
+                    // enter a retry loop writing the sitemap to the trace file
+                    int retryCount = 2;
+                    while (retryCount > 0)
+                    {
+                        try
+                        {
+                            if (traceFilename == null)
+                            {
+                                // create the file
+                                using (var stream = File.Create(TraceFilename))
+                                using (var writer = new StreamWriter(stream))
+                                {
+                                    // log the file creation
+                                    writer.WriteLine(message);
+                                    writer.Flush();
+                                }
+                            }
+
+                            // open the file
+                            using (var stream = File.Open(TraceFilename, FileMode.Append, FileAccess.Write, FileShare.Read))
+                            using (var writer = new StreamWriter(stream))
+                            {
+                                writer.WriteLine(message);
+                                writer.Flush();
+
+                                // reset the trace filename if it exceeds the maximum file size
+                                if (writer.BaseStream.Position > MaxFileSize)
+                                    traceFilename = null;
+                            }
+
+                            // success - terminate the enclosing retry loop
+                            break;
+                        }
+                        catch (Exception)
+                        {
+                            // the file wasn't opened or written to correctly - try to start with a new file in the next iteration of the retry loop
+                            traceFilename = null;
+                            retryCount--;
+                        }
+                    }
+                }
+            }
+        }
+
         #endregion
     }
 }

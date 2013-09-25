@@ -18,7 +18,8 @@ namespace ServiceEntities.Tests
             siteMapRepository = siteMapRepository ?? new SiteMapRepository(
                 new Shared.Mocks.MockMongoRepositority<SiteMapping>(),
                 new Shared.Mocks.MockMongoRepositority<SiteExpression>(),
-                new Shared.Mocks.MockMongoRepositority<UnknownSite>());
+                new Shared.Mocks.MockMongoRepositority<UnknownSite>(),
+                new Shared.Mocks.MockMongoRepositority<SiteMapVersion>());
         }
 
         [Test]

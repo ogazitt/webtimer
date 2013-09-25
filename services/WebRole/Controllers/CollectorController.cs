@@ -10,6 +10,7 @@ using ServiceEntities.Collector;
 using ServiceEntities.UserData;
 using ServiceHost;
 using WebRole.Filters;
+using WebRole.Models;
 
 namespace WebRole.Controllers
 {
@@ -28,7 +29,7 @@ namespace WebRole.Controllers
             CurrentUser = User;
         }
 
-        //private RecordRepository repository = new RecordRepository();
+        //private RecordRepository userDataRepository = new RecordRepository();
         private CollectorContext _repository;
 
         public CollectorContext Repository
@@ -46,8 +47,8 @@ namespace WebRole.Controllers
         {
             //BUGBUG - need to do something about CSRF 
 
-            //BUGBUG - clean up repository collectorContext? apparently no need to with MongoRepository
-            //req.RegisterForDispose(repository);
+            //BUGBUG - clean up userDataRepository collectorContext? apparently no need to with MongoRepository
+            //req.RegisterForDispose(userDataRepository);
 
             var list = new List<SiteLookupRecord>();
             var array = value as JArray;
@@ -84,14 +85,15 @@ namespace WebRole.Controllers
             // THIS API IS FOR TESTING ONLY - it is for creating synthetic sitemaps
 
             var userName = CurrentUser.Identity.Name;
-            var userDataContext = Storage.NewUserDataContext;
-            var device = userDataContext.Devices.FirstOrDefault(d => d.UserId == userName) ?? Device.CreateNewDevice(userName);
-
-            var collectorContext = Storage.CollectorContextFor(userName);
-            var list = collectorContext.MockRecords(device, id);
-            collectorContext.AddRecords(list);
-            TraceLog.TraceInfo(string.Format("Added {0} sitemaps for user {1}", list.Count, Repository.UserId));
-            return id;
+            using (var userDataRepository = new UserDataRepository(userName))
+            {
+                var device = userDataRepository.Devices.FirstOrDefault() ?? Device.CreateNewDevice(userName);
+                var collectorContext = Storage.CollectorContextFor(userName);
+                var list = collectorContext.MockRecords(device, id);
+                collectorContext.AddRecords(list);
+                TraceLog.TraceInfo(string.Format("Added {0} sitemaps for user {1}", list.Count, Repository.UserId));
+                return id;
+            }
         }
 
         // GET colapi/collector

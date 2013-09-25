@@ -1,0 +1,34 @@
+﻿<!-- Device page partial view -->
+<p class="error" data-ng-show="error">{{error}}</p>
+<button data-ng-click="addPerson()">Add Person</button>
+<br/>
+<article class="todoList" data-ng-repeat="person in People">
+    <header>
+        <form data-ng-submit="endEdit(person)">
+            <input  data-ng-model="person.title" 
+                    data-selected-when="person.isEditingPersonTitle"
+                    data-ng-click="clearErrorMessage(person)" 
+                    data-on-blur="endEdit(person)"/>           
+        </form>
+    </header>
+
+    <a href="#" class="deletelist" data-ng-click="deletePerson(person)">X</a>
+
+    <ul>
+        <li data-ng-repeat="device in person.devices">
+            <input type="text" class="todoItemInput" 
+                    data-ng-model="device.name" 
+                    data-on-blur="endEdit(device)"
+                    data-on-enter="endEdit(device)"
+                    data-ng-click="clearErrorMessage(device)" />
+            <a data-ng-click="person.deleteDevice(device)">X</a>
+            <p class="error" data-ng-show="device.errorMessage">{{device.errorMessage}}</p>
+        </li>
+    </ul>
+    <form data-ng-submit="person.addDevice()">
+        <input data-ng-model="person.newDeviceTitle" class="addTodo" 
+                placeholder = "Type here to add"
+                data-on-blur="person.addDevice()" />
+    </form>
+    <p class="error" data-ng-show="person.errorMessage">{{person.errorMessage}}</p>
+</article>

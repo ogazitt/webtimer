@@ -73,7 +73,11 @@ namespace WebRole.Controllers
                     TraceLog.TraceInfo(string.Format("Created user {0}", model.UserName));
 
                     InitiateDatabaseForNewUser(model.UserName);
-                    UserDataContext.InitializeNewUserAccount(model.UserName);
+
+                    using (var repository = new UserDataRepository(model.UserName))
+                    {
+                        repository.InitializeNewUserAccount();
+                    }
 
                     FormsAuthentication.SetAuthCookie(model.UserName, createPersistentCookie: false);
                     return Json(new { success = true, redirect = returnUrl });

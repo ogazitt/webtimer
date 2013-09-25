@@ -6,6 +6,7 @@ using System.Linq;
 
 using ServiceEntities.UserData;
 using ServiceHost;
+using ServiceHost.Migrations;
 
 namespace ServiceHost
 {
@@ -56,9 +57,14 @@ namespace ServiceHost
 
         public static bool InitializeDatabase()
         {
-            TraceLog.TraceDetail("Checking if the UserData database exists");
+            TraceLog.TraceDetail("Initializing and potentially migrating the UserData database");
 
-            Database.SetInitializer<UserDataContext>(null);
+            //Database.SetInitializer<UserDataContext>(null);
+            Database.SetInitializer<UserDataContext>(new MigrateDatabaseToLatestVersion<UserDataContext, Configuration>());
+
+            return true;
+
+#if KILL    // don't need this anymore       
             try
             {
                 using (var context = new UserDataContext())
@@ -94,46 +100,7 @@ namespace ServiceHost
                 TraceLog.TraceException("The UserData database could not be initialized", ex);
                 return false;
             }
-        }
-
-        public static void InitializeNewUserAccount(string userName)
-        {
-            try
-            {
-                var context = new UserDataContext();
-
-                // add the user and the "uncategorized" person
-                var person = new Person()
-                {
-                    Name = "Shared",
-                    UserId = userName,
-                    Birthdate = null,
-                    IsChild = false
-                };
-                context.People.Add(person);
-                person = new Person()
-                {
-                    Name = userName,
-                    UserId = userName,
-                    Birthdate = null,
-                    IsChild = false
-                };
-                context.People.Add(person);
-                context.SaveChanges();
-
-#if DEBUG
-                // add a dummy device for testing
-                var device = Device.CreateNewDevice(userName);
-                device.PersonId = person.PersonId;
-                context.Devices.Add(device);
-                context.SaveChanges();
 #endif
-            }
-            catch (Exception ex)
-            {
-                TraceLog.TraceException(string.Format("UserData initialization failed for user {0}", userName), ex);
-                throw;
-            }
         }
     }
 }

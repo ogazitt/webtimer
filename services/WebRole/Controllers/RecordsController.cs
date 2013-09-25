@@ -32,7 +32,7 @@ namespace WebRole.Controllers
 
 
         /*
-        private RecordRepository repository = new RecordRepository();
+        private RecordRepository userDataRepository = new RecordRepository();
         private bool disposed = false;
 
         //
@@ -40,7 +40,7 @@ namespace WebRole.Controllers
 
         public ActionResult Index()
         {
-            return View(repository.GetAllRecords());
+            return View(userDataRepository.GetAllRecords());
         }
 
         # region IDisposable
@@ -57,7 +57,7 @@ namespace WebRole.Controllers
             {
                 if (disposing)
                 {
-                    this.repository.Dispose();
+                    this.userDataRepository.Dispose();
                 }
             }
 

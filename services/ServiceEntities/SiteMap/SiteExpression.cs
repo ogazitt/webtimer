@@ -48,7 +48,7 @@ namespace ServiceEntities.SiteMap
             new SiteExpression() { Regex = @".*\.dropbox\.com$", Site = "suppress" },
             new SiteExpression() { Regex = @"^teredo\.ipv6\.microsoft\.com$", Site = "suppress" },
             new SiteExpression() { Regex = @"^webtimer.*\.windows\.net$", Site = "suppress" },
-            new SiteExpression() { Regex = @"^webtimer.*\.cloudapp\.net$", Site = "suppress" }
+            new SiteExpression() { Regex = @"^webtimer.*\.cloudapp\.net$", Site = "suppress" },
         };
     }
 }

@@ -47,10 +47,13 @@ namespace ProcessorWorker
             stopwatch.Start();
 
             var SiteMapRepository = Storage.NewSiteMapRepository;
-            SiteMapRepository.Initialize();
+            var versionString = SiteMapRepository.Initialize(Me);
 
             stopwatch.Stop();
-            TraceLog.TraceDetail("Initialized Site Map Repository: {0:.2} secs" + stopwatch.ElapsedMilliseconds / 1000);
+            TraceLog.TraceDetail(string.Format(
+                "Initialized Site Map Repository version {0}: {1:F2} secs",
+                versionString,
+                stopwatch.ElapsedMilliseconds / 1000));
 
             // run an infinite loop doing the following:
             //   grab sitemaps from the collector database
@@ -59,6 +62,18 @@ namespace ProcessorWorker
             //   sleep for the timeout period
             while (true)
             {
+                // reinitialize the mapping database if the version changed
+                if (SiteMapRepository.VersionChanged())
+                {
+                    stopwatch.Start();
+                    versionString = SiteMapRepository.Initialize(Me);
+                    stopwatch.Stop();
+                    TraceLog.TraceInfo(string.Format(
+                        "Re-Initialized Site Map Repository version {0}: {1:F2} secs",
+                        versionString,
+                        stopwatch.ElapsedMilliseconds / 1000));
+                }
+
                 var UserContext = Storage.NewUserDataContext;
                 var CollectorContext = Storage.NewCollectorContext;
 

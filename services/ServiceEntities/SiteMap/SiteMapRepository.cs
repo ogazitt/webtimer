@@ -18,20 +18,40 @@ namespace ServiceEntities.SiteMap
         IRepository<SiteMapping> _mappingRepository;
         IRepository<SiteExpression> _expressionRepository;
         IRepository<UnknownSite> _unknownSiteRepository;
+        IRepository<SiteMapVersion> _versionRepository;
         List<Regex> regexList = new List<Regex>();
         Dictionary<Regex, SiteExpression> dictionary = new Dictionary<Regex, SiteExpression>();
+        SiteMapVersion version = new SiteMapVersion();
 
-        public SiteMapRepository(IRepository<SiteMapping> mappingRepository, IRepository<SiteExpression> expressionRepository, IRepository<UnknownSite> unknownSiteRepository)
+        public SiteMapRepository(
+            IRepository<SiteMapping> mappingRepository, 
+            IRepository<SiteExpression> expressionRepository, 
+            IRepository<UnknownSite> unknownSiteRepository,
+            IRepository<SiteMapVersion> versionRepository)
         {
             _mappingRepository = mappingRepository;
             _expressionRepository = expressionRepository;
             _unknownSiteRepository = unknownSiteRepository;
+            _versionRepository = versionRepository;
         }
 
-        public void Initialize()
+        public string Initialize(string me)
         {
-            InitializeDB();
+            var versionString = InitializeDB(me);
             PopulateSiteExpressions();
+            return versionString;
+        }
+
+        public bool VersionChanged()
+        {
+            // check to make sure the database hasn't changed versions
+            var currentVersion = _versionRepository.FirstOrDefault();
+            if (currentVersion == null ||
+                currentVersion.Status != SiteMapVersion.OK ||
+                version == null ||
+                currentVersion.VersionString != version.VersionString)
+                return true;
+            return false;
         }
 
         /// <summary>
@@ -90,13 +110,46 @@ namespace ServiceEntities.SiteMap
 
         #region Helpers
 
-        private void InitializeDB()
+        private string InitializeDB(string me)
         {
-            if (_expressionRepository.Count() == 0)
-                _expressionRepository.Add(SiteExpression.Expressions);
+            // protect against multithreaded access
+            lock (version)
+            {
+                // get the database version
+                version = _versionRepository.FirstOrDefault();
 
-            if (_mappingRepository.Count() == 0)
-                _mappingRepository.Add(SiteMapping.SiteMappings);
+                // check if the database needs updating
+                if (version == null ||
+                    version.Status == SiteMapVersion.Corrupted ||
+                    _expressionRepository.Count() == 0 ||
+                    _mappingRepository.Count() == 0)
+                {
+                    var versionString = DateTime.Now.ToString("s");
+                    if (version == null)
+                        version = new SiteMapVersion() { Status = me, VersionString = versionString };
+                    else
+                        version.Status = me;
+                    _versionRepository.Update(version);
+
+                    // check if successfully "locked" the version record
+                    version = _versionRepository.FirstOrDefault(v => v.Status == me);
+                    if (version != null)
+                    {
+                        // safe to update
+                        if (_expressionRepository.Count() == 0)
+                            _expressionRepository.Add(SiteExpression.Expressions);
+
+                        if (_mappingRepository.Count() == 0)
+                            _mappingRepository.Add(SiteMapping.SiteMappings);
+
+                        _versionRepository.DeleteAll();
+                        version = new SiteMapVersion() { VersionString = versionString, Status = SiteMapVersion.OK };
+                        _versionRepository.Add(version);
+                    }
+                }
+                
+                return version.VersionString;
+            }
         }
 
         private void PopulateSiteExpressions()
@@ -115,6 +168,14 @@ namespace ServiceEntities.SiteMap
             foreach (var regex in dictionary.Keys)
                 if (regex.IsMatch(site))
                     return dictionary[regex];
+
+            // run catchall site expression which converts *.foo.com to foo.com
+            var catchall = @".*\.(.*)\.(com|edu|net|org|co|io)";
+            var match = Regex.Match(site, catchall);
+            if (match != null && match.Groups[0].Success)
+            {
+                return new SiteExpression() { Regex = catchall, Site = match.Groups[0].Value };
+            }
             return null;
         }
 

@@ -20,6 +20,7 @@ namespace CaptureService
 
         protected override void OnStart(string[] args)
         {
+            TraceHelper.TraceDestination = TraceHelper.Destination.File;
             CollectorClient.Start();
             UploadClient.Start();
         }

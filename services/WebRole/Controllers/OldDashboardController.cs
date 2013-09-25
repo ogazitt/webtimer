@@ -8,31 +8,37 @@ using System.Web.Mvc;
 
 using ServiceEntities.UserData;
 using ServiceHost;
+using WebRole.Models;
 
 namespace WebRole.Controllers
 {
     public class OldDashboardController : Controller
     {
-        private UserDataContext db = Storage.NewUserDataContext;
+        private UserDataRepository _repository;
+
+        public OldDashboardController() : base()
+        {
+            _repository = new UserDataRepository(User);
+        }
 
         //
         // GET: /Dashboard/
 
         public ActionResult Index()
         {
-            var websessions = db.WebSessions.Where(s => s.UserId == User.Identity.Name).Include(w => w.Device);
+            var websessions = _repository.WebSessions.Include(w => w.Device);
             return View(websessions.ToList());
         }
 
         public ActionResult Raw()
         {
-            var websessions = db.WebSessions.Where(s => s.UserId == User.Identity.Name).Include(w => w.Device);
+            var websessions = _repository.WebSessions.Include(w => w.Device);
             return View(websessions.ToList());
         }
 
         protected override void Dispose(bool disposing)
         {
-            db.Dispose();
+            _repository.Dispose();
             base.Dispose(disposing);
         }
     }

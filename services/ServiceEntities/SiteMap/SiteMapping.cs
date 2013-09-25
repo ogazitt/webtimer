@@ -28,6 +28,7 @@ namespace ServiceEntities.SiteMap
             new SiteMapping() { Site = "youtube.com", Category = UserData.Category.Categories.Video },
             // educational
             new SiteMapping() { Site = "khanacademy.org", Category = UserData.Category.Categories.Educational },
+            new SiteMapping() { Site = "lumosity.com", Category = UserData.Category.Categories.Educational },
             // suppressed
             new SiteMapping() { Site = "suppress", Category = UserData.Category.Categories.Suppressed },
         };

@@ -39,7 +39,7 @@ dashboard.factory('model', function () {
         Person.prototype.addDevice = function () {
             var person = this;
             var title = person.newDeviceTitle;
-            if (title) { // need a title to save
+            if (title !== undefined) { // need a title to save
                 var device = datacontext.createDevice();
                 device.title = title;
                 device.person = person;

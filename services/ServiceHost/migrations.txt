@@ -1,4 +1,4 @@
-﻿Enable-Migrations -ContextTypeName ServiceHost.UserContext -ProjectName ServiceHost -StartUpProjectName WebRole -ConnectionStringName SqlAzureConnection
-add-migration UserTables -ProjectName ServiceHost -StartUpProjectName WebRole -ConnectionStringName SqlAzureConnection
-update-database -ProjectName ServiceHost -StartUpProjectName WebRole -ConnectionStringName SqlAzureConnection
-update-database -ProjectName ServiceHost -StartUpProjectName WebRole -ConnectionStringName LocalConnection
+﻿Enable-Migrations -ContextTypeName ServiceHost.UserDataContext -ProjectName ServiceHost -StartUpProjectName WebRole -ConnectionStringName SqlAzureUserData
+add-migration UserTables -ProjectName ServiceHost -StartUpProjectName WebRole -ConnectionStringName SqlAzureUserData
+update-database -ProjectName ServiceHost -StartUpProjectName WebRole -ConnectionStringName SqlAzureUserData
+update-database -ProjectName ServiceHost -StartUpProjectName WebRole -ConnectionStringName LocalUserData

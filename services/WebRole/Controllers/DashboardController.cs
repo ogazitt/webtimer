@@ -101,6 +101,7 @@
                 .Select(sp => new HighChartSeries()
                 {
                     Name = sp.Key.Name,
+                    Color = sp.Key.Color,
                     Data = from cat in categories
                            join sess in sp on cat equals sess.Category into g
                            select new HighChartResult()

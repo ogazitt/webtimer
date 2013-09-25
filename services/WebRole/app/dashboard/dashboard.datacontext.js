@@ -175,7 +175,7 @@ dashboard.factory('datacontext',
 
         function createPredicate(personId) {
             var predicate = breeze.Predicate("category", "!=", null);
-            if (personId)
+            if (personId !== undefined)
                 predicate = predicate.and("personId", "==", personId);
             return predicate;
         }

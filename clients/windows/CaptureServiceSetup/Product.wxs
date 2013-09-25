@@ -21,10 +21,11 @@
 
 	<Fragment>
 		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">			
-			<Component Id="ProductComponent">
+			<Component Id="$(var.CaptureService.TargetFileName)">
 				<!--<File Id="Insert dll name" Name="Insert dll name again" Source="Insert path to dll" Vital="yes" KeyPath="no" DiskId="1"/>-->
-				<File Id="CaptureService" Name="CaptureService" Source="$(var.CaptureService.TargetPath)" Vital="yes" KeyPath="yes" DiskId="1"/>
-				<ServiceInstall
+        <File Id="$(var.CaptureService.TargetFileName)" Name="$(var.CaptureService.TargetFileName)" Source="$(var.CaptureService.TargetPath)" Vital="yes" KeyPath="yes" />
+        <File Id="$(var.CaptureService.TargetFileName).config" Name="$(var.CaptureService.TargetFileName).config" Source="$(var.CaptureService.TargetPath).config" Vital="yes" KeyPath="no" />
+        <ServiceInstall
 					Id="ServiceInstaller"
 					Type="ownProcess"
 					Vital="yes"

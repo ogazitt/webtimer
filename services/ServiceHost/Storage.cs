@@ -32,7 +32,8 @@ namespace ServiceHost
             get { return new SiteMapRepository(
                 new MongoRepository<SiteMapping>(HostEnvironment.MongoUri),
                 new MongoRepository<SiteExpression>(HostEnvironment.MongoUri),
-                new MongoRepository<UnknownSite>(HostEnvironment.MongoUri));
+                new MongoRepository<UnknownSite>(HostEnvironment.MongoUri),
+                new MongoRepository<SiteMapVersion>(HostEnvironment.MongoUri));
             }
         }
 

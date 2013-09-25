@@ -94,9 +94,9 @@ namespace WebRole.Models
 
         // "this.Context" is reserved for Breeze save only!
         // A second, lazily instantiated DbContext will be used
-        // for db access during custom save validation. 
+        // for _repository access during custom save validation. 
         // See this stackoverflow question and reply for an explanation:
-        // http://stackoverflow.com/questions/14517945/using-this-collectorContext-inside-beforesaveentity
+        // http://stackoverflow.com/questions/14517945/using-this-datacontext-inside-beforesaveentity
         private UserDataContext ValidationContext
         {
             get { return _validationContext ?? (_validationContext = new UserDataContext()); }
