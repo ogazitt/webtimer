@@ -11,3 +11,14 @@
     min-width: 70px;
 }
 
+.navbar .navbar-inner {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/*
+.nav .nav-divider {
+    height: 15px;
+    width: 1px;
+}
+*/

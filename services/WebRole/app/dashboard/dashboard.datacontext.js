@@ -36,12 +36,11 @@ dashboard.factory('datacontext',
             getPeople:        getPeople,
             createPerson:     createPerson,
             createDevice:     createDevice,
-            deleteDevice:     deleteDevice,
+            removeDevice:     removeDevice,
             deletePerson:     deletePerson,
             saveEntity:       saveEntity
         };
         model.initialize(datacontext);
-        datacontext.getPeople();
         return datacontext;
 
         //#region private members
@@ -191,10 +190,9 @@ dashboard.factory('datacontext',
             if (initializedDevices && !forceRefresh) {
                 query = query.using(breeze.FetchStrategy.FromLocalCache);
             }
-            initializedDevices = true;
 
             return manager.executeQuery(query)
-                .then(getSucceeded); // caller to handle failure
+                .then(getDevicesSucceeded); // caller to handle failure
         }
 
         function getPeople(forceRefresh) {
@@ -207,23 +205,30 @@ dashboard.factory('datacontext',
             if (initializedPeople && !forceRefresh) {
                 query = query.using(breeze.FetchStrategy.FromLocalCache);
             }
-            initializedPeople = true;
 
             return manager.executeQuery(query)
-                .then(getSucceeded); // caller to handle failure
+                .then(getPeopleSucceeded); // caller to handle failure
         }
 
         function getCatTotalsSucceeded(data) {
             var qType = data.XHR ? "remote" : "local";
-            logger.log(qType + " query succeeded");
+            logger.log(qType + " category totals query succeeded");
             setCurrentSeries(data.results);
             $rootScope.$broadcast('seriesDataChange');
             return data.results;
         }
 
-        function getSucceeded(data) {
+        function getPeopleSucceeded(data) {
             var qType = data.XHR ? "remote" : "local";
-            logger.log(qType + " query succeeded");
+            logger.log(qType + " people query succeeded");
+            initializedPeople = true;
+            return data.results;
+        }
+
+        function getDevicesSucceeded(data) {
+            var qType = data.XHR ? "remote" : "local";
+            logger.log(qType + " devices query succeeded");
+            initializedDevices = true;
             return data.results;
         }
 
@@ -235,16 +240,16 @@ dashboard.factory('datacontext',
             return manager.createEntity("Person");
         }
 
-        function deleteDevice(device) {
-            device.entityAspect.setDeleted();
-            return saveEntity(device);
+        function removeDevice(device) {
+            var person = device.person;
+            person.removeDevice(device);
         }
 
         function deletePerson(person) {
             // Neither breeze nor server cascade deletes so we have to do it
-            var devices = person.devices.slice(); // iterate over copy
+            //var devices = person.devices.slice(); // iterate over copy
             // don't cascade
-            //devices.forEach(function (entity) { entity.entityAspect.setDeleted(); });
+            //devices.forEach(function (entity) { entity.person = null; });
             person.entityAspect.setDeleted();
             return saveEntity(person);
         }
@@ -253,11 +258,16 @@ dashboard.factory('datacontext',
             // if nothing to save, return a resolved promise
             if (!manager.hasChanges()) { return Q(); }
 
+            if (masterEntity.birthDateString !== undefined && masterEntity.birthDateString !== null) {
+                masterEntity.birthdate = Date.parse(masterEntity.birthDateString);
+            }
+
             var description = describeSaveOperation(masterEntity);
             return manager.saveChanges().then(saveSucceeded).fail(saveFailed);
 
-            function saveSucceeded() {
+            function saveSucceeded(data) {
                 logger.log("saved " + description);
+                return data;
             }
 
             function saveFailed(error) {
@@ -275,9 +285,9 @@ dashboard.factory('datacontext',
         function describeSaveOperation(entity) {
             var statename = entity.entityAspect.entityState.name.toLowerCase();
             var typeName = entity.entityType.shortName;
-            var title = entity.title;
-            title = title ? (" '" + title + "'") : "";
-            return statename + " " + typeName + title;
+            var name = entity.name;
+            name = name ? (" '" + name + "'") : "";
+            return statename + " " + typeName + name;
         }
         function getErrorMessage(error) {
             var reason = error.message;

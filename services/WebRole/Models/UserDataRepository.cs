@@ -11,51 +11,51 @@ using ServiceEntities.UserData;
 // ReSharper disable InconsistentNaming
 namespace WebRole.Models
 {
-    public class UserDataRepository : IDisposable
+    public class UserDataRepository : UserDataContext //, IDisposable
     {
-        UserDataContext _context = null;
+        //UserDataContext _context = null;
 
         public UserDataRepository(IPrincipal user) : this(user.Identity.Name) { }
 
         public UserDataRepository(string userName)
         {
             UserId = userName;
-            _context = Storage.NewUserDataContext;
+            //_context = Storage.NewUserDataContext;
         }
 
         public string UserId { get; private set; }
 
-        public DbQuery<Category> Categories
+        public new DbQuery<Category> Categories
         {
             get
             {
-                return (DbQuery<Category>)_context.Categories;
+                return (DbQuery<Category>)base.Categories;
             }
         }
 
-        public DbQuery<Device> Devices
+        public new DbQuery<Device> Devices
         {
             get
             {
-                return (DbQuery<Device>)_context.Devices
+                return (DbQuery<Device>)base.Devices
                     .Where(d => d.UserId == UserId);
             }
         }
 
-        public DbQuery<Person> People
+        public new DbQuery<Person> People
         {
             get
             {
-                return (DbQuery<Person>)_context.People
+                return (DbQuery<Person>)base.People
                     .Where(p => p.UserId == UserId);
             }
         }
 
-        public DbQuery<WebSession> WebSessions
+        public new DbQuery<WebSession> WebSessions
         {
             get
             {
-                return (DbQuery<WebSession>)_context.WebSessions
+                return (DbQuery<WebSession>)base.WebSessions
                     .Where(w => w.UserId == UserId);
             }
         }
@@ -100,8 +100,8 @@ namespace WebRole.Models
         {
             if (device == null)
                 return;
-            _context.Devices.Add(device);
-            _context.SaveChanges();
+            base.Devices.Add(device);
+            base.SaveChanges();
         }
         
         public void AddPerson(Person person)
@@ -129,10 +129,11 @@ namespace WebRole.Models
                 }
             }
 
-            _context.People.Add(person);
-            _context.SaveChanges();
+            base.People.Add(person);
+            base.SaveChanges();
         }
 
+        /*
         #region IDisposable
 
         private bool disposed = false;
@@ -157,5 +158,6 @@ namespace WebRole.Models
         }
 
         #endregion
+         * */
     }
 }

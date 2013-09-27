@@ -1,0 +1,48 @@
+﻿<!-- Device page partial view -->
+<p class="error" data-ng-show="error">{{error}}</p>
+<br/>
+<article class="todoList" data-ng-repeat="device in devices">
+    <header>
+        <form role="form"">
+            <input  data-ng-model="device.name" 
+                    data-selected-when="device.isEditingDeviceName"
+                    data-ng-click="clearErrorMessage(device)" 
+                    data-on-blur="endEdit(device)" 
+                    data-on-enter="endEdit(device)"/> 
+        </form>
+    </header>
+    <form class="form-horizontal" role="form">
+        <div class="form-group">
+            <label class="control-label col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-4 col-sm-offset-1 col-sm-4 col-xs-offset-1 col-xs-4">Type</label>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <select class="form-control"
+                        data-ng-model="device.type" 
+                        data-ng-click="clearErrorMessage(device)" 
+                        data-on-blur="endEdit(device)" 
+                        data-on-enter="endEdit(device)">
+                    <option>Computer</option>
+                    <option>Phone</option>
+                    <option>Tablet</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Hostname</label>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <p class="form-control-static pull-left" data-ng-bind="device.hostname" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">IP Address</label>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <p class="form-control-static pull-left" data-ng-bind="device.ipAddress" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Device ID</label>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <p class="form-control-static pull-left" data-ng-bind="device.deviceId" />
+            </div>
+        </div>
+    </form>
+</article>

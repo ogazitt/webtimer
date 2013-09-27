@@ -24,7 +24,9 @@ namespace WebRole
             bundles.Add(new ScriptBundle("~/bundles/ajaxlogin").Include(
                         "~/app/ajaxlogin.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/date").Include(
+            bundles.Add(new ScriptBundle("~/bundles/extras").Include(
+                        "~/Scripts/jquery.colorPicker.min.js",
+                        "~/Scripts/angular-colorpicker.js",
                         "~/Scripts/date.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/breeze").Include(
@@ -48,11 +50,17 @@ namespace WebRole
             bundles.Add(new ScriptBundle("~/bundles/dashboard").Include(
                         "~/app/dashboard/dashboard.js", // must be first
                         "~/app/dashboard/dashboard.datacontext.js", 
-                        "~/app/dashboard/dashboard.model.js", 
+                        "~/app/dashboard/dashboard.model.js",
                         "~/app/dashboard/logger.js",
-                        "~/app/dashboard/toolbar.js",
-                        "~/app/dashboard/log.controller.js",
-                        "~/app/dashboard/day.controller.js"));
+                        "~/app/dashboard/controllers/day.controller.js",
+                        "~/app/dashboard/controllers/week.controller.js",
+                        "~/app/dashboard/controllers/month.controller.js",
+                        "~/app/dashboard/controllers/devices.controller.js",
+                        "~/app/dashboard/controllers/people.controller.js",
+                        "~/app/dashboard/controllers/log.controller.js",
+                        "~/app/dashboard/controllers/header.controller.js",
+                        "~/app/dashboard/controllers/toolbar.controller.js"));
+
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
@@ -60,9 +68,13 @@ namespace WebRole
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                "~/Content/Site.css",
-                "~/Content/dashboard.css",
-                "~/Content/TodoList.css"));
+                        "~/Content/Site.css",
+                        "~/Content/jquery-colorPicker.css",
+                        "~/Content/btnswitch.css",
+                        "~/Content/TodoList.css"));
+
+            bundles.Add(new StyleBundle("~/Content/dashboard").Include(
+                        "~/Content/dashboard.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/themes/base/jquery.ui.core.css",

@@ -79,6 +79,37 @@ namespace WebRole.Models
             if (info.EntityState == EntityState.Added)
             {
                 person.UserId = UserId;
+
+                // assign a new color if necessary
+                if (string.IsNullOrEmpty(person.Color))
+                {
+                    // default to first color
+                    person.Color = Person.ColorList[0];
+
+                    // try to assign a color that hasn't yet been assigned 
+                    var colors = People.Select(p => p.Color).Distinct();
+                    for (int i = 0; i < Person.ColorList.Count; i++)
+                    {
+                        if (!colors.Contains(Person.ColorList[i]))
+                        {
+                            person.Color = Person.ColorList[i];
+                            break;
+                        }
+                    }
+                }
+                return true;
+            }
+            if (info.EntityState == EntityState.Deleted)
+            {
+                // reassign all devices to Shared
+                var shared = ValidationRepository.People.FirstOrDefault(p => p.Name == "Shared");
+                if (shared != null)
+                {
+                    var devices = ValidationRepository.Devices.Where(d => d.PersonId == person.PersonId);
+                    foreach (var d in devices)
+                        d.PersonId = shared.PersonId;
+                    ValidationRepository.SaveChanges();
+                }
                 return true;
             }
             return UserId == person.UserId || throwCannotSaveEntityForThisUser(person.UserId);
@@ -102,6 +133,11 @@ namespace WebRole.Models
             get { return _validationContext ?? (_validationContext = new UserDataContext()); }
         }
         private UserDataContext _validationContext;
+        private UserDataRepository ValidationRepository
+        {
+            get { return _validationRepository ?? (_validationRepository = new UserDataRepository(UserId)); }
+        }
+        private UserDataRepository _validationRepository;
 
         private bool throwCannotSaveEntityForThisUser(string userId)
         {

@@ -1,0 +1,18 @@
+﻿@if (Request.IsAuthenticated) {
+    <ul class="nav navbar-nav navbar-right">
+        <li class="nav-divider"></li>
+        <li class="dropdown active">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <i class="glyphicon glyphicon-user"></i>
+                <strong>@User.Identity.Name</strong>
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="/">Dashboard</a></li>
+                <li><a href="/Account/Manage">Settings</a></li>
+                <li class="divider"></li>
+                <li><a href="javascript:document.getElementById('logoutForm').submit()">Sign Out</a></li>
+            </ul>
+        </li>
+    </ul>
+}

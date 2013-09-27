@@ -26,18 +26,20 @@ namespace ServiceEntities.UserData
 
         public static class Colors
         {
-            public const string Blue = "blue";
-            public const string Red = "red";
-            public const string Green = "green";
-            public const string Yellow = "yellow";
-            public const string Orange = "orange";
-            public const string Brown = "brown";
-            public const string Purple = "purple";
-            public const string Black = "black";
+            public const string Black  = "#000000";
+            public const string Blue   = "#0000ff";
+            public const string Red    = "#ff0000";
+            public const string Green  = "#007f00";
+            public const string Yellow = "#ffff00";
+            public const string Orange = "#ff7f00";
+            public const string Brown  = "#7f0000";
+            public const string Purple = "#7f007f";
+            public const string Pink   = "#ff7fff";
         }
 
         public static List<string> ColorList = new List<string>() 
         { 
+            Colors.Black,
             Colors.Blue, 
             Colors.Red, 
             Colors.Green, 
@@ -45,7 +47,7 @@ namespace ServiceEntities.UserData
             Colors.Orange, 
             Colors.Brown, 
             Colors.Purple, 
-            Colors.Black
+            Colors.Pink, 
         };
     }
 }

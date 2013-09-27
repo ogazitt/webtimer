@@ -15,9 +15,9 @@
 @if (@User.Identity.IsAuthenticated)
 {
 <!-- main dashboard div, which contains the app views -->
-<div data-ng-app="dashboard">
+<div class="dashboard">
     <!-- toolbar -->
-    @Html.Include("~/app/dashboard/toolbar.view.html")
+    @Html.Include("~/app/dashboard/views/toolbar.view.html")
     <br />
     <!-- view -->
     <div data-ng-view=""></div> 
@@ -35,8 +35,15 @@ else
     @section scripts {
         @Scripts.Render("~/bundles/angular")
         @Scripts.Render("~/bundles/breeze")
-        @Scripts.Render("~/bundles/date")
+        @Scripts.Render("~/bundles/extras")
         @Scripts.Render("~/bundles/highcharts")
         @Scripts.Render("~/bundles/dashboard")
     }
+    
+    <script type="text/javascript">
+        // document ready handler 
+        $(document).ready(function () {
+            window.UserName = "@User.Identity.Name";
+        });
+    </script>
 }

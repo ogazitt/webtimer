@@ -19,6 +19,7 @@ dashboard.controller('PeopleController',
         $scope.endEdit = endEdit;
         $scope.addPerson = addPerson;
         $scope.deletePerson = deletePerson;
+        $scope.toggleIsChild = toggleIsChild;
         $scope.clearErrorMessage = clearErrorMessage;
 
         // load People immediately (from cache if possible)
@@ -32,20 +33,30 @@ dashboard.controller('PeopleController',
         function refresh() { getTodos(true); }
 
         function getSucceeded(data) {
-            $scope.people = data;
+            // clone the array
+            $scope.people = data.slice(0);
+            // remove "shared"
+            $scope.people.shift();
         }
         function failed(error) {
             $scope.error = error.message;
         }
         function refreshView() {
+            /*
+            $(".pick-a-color").each(function (index) {
+                alert($(this).text());
+            });
+            */
             $scope.$apply();
         }
         function endEdit(entity) {
-            datacontext.saveEntity(entity).fin(refreshView);
+            datacontext.saveEntity(entity)
+                .then(clearEditMode)
+                .fin(refreshView);
         }
         function addPerson() {
             var person = datacontext.createPerson();
-            person.isEditingListTitle = true;
+            person.isEditingPersonName = true;
             datacontext.saveEntity(person)
                 .then(addSucceeded)
                 .fail(addFailed)
@@ -69,13 +80,20 @@ dashboard.controller('PeopleController',
                 showAddedPerson(person); // re-show the restored list
             }
         }
+        function toggleIsChild(person) {
+            person.isChild = !person.isChild;
+            endEdit(person);
+        }
         function clearErrorMessage(obj) {
             if (obj && obj.errorMessage) {
                 obj.errorMessage = null;
             }
         }
         function showAddedPerson(person) {
-            $scope.People.unshift(person); // Insert person at the front
+            $scope.people.push(person); // Insert person at the back
+        }
+        function clearEditMode(person) {
+            person.isEditingPersonName = false;
         }
         //#endregion
     }]);

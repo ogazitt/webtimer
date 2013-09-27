@@ -1,0 +1,8 @@
+﻿<!-- Header partial view -->
+<div data-ng-controller="HeaderController">
+    <ul class="nav navbar-nav">
+        <li data-ng-class="{ active: isActive('/')}"><a href="#/"><strong>Dashboard</strong></a></li>
+        <li data-ng-class="{ active: isActive('/people')}"><a href="#/people"><strong>People</strong></a></li>
+        <li data-ng-class="{ active: isActive('/devices')}"><a href="#/devices"><strong>Devices</strong></a></li>
+    </ul>
+</div>

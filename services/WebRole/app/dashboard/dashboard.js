@@ -1,21 +1,110 @@
 ﻿// dashboard module
 // this script hooks up all the components and must come first
 
-window.dashboard = angular.module('dashboard', ["highcharts-ng", "toolbar"]);
+window.dashboard = angular.module('dashboard', ["highcharts-ng", "toolbar", "header", "colorpicker-ng"]);
 //var dashboard = angular.module('dashboard', ["highcharts-ng"]);
 
-// Add global "services" (like breeze and Q) to the Ng injector
-// Learn about Angular dependency injection in this video
-// http://www.youtube.com/watch?feature=player_embedded&v=1CpiB3Wk25U#t=2253s
+// Add global "services" to the Ng injector
 dashboard.value('breeze', window.breeze)
          .value('Q', window.Q);
 
 // Configure routes
 dashboard.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.
-        when('/', { templateUrl: 'app/dashboard/day.view.html', controller: 'DayController' }).
-        when('/week', { templateUrl: 'app/dashboard/week.view.html', controller: 'WeekController' }).
-        when('/log', { templateUrl: 'app/dashboard/log.view.html', controller: 'LogController' }).
+        when('/', { templateUrl: 'app/dashboard/views/day.view.html', controller: 'DayController' }).
+        when('/week', { templateUrl: 'app/dashboard/views/week.view.html', controller: 'WeekController' }).
+        when('/month', { templateUrl: 'app/dashboard/views/month.view.html', controller: 'MonthController' }).
+        when('/people', { templateUrl: 'app/dashboard/views/people.view.html', controller: 'PeopleController' }).
+        when('/devices', { templateUrl: 'app/dashboard/views/devices.view.html', controller: 'DevicesController' }).
+        when('/log', { templateUrl: 'app/dashboard/views/log.view.html', controller: 'LogController' }).
         otherwise({ redirectTo: '/' });
 }]);
 
+//#region Ng directives
+/*  We extend Angular with custom data bindings written as Ng directives */
+dashboard.directive('onFocus', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, elm, attrs) {
+            elm.bind('focus', function () {
+                scope.$apply(attrs.onFocus);
+            });
+        }
+    };
+})
+.directive('onBlur', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, elm, attrs) {
+            elm.bind('blur', function () {
+                scope.$apply(attrs.onBlur);
+            });
+        }
+    };
+})
+.directive('onEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if (event.which === 13) {
+                scope.$apply(function () {
+                    scope.$eval(attrs.onEnter);
+                });
+                // remove focus
+                element.blur();
+                event.preventDefault();
+            }
+        });
+    };
+})
+.directive('selectedWhen', function () {
+    return function (scope, elm, attrs) {
+        scope.$watch(attrs.selectedWhen, function (shouldBeSelected) {
+            if (shouldBeSelected) {
+                elm.select();
+            }
+        });
+    };
+});
+if (!Modernizr.input.placeholder) {
+    // this browser does not support HTML5 placeholders
+    // see http://stackoverflow.com/questions/14777841/angularjs-inputplaceholder-directive-breaking-with-ng-model
+    dashboard.directive('placeholder', function () {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function (scope, element, attr, ctrl) {
+
+                var value;
+
+                var placeholder = function () {
+                    element.val(attr.placeholder);
+                };
+                var unplaceholder = function () {
+                    element.val('');
+                };
+
+                scope.$watch(attr.ngModel, function (val) {
+                    value = val || '';
+                });
+
+                element.bind('focus', function () {
+                    if (value == '') unplaceholder();
+                });
+
+                element.bind('blur', function () {
+                    if (element.val() == '') placeholder();
+                });
+
+                ctrl.$formatters.unshift(function (val) {
+                    if (!val) {
+                        placeholder();
+                        value = '';
+                        return attr.placeholder;
+                    }
+                    return val;
+                });
+            }
+        };
+    });
+}
+//#endregion 

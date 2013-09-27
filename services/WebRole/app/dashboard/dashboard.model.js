@@ -22,33 +22,28 @@ dashboard.factory('model', function () {
     
     function deviceInitializer(device) {
         device.errorMessage = "";
+        device.isEditingDeviceName = false;
     }
 
     function personInitializer(person) {
         person.errorMessage = "";
-        person.newDeviceTitle = "";
-        person.isEditingListTitle = false;
+        person.isEditingPersonName = false;
+        person.birthDateString = person.birthdate !== null ? person.birthdate.toString("M/d/yyyy") : null;
     }
 
     function Person() {
-        this.title = "New Person"; // defaults
+        this.name = "New Person"; // defaults
         this.userId = "to be replaced";
     }
     
     function extendPerson() {
-        Person.prototype.addDevice = function () {
-            var person = this;
-            var title = person.newDeviceTitle;
-            if (title !== undefined) { // need a title to save
-                var device = datacontext.createDevice();
-                device.title = title;
-                device.person = person;
-                datacontext.saveEntity(device);
-                person.newDeviceTitle = ""; // clear UI title box
-            }
+        Person.prototype.addDevice = function (device) {
+            device.person = this;
+            datacontext.saveEntity(device);
         };
 
-        Person.prototype.deleteDevice = function (device) {
+        Person.prototype.removeDevice = function (device) {
+            device.person = null;
             return datacontext.deleteDevice(device);
         };
     }
