@@ -14,6 +14,7 @@ dashboard.factory('datacontext',
         var currentDate = Date.today();
         var currentPeriod = 'day';
         var currentSeries = [];
+        var currentPersonId = null;
 
         configureBreeze();
         var manager = new breeze.EntityManager("api/dashboard");
@@ -25,6 +26,8 @@ dashboard.factory('datacontext',
             getCurrentDate:   getCurrentDate,
             setCurrentDate:   setCurrentDate,
             setCurrentPeriod: setCurrentPeriod,
+            getCurrentPerson: getCurrentPerson,
+            setCurrentPerson: setCurrentPerson,
             moveForward:      moveForward,
             moveBack:         moveBack,
             getCurrentSeries: getCurrentSeries,
@@ -73,6 +76,14 @@ dashboard.factory('datacontext',
                 default:
                     break;
             }
+        }
+
+        function getCurrentPerson() {
+            return currentPersonId;
+        }
+
+        function setCurrentPerson(personId) {
+            currentPersonId = personId;
         }
 
         function moveForward() {
@@ -129,17 +140,25 @@ dashboard.factory('datacontext',
             start = dateAsString(currentDate);
             end = dateAsString(getEndDate(currentDate, currentPeriod));
 
-            var query = breeze.EntityQuery
-                .from("CategoryTotals")
-                .withParameters({ Start: start, End: end });
+            var query;
+            if (currentPersonId !== null) {
+                query = breeze.EntityQuery
+                                .from("CategoryTotalsForPerson")
+                                .withParameters({ Start: start, End: end, PersonId: currentPersonId });
+            }
+            else {
+                query = breeze.EntityQuery
+                                .from("CategoryTotals")
+                                .withParameters({ Start: start, End: end });
+            }
 
             return manager.executeQuery(query)
                 .then(getCatTotalsSucceeded); // caller to handle failure
         }
 
         function getData(type, start, end, personId) {
-            start = dateAsString(start);
-            end = dateAsString(end);
+            var start = dateAsString(start);
+            var end = dateAsString(end);
 
             var query = breeze.EntityQuery
                 .from(type)
@@ -174,8 +193,9 @@ dashboard.factory('datacontext',
 
         function createPredicate(personId) {
             var predicate = breeze.Predicate("category", "!=", null);
-            if (personId !== undefined)
-                predicate = predicate.and("personId", "==", personId);
+            if (personId !== null) {
+                predicate = predicate.and("device.personId", "==", personId);
+            }
             return predicate;
         }
 
@@ -258,8 +278,11 @@ dashboard.factory('datacontext',
             // if nothing to save, return a resolved promise
             if (!manager.hasChanges()) { return Q(); }
 
-            if (masterEntity.birthDateString !== undefined && masterEntity.birthDateString !== null) {
-                masterEntity.birthdate = Date.parse(masterEntity.birthDateString);
+            if (masterEntity.birthdate !== undefined && masterEntity.birthdate !== null) {
+                try {
+                    var birthdate = Date.parse(masterEntity.birthdate);
+                    masterEntity.birthdate = birthdate.toString('M/d/yyyy');
+                } catch (e) { }
             }
 
             var description = describeSaveOperation(masterEntity);

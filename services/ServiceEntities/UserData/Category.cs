@@ -15,6 +15,8 @@ namespace ServiceEntities.UserData
         [Required, MaxLength(30)]
         public string Name { get; set; }
 
+        public string Color { get; set; }
+
         public class Categories
         {
             public const string Suppressed = "Suppressed";
@@ -27,9 +29,9 @@ namespace ServiceEntities.UserData
         {
             return new List<Category>()
             {
-                new Category() { Name = Categories.Social },
-                new Category() { Name = Categories.Video },
-                new Category() { Name = Categories.Educational },
+                new Category() { Name = Categories.Social, Color = Colors.Red },
+                new Category() { Name = Categories.Video, Color = Colors.Blue },
+                new Category() { Name = Categories.Educational, Color = Colors.Green },
             };
         }
     }

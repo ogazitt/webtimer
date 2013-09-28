@@ -9,7 +9,7 @@ namespace ServiceEntities.UserData
     public class HighChartResult
     {
         public string Name { get; set; }
-        public int Y { get; set; }
+        public decimal Y { get; set; }
         public string Color { get; set; }
     }
 }

@@ -72,6 +72,14 @@
     <Compile Include="Migrations\201309240604064_InitialDatabase.Designer.cs">
       <DependentUpon>201309240604064_InitialDatabase.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201309280259235_UserTables.cs" />
+    <Compile Include="Migrations\201309280259235_UserTables.Designer.cs">
+      <DependentUpon>201309280259235_UserTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201309280444155_BirthdateToString.cs" />
+    <Compile Include="Migrations\201309280444155_BirthdateToString.Designer.cs">
+      <DependentUpon>201309280444155_BirthdateToString.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage.cs" />
@@ -94,6 +102,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201309240604064_InitialDatabase.resx">
       <DependentUpon>201309240604064_InitialDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201309280259235_UserTables.resx">
+      <DependentUpon>201309280259235_UserTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201309280444155_BirthdateToString.resx">
+      <DependentUpon>201309280444155_BirthdateToString.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -59,6 +59,7 @@
     <Compile Include="Collector\SiteLookupRecord.cs" />
     <Compile Include="SiteMap\SiteMapRepository.cs" />
     <Compile Include="UserData\Category.cs" />
+    <Compile Include="UserData\Color.cs" />
     <Compile Include="UserData\HighChartSeries.cs" />
     <Compile Include="UserData\Device.cs" />
     <Compile Include="UserData\HighChartResult.cs" />

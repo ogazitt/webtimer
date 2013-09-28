@@ -1,50 +1,56 @@
 ﻿<!-- People page partial view -->
-<p class="error" data-ng-show="error">{{error}}</p>
-<button data-ng-click="addPerson()">Add Person</button>
-<br/>
-<article class="todoList" data-ng-repeat="person in people">
-    <header>
-        <form role="form"">
-            <input  data-ng-model="person.name" 
-                    data-selected-when="person.isEditingPersonName"
-                    data-ng-click="clearErrorMessage(person)" 
-                    data-on-blur="endEdit(person)" 
-                    data-on-enter="endEdit(person)"/> 
-        </form>
-    </header>
-
-    <a href="#/people" class="deletelist" data-ng-click="deletePerson(person)">X</a>
-
-    <form class="form-horizontal" role="form">
-        <div class="form-group">
-            <label class="control-label col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-4 col-sm-offset-1 col-sm-4 col-xs-offset-1 col-xs-4">Birthdate</label>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                <input  class="form-control" placeholder="Birthdate"
-                        data-ng-model="person.birthDateString" 
+<div class="main-view">
+    <p class="error" data-ng-show="error">{{error}}</p>
+    <br/>
+    <article class="todoList" data-ng-repeat="person in people">
+        <header>
+            <form role="form">
+                <input  data-ng-model="person.name" 
+                        data-selected-when="person.isEditingPersonName"
                         data-ng-click="clearErrorMessage(person)" 
                         data-on-blur="endEdit(person)" 
                         data-on-enter="endEdit(person)"/> 
+            </form>
+        </header>
+
+        <a href="#/people" class="deletelist" data-ng-click="deletePerson(person)">X</a>
+
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label class="control-label col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-4 col-sm-offset-1 col-sm-4 col-xs-offset-1 col-xs-4">Birthdate</label>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <input  class="form-control" placeholder="Birthdate"
+                            data-ng-model="person.birthdate" 
+                            data-ng-click="clearErrorMessage(person)" 
+                            data-on-blur="endEdit(person)" 
+                            data-on-enter="endEdit(person)"/> 
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-4 col-sm-offset-1 col-sm-4 col-xs-offset-1 col-xs-4">Color</label>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                <input  data-color-picker="person.color" 
-                        data-ng-model="person.color" 
-                        data-ng-change="endEdit(person)"
-                        data-ng-click="clearErrorMessage(person)" 
-                        data-on-blur="endEdit(person)"/>
+            <div class="form-group">
+                <label class="control-label col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-4 col-sm-offset-1 col-sm-4 col-xs-offset-1 col-xs-4">Color</label>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <input  data-color-picker="person.color" 
+                            data-ng-model="person.color" 
+                            data-ng-change="endEdit(person)"
+                            data-ng-click="clearErrorMessage(person)" 
+                            data-on-blur="endEdit(person)"/>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-4 col-sm-offset-1 col-sm-4 col-xs-offset-1 col-xs-4">Child</label>
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                <span class="btn btn-switch" data-ng-click="toggleIsChild(person)" data-ng-model="person.isChild">
-                    <span class="btn-switch-on btn-primary" data-ng-show="person.isChild">YES</span>
-                    <span class="btn-switch-off btn-default" data-ng-hide="person.isChild">NO</span>  
-                </span>
+            <div class="form-group">
+                <label class="control-label col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-4 col-sm-offset-1 col-sm-4 col-xs-offset-1 col-xs-4">Child</label>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    <span class="btn btn-switch" data-ng-click="toggleIsChild(person)" data-ng-model="person.isChild">
+                        <span class="btn-switch-on btn-primary" data-ng-show="person.isChild">YES</span>
+                        <span class="btn-switch-off btn-default" data-ng-hide="person.isChild">NO</span>  
+                    </span>
+                </div>
             </div>
-        </div>
-    </form>
-    <p class="error" data-ng-show="person.errorMessage">{{person.errorMessage}}</p>
-</article>
+        </form>
+        <p class="error" data-ng-show="person.errorMessage">{{person.errorMessage}}</p>
+    </article>
+    <article class="todoList">
+        <button class="btn btn-default add-button" data-ng-click="addPerson()">
+            <span class="glyphicon glyphicon-plus glyphicon-huge add-button-plus"></span>
+        </button>
+    </article>
+</div>

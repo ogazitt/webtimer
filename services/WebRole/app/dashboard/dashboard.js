@@ -12,8 +12,7 @@ dashboard.value('breeze', window.breeze)
 dashboard.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.
         when('/', { templateUrl: 'app/dashboard/views/day.view.html', controller: 'DayController' }).
-        when('/week', { templateUrl: 'app/dashboard/views/week.view.html', controller: 'WeekController' }).
-        when('/month', { templateUrl: 'app/dashboard/views/month.view.html', controller: 'MonthController' }).
+        when('/detail', { templateUrl: 'app/dashboard/views/detail.day.view.html', controller: 'DetailController' }).
         when('/people', { templateUrl: 'app/dashboard/views/people.view.html', controller: 'PeopleController' }).
         when('/devices', { templateUrl: 'app/dashboard/views/devices.view.html', controller: 'DevicesController' }).
         when('/log', { templateUrl: 'app/dashboard/views/log.view.html', controller: 'LogController' }).

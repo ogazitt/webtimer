@@ -22,3 +22,24 @@
     width: 1px;
 }
 */
+
+.signup-button {
+    margin-top: 100px;
+}
+
+.add-button {
+    margin-top: 95px;
+}
+
+.add-button-plus {
+    margin-top: -5px;
+    margin-left: 5px;
+}
+
+.glyphicon-huge {
+    font-size: 4em;
+}
+
+.main-view {
+    text-align: center;
+}

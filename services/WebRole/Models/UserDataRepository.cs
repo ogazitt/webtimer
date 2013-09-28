@@ -115,15 +115,15 @@ namespace WebRole.Models
             if (string.IsNullOrEmpty(person.Color))
             {
                 // default to first color
-                person.Color = Person.ColorList[0];
+                person.Color = Colors.List[0];
 
                 // try to assign a color that hasn't yet been assigned 
                 var colors = People.Select(p => p.Color).Distinct();
-                for (int i = 0; i < Person.ColorList.Count; i++)
+                for (int i = 0; i < Colors.List.Count; i++)
                 {
-                    if (!colors.Contains(Person.ColorList[i]))
+                    if (!colors.Contains(Colors.List[i]))
                     {
-                        person.Color = Person.ColorList[i];
+                        person.Color = Colors.List[i];
                         break;
                     }
                 }

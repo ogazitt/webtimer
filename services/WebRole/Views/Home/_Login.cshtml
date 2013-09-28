@@ -9,12 +9,12 @@
         <ol>
             <li>
                 @Html.LabelFor(m => m.UserName)
-                @Html.TextBoxFor(m => m.UserName, new { autofocus = "autofocus", id = "loginName" })
+                @Html.TextBoxFor(m => m.UserName, new { autofocus = "autofocus", id = "loginName", @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.UserName)
             </li>
             <li>
                 @Html.LabelFor(m => m.Password)
-                @Html.PasswordFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.Password)
             </li>
             <li>

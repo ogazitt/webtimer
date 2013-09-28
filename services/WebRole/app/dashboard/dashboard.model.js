@@ -28,7 +28,12 @@ dashboard.factory('model', function () {
     function personInitializer(person) {
         person.errorMessage = "";
         person.isEditingPersonName = false;
-        person.birthDateString = person.birthdate !== null ? person.birthdate.toString("M/d/yyyy") : null;
+        if (person.birthdate !== null) {
+            try {
+                var birthdate = Date.parse(person.birthdate);
+                person.birthday = birthdate.toString('M/d/yyyy');
+            } catch (e) { }
+        }
     }
 
     function Person() {

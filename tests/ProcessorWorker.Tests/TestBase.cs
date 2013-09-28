@@ -22,7 +22,8 @@ namespace CollectorWorker.Tests
         protected SiteMapRepository siteMapRepository = new SiteMapRepository(
             new Shared.Mocks.MockMongoRepositority<SiteMapping>(),
             new Shared.Mocks.MockMongoRepositority<SiteExpression>(),
-            new Shared.Mocks.MockMongoRepositority<UnknownSite>());
+            new Shared.Mocks.MockMongoRepositority<UnknownSite>(),
+            new Shared.Mocks.MockMongoRepositority<SiteMapVersion>());
 
         const int macAddressCount = 10;
         const int websiteCount = 10;

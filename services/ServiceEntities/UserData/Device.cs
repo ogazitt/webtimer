@@ -23,6 +23,16 @@ namespace ServiceEntities.UserData
         [Display(Name = "IP Address")]
         public string IpAddress { get; set; }
 
+        [Display(Name = "Device Type")]
+        public string DeviceType { get; set; }
+
+        public static class DeviceTypes
+        {
+            public const string Computer = "Computer";
+            public const string Phone = "Phone";
+            public const string Tablet = "Tablet";
+        }
+
         [ForeignKey("Person")]
         public int? PersonId { get; set; }
         public virtual Person Person { get; set; }

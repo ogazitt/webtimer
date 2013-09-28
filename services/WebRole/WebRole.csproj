@@ -270,7 +270,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="angular-highcharts-demo.html" />
+    <Content Include="app\dashboard\controllers\detail.day.controller.js" />
     <Content Include="app\dashboard\controllers\header.controller.js" />
+    <Content Include="app\dashboard\views\detail.day.view.html" />
     <Content Include="app\dashboard\views\header.view.html" />
     <Content Include="app\dashboard\controllers\devices.controller.js" />
     <Content Include="app\dashboard\views\devices.view.html" />

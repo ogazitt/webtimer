@@ -22,21 +22,12 @@ dashboard.controller('DayController',
                     }
                 },
                 title: {
-                    text: 'Web usage for ' + $scope.currentDate.toString('M/d/yyyy') + ' by category'
+                    text: chartTitle()
                 },
             },
-            series: [],
             series: datacontext.getCurrentSeries(),
-            title: {
-                text: 'Web usage for ' + $scope.currentDate.toString('M/d/yyyy') + ' by category old'
-            },
             xAxis: {
                 categories: []
-            },
-            yAxis: {
-                title: {
-                    text: 'Total number of minutes'
-                }
             },
             loading: false
         };
@@ -44,6 +35,7 @@ dashboard.controller('DayController',
         $scope.$on('seriesDataChange', function $seriesDataChange() {
             $scope.chartConfig.series = datacontext.getCurrentSeries();
             $scope.currentDate = datacontext.getCurrentDate();
+            $scope.chartConfig.options.title.text = chartTitle();
             refreshView();
         });
 
@@ -67,6 +59,10 @@ dashboard.controller('DayController',
         function getPeople() {
             return datacontext.getPeople(false)
                 .then(getPeopleSucceeded).fail(failed).fin(refreshView);
+        }
+
+        function chartTitle() {
+            return 'Web usage for ' + $scope.currentDate.toString('M/d/yyyy') + ' by category';
         }
 
         function refresh() { getCategoryTotals(true); }

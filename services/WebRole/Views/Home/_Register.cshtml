@@ -9,15 +9,15 @@
         <ol>
             <li>
                 @Html.LabelFor(m => m.UserName)
-                @Html.TextBoxFor(m => m.UserName, new { id = "registerName" })
+                @Html.TextBoxFor(m => m.UserName, new { id = "registerName" , @class = "form-control" })
             </li>
             <li>
                 @Html.LabelFor(m => m.Password)
-                @Html.PasswordFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
             </li>
             <li>
                 @Html.LabelFor(m => m.ConfirmPassword)
-                @Html.PasswordFor(m => m.ConfirmPassword)
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
             </li>
             <li>
                 <button type="submit" class="btn btn-primary">Sign up</button>

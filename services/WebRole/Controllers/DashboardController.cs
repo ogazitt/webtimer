@@ -73,7 +73,7 @@
                 });
         }
 
-        // GET ~/api/Dashboard/ConsolidatedWebSessions
+        // GET ~/api/Dashboard/CategoryTotals
         [HttpGet]
         public IQueryable<HighChartSeries> CategoryTotals(string start, string end)
         {
@@ -95,7 +95,7 @@
                 });
             */
             var categories = _repository.Categories.Select(c => c.Name).ToList();
-            return _repository.WebSessions
+            var results = _repository.WebSessions
                 .Where(s => s.Start.CompareTo(start) > 0 && s.Start.CompareTo(end) < 0 && s.Category != null)
                 .GroupBy(s => s.Device.Person)
                 .Select(sp => new HighChartSeries()
@@ -109,7 +109,21 @@
                                Name = cat,
                                Y = g.Count() > 0 ? g.Sum(d => d.Duration) : 0
                            }
-                });
+                })
+                .ToList();
+
+            // postprocess by converting seconds to minutes
+            foreach (var series in results)
+            {
+                foreach (var result in series.Data)
+                {
+                    // Y is returned as a decimal which has a scale of 1 (xxx.x)
+                    result.Y = decimal.Truncate(result.Y * 10 / 60) / 10;
+                }
+            }
+
+            return results.AsQueryable<HighChartSeries>();
+
             /*
             return _repository.WebSessions
                 .Where(s => s.Start.CompareTo(start) > 0 && s.Start.CompareTo(end) < 0 && s.Category != null)
@@ -135,6 +149,48 @@
              */
         }
 
+        // GET ~/api/Dashboard/CategoryTotalsForPerson
+        [HttpGet]
+        public IQueryable<HighChartSeries> CategoryTotalsForPerson(string start, string end, int personId)
+        {
+            // prepare the category list for joining and post-processing
+            var categories = _repository.Categories.ToList();
+            var categoryNames = categories.Select(c => c.Name).ToList();
+            var categoryColors = new Dictionary<string, string>();
+            foreach (var cat in categories)
+                categoryColors[cat.Name] = cat.Color;
+
+            var results = _repository.WebSessions
+                .Where(s => s.Start.CompareTo(start) > 0 && s.Start.CompareTo(end) < 0 && s.Category != null &&
+                            s.Device.PersonId == personId)
+                .GroupBy(s => s.Device.Person)
+                .Select(sp => new HighChartSeries()
+                {
+                    Name = sp.Key.Name,
+                    Color = sp.Key.Color,
+                    Data = from cat in categoryNames
+                           join sess in sp on cat equals sess.Category into g
+                           select new HighChartResult()
+                    {
+                        Name = cat,
+                        Y = (int?)g.Sum(d => d.Duration) ?? 0
+                    }
+                }).ToList();
+
+            // postprocess with colors and convert seconds to minutes
+            foreach (var series in results)
+            {
+                foreach (var result in series.Data)
+                {
+                    result.Color = categoryColors[result.Name];
+                    // Y is returned as a decimal which has a scale of 1 (xxx.x)
+                    result.Y = decimal.Truncate(result.Y * 10 / 60) / 10;
+                }
+            }
+
+            return results.AsQueryable<HighChartSeries>();
+        }
+
         /*
         // GET ~/api/Dashboard/Dash
         [HttpGet]
@@ -152,6 +208,7 @@
                 });
         }
          */
+
 
     }
 }
