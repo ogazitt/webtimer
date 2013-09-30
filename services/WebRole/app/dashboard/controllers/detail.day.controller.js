@@ -11,9 +11,8 @@ dashboard.controller('DetailController',
 
         $scope.error = "";
         $scope.currentDate = datacontext.getCurrentDate();
-        $scope.getCategoryTotals = getCategoryTotals;
         $scope.refresh = refresh;
-        $scope.clearErrorMessage = clearErrorMessage;
+        $scope.clearErrorMessage = clearErrorMessage;        
 
         $scope.columnChartConfig = {
             options: {
@@ -23,6 +22,40 @@ dashboard.controller('DetailController',
                 plotOptions: {
                     series: {
                         stacking: null
+                    },
+                    column: {
+                        cursor: 'pointer',
+                        point: {
+                            events: {
+                                click: function () {
+                                    var currentQuery = datacontext.getCurrentQuery();
+                                    switch (currentQuery) {
+                                        case Queries.Categories:
+                                            datacontext.setCurrentQuery(Queries.Sites)
+                                            datacontext.setCurrentCategory(this.name);
+                                            getData();
+                                            break;
+                                        case Queries.Sites:
+                                            datacontext.setCurrentQuery(Queries.Categories)
+                                            datacontext.setCurrentCategory(null);
+                                            getData();
+                                            break;
+                                    }
+                                }
+                            }
+                        },
+/*
+                        dataLabels: {
+                            enabled: true,
+                            color: colors[0],
+                            style: {
+                                fontWeight: 'bold'
+                            },
+                            formatter: function () {
+                                return this.y + '%';
+                            }
+                        }
+                        */
                     }
                 },
                 yAxis: {
@@ -76,15 +109,15 @@ dashboard.controller('DetailController',
             //$scope.pieChartConfig.series = calcPieChartSeries();
             $scope.pieChartConfig.series = $scope.columnChartConfig.series;
             $scope.currentDate = datacontext.getCurrentDate();
+            $scope.columnChartConfig.xAxis.categories = [];
             refreshView();
         });
 
-        $scope.getCategoryTotals();
+        getData();
 
         //#region private functions 
-        function getCategoryTotals() {
-            return datacontext.getCatTotals()
-                .then(getCategoryTotalsSucceeded).fail(failed).fin(refreshView);
+        function getData() {
+            return datacontext.getData().fail(failed).fin(refreshView);
         }
 
         function calcPieChartSeries() {
@@ -92,26 +125,12 @@ dashboard.controller('DetailController',
                 return;
             }
             var data = $scope.columnChartConfig.series[0].data;
-            /*
-            var total = 0.0;
-            for (index in data) {
-                total += data[index];
-            }
-            
-            var pieData = [];
-            for (index in data) {
-                pieData.push(data[index]) / total;
-            }
-            */
-
-            return [ { data: pieData } ];
+            //return [ { data: pieData } ];
+            return $scope.columnChartConfig.series;
         }
 
         function refresh() { getCategoryTotals(true); }
 
-        function getCategoryTotalsSucceeded(data) {
-            //$scope.chartConfig.series = data;
-        }
         function failed(error) {
             $scope.error = error.message;
         }

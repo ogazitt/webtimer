@@ -7,7 +7,6 @@ dashboard.controller('DayController',
 
         $scope.error = "";
         $scope.currentDate = datacontext.getCurrentDate();
-        $scope.getCategoryTotals = getCategoryTotals;
         $scope.refresh = refresh;
         $scope.clearErrorMessage = clearErrorMessage;
 
@@ -39,26 +38,20 @@ dashboard.controller('DayController',
             refreshView();
         });
 
-        $scope.getCategoryTotals();
+        // reset person filter to no filter
+        datacontext.setCurrentPerson(null);
+        // reset query to Categories
+        datacontext.setCurrentQuery(Queries.Categories);
+        // get the data
+        getData();
+        
 
         //#region private functions 
-        function getCategoryTotals() {
-            var start = datacontext.getCurrentDate();
-            var end = start.clone().addDays(1);
-            /*
-            for (var i in $scope.people) {
-                var person = $scope.people[i];
-                datacontext.getCategoryTotals(person.personId, start, end)
-                    .then(getSucceeded).fail(failed);
+        function getData() {
+            return datacontext.getData()
+                .then(getSucceeded).fail(failed).fin(refreshView);
+            function getSucceeded(data) {
             }
-            */
-            return datacontext.getCatTotals(start, end)
-                .then(getCategoryTotalsSucceeded).fail(failed).fin(refreshView);
-        }
-
-        function getPeople() {
-            return datacontext.getPeople(false)
-                .then(getPeopleSucceeded).fail(failed).fin(refreshView);
         }
 
         function chartTitle() {
@@ -67,12 +60,6 @@ dashboard.controller('DayController',
 
         function refresh() { getCategoryTotals(true); }
 
-        function getCategoryTotalsSucceeded(data) {
-            //$scope.chartConfig.series = data;
-        }
-        function getPeopleSucceeded(data) {
-            $scope.people = data;
-        }
         function failed(error) {
             $scope.error = error.message;
         }

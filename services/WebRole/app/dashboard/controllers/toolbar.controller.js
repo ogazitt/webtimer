@@ -1,14 +1,6 @@
-﻿
-window.toolbar = angular.module('toolbar', []);
-//var dashboard = angular.module('dashboard', ["highcharts-ng"]);
-
-// Add global "services" (like breeze and Q) to the Ng injector
-// Learn about Angular dependency injection in this video
-// http://www.youtube.com/watch?feature=player_embedded&v=1CpiB3Wk25U#t=2253s
-//dashboard.value('breeze', window.breeze)
-//         .value('Q', window.Q);
-
-toolbar.controller('ToolbarController',
+﻿// toolbar controller
+window.toolbar = angular.module('toolbar', [])
+.controller('ToolbarController',
     ['$scope', 'datacontext', '$location',
     function ($scope, datacontext, $location) {
 
@@ -32,7 +24,11 @@ toolbar.controller('ToolbarController',
         };
 
         $scope.isActivePerson = function $isActivePerson(person) {
-            return $scope.settings.person === person;
+            if ($scope.settings.person === null || person === null) {
+                return $scope.settings.person === person;
+            } else {
+                return $scope.settings.person.personId === person.personId;
+            }
         };
 
         $scope.selectPerson = function $selectPerson(newPerson) {
@@ -41,13 +37,16 @@ toolbar.controller('ToolbarController',
             // only do anything if the person actually changed
             if (oldPerson !== newPerson) {
                 // set the new person
-                datacontext.setCurrentPerson(newPerson !== null ? newPerson.personId : null);
+                datacontext.setCurrentPerson(newPerson);
                 $scope.settings.person = newPerson;
 
                 // only reload the data if we switched from a person to another person
                 // in all other cases, the view transition handles the data access
                 if (oldPerson !== null && newPerson !== null) {
-                    datacontext.getCatTotals().then(getSucceeded).fail(getFailed);
+                    // pop out to category view
+                    datacontext.setCurrentCategory(null);
+                    datacontext.setCurrentQuery(Queries.Categories);
+                    datacontext.getData().then(getSucceeded).fail(getFailed);
                     function getSucceeded(data) {
                         $scope.$apply();
                     }
@@ -58,13 +57,18 @@ toolbar.controller('ToolbarController',
             }
         };
 
+        $scope.$on('seriesDataChange', function $seriesDataChange() {
+            $scope.settings.person = datacontext.getCurrentPerson();
+            $scope.$apply();
+        });
+
         $scope.selectDay = function $selectDay() {
             this.settings.period = 'day';
             datacontext.setCurrentPeriod(this.settings.period);
             this.settings.value = datacontext.getCurrentDate();
             this.settings.format = 'shortDate';
             this.settings.buttonTitle = 'Today';
-            datacontext.getCatTotals();
+            datacontext.getData();
         };
 
         $scope.selectWeek = function $selectWeek() {
@@ -73,7 +77,7 @@ toolbar.controller('ToolbarController',
             this.settings.value = datacontext.getCurrentDate();
             this.settings.format = 'shortDate';
             this.settings.buttonTitle = 'This Week';
-            datacontext.getCatTotals();
+            datacontext.getData();
         };
 
         $scope.selectMonth = function $selectMonth() {
@@ -82,32 +86,30 @@ toolbar.controller('ToolbarController',
             this.settings.value = datacontext.getCurrentDate();
             this.settings.format = 'MMMM';
             this.settings.buttonTitle = 'This Month';
-            datacontext.getCatTotals();
+            datacontext.getData();
         };
 
         $scope.selectNow = function $selectNow() {
             this.settings.value = Date.today();
             datacontext.setCurrentDate(this.settings.value);
-            datacontext.getCatTotals();
+            datacontext.getData();
         };
 
         $scope.forward = function $forward() {
             datacontext.moveForward();
-            datacontext.getCatTotals();
+            datacontext.getData();
         };
 
         $scope.back = function $back() {
             datacontext.moveBack();
-            datacontext.getCatTotals();
+            datacontext.getData();
         };
 
         function getPeople() {
             datacontext.getPeople().then(getSucceeded);
-
             function getSucceeded(data) {
                 $scope.people = data;
                 $scope.$apply();
             }
         }
-
     }]);

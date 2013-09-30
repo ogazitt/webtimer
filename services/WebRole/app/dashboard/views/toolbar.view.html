@@ -16,9 +16,9 @@
 
         <!-- time period controls -->
         <div class="btn-group pull-right">
-            <a href="#/" class="btn btn-default btn-active" data-ng-class="{ active: isActivePeriod('day')}" data-ng-click="selectDay()">Day</a> 
-            <a href="#/week" class="btn btn-default" data-ng-class="{ active: isActivePeriod('week')}" data-ng-click="selectWeek()">Week</a> 
-            <a href="#/month" class="btn btn-default" data-ng-class="{ active: isActivePeriod('month')}" data-ng-click="selectMonth()">Month</a> 
+            <button class="btn btn-default btn-active" data-ng-class="{ active: isActivePeriod('day')}" data-ng-click="selectDay()">Day</button> 
+            <button class="btn btn-default" data-ng-class="{ active: isActivePeriod('week')}" data-ng-click="selectWeek()">Week</button> 
+            <button class="btn btn-default" data-ng-class="{ active: isActivePeriod('month')}" data-ng-click="selectMonth()">Month</button> 
             <a href="#/log" class="btn btn-default">Log</a> 
             <a data-ng-click="refresh()" class="btn btn-default">Refresh</a>     
         </div>  

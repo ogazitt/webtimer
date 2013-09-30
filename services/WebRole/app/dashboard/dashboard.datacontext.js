@@ -1,5 +1,10 @@
 ﻿/* datacontext: data access and model management layer */
 
+var Queries = {
+    Categories: "CategoryTotals",
+    Sites: "ConsolidatedWebSessions",
+};
+
 // create and add datacontext to the Ng injector
 // constructor function relies on Ng injector
 // to provide service dependencies
@@ -14,55 +19,54 @@ dashboard.factory('datacontext',
         var currentDate = Date.today();
         var currentPeriod = 'day';
         var currentSeries = [];
-        var currentPersonId = null;
+        var currentPerson = null;
+        var currentCategory = null;
+        var currentQuery = Queries.Categories;
 
         configureBreeze();
         var manager = new breeze.EntityManager("api/dashboard");
         manager.enableSaveQueuing(true);
 
         var datacontext = {
-            addEventHandler:  addEventHandler,
-            metadataStore:    manager.metadataStore,
-            getCurrentDate:   getCurrentDate,
-            setCurrentDate:   setCurrentDate,
-            setCurrentPeriod: setCurrentPeriod,
-            getCurrentPerson: getCurrentPerson,
-            setCurrentPerson: setCurrentPerson,
-            moveForward:      moveForward,
-            moveBack:         moveBack,
-            getCurrentSeries: getCurrentSeries,
-            setCurrentSeries: setCurrentSeries,
-            getWebSessions:   getWebSessions,
-            getAggSessions:   getAggSessions,
-            getCatTotals:     getCatTotals,
-            getDevices:       getDevices,
-            getPeople:        getPeople,
-            createPerson:     createPerson,
-            createDevice:     createDevice,
-            removeDevice:     removeDevice,
-            deletePerson:     deletePerson,
-            saveEntity:       saveEntity
+            metadataStore:      manager.metadataStore,
+            getCurrentDate:     getCurrentDate,
+            setCurrentDate:     setCurrentDate,
+            setCurrentPeriod:   setCurrentPeriod,
+            getCurrentPerson:   getCurrentPerson,
+            setCurrentPerson:   setCurrentPerson,
+            getCurrentCategory: getCurrentCategory,
+            setCurrentCategory: setCurrentCategory,
+            getCurrentQuery:    getCurrentQuery,
+            setCurrentQuery:    setCurrentQuery,
+            moveForward:        moveForward,
+            moveBack:           moveBack,
+            getCurrentSeries:   getCurrentSeries,
+            setCurrentSeries:   setCurrentSeries,
+            getData:            getData,
+            getDevices:         getDevices,
+            getPeople:          getPeople,
+            createPerson:       createPerson,
+            createDevice:       createDevice,
+            removeDevice:       removeDevice,
+            deletePerson:       deletePerson,
+            saveEntity:         saveEntity
         };
         model.initialize(datacontext);
         return datacontext;
 
         //#region private members
 
-        function addEventHandler(handler) {
-            eventHandlers.push(handler);
-        }
-
         function getCurrentDate() {
             return currentDate;
         }
 
-        function setCurrentDate(date) {
-            currentDate = date;
+        function setCurrentDate(value) {
+            currentDate = value;
         }
 
-        function setCurrentPeriod(period) {
-            currentPeriod = period;
-            switch (period) {
+        function setCurrentPeriod(value) {
+            currentPeriod = value;
+            switch (value) {
                 case 'day':
                     break;
                 case 'week':
@@ -79,11 +83,27 @@ dashboard.factory('datacontext',
         }
 
         function getCurrentPerson() {
-            return currentPersonId;
+            return currentPerson;
         }
 
-        function setCurrentPerson(personId) {
-            currentPersonId = personId;
+        function setCurrentPerson(value) {
+            currentPerson = value;
+        }
+
+        function getCurrentCategory() {
+            return currentCategory;
+        }
+
+        function setCurrentCategory(value) {
+            currentCategory = value;
+        }
+
+        function getCurrentQuery() {
+            return currentQuery;
+        }
+
+        function setCurrentQuery(value) {
+            currentQuery = value;
         }
 
         function moveForward() {
@@ -128,45 +148,29 @@ dashboard.factory('datacontext',
             currentSeries = series;
         }
 
-        function getWebSessions(start, end, personId) {
-            return getData("WebSessions", start, end, personId);
-        }
-
-        function getAggSessions(start, end, personId) {
-            return getData("ConsolidatedWebSessions", start, end, personId);
-        }
-
-        function getCatTotals() {
-            start = dateAsString(currentDate);
-            end = dateAsString(getEndDate(currentDate, currentPeriod));
-
-            var query;
-            if (currentPersonId !== null) {
-                query = breeze.EntityQuery
-                                .from("CategoryTotalsForPerson")
-                                .withParameters({ Start: start, End: end, PersonId: currentPersonId });
-            }
-            else {
-                query = breeze.EntityQuery
-                                .from("CategoryTotals")
-                                .withParameters({ Start: start, End: end });
-            }
-
-            return manager.executeQuery(query)
-                .then(getCatTotalsSucceeded); // caller to handle failure
-        }
-
-        function getData(type, start, end, personId) {
-            var start = dateAsString(start);
-            var end = dateAsString(end);
-
-            var query = breeze.EntityQuery
-                .from(type)
-                .where(createPredicate(personId))
-                .withParameters({ Start: start, End: end });
-
+        function getData(queryType, category) {
+            queryType = queryType || currentQuery;
+            category = category || currentCategory;
+            var start = dateAsString(currentDate);
+            var end = dateAsString(getEndDate(currentDate, currentPeriod));
+            query = breeze.EntityQuery
+                            .from(queryType)
+                            .withParameters({
+                                Start: start,
+                                End: end,
+                                PersonId: currentPerson !== null ? currentPerson.personId : null,
+                                Category: category
+                            });
             return manager.executeQuery(query)
                 .then(getSucceeded); // caller to handle failure
+
+            function getSucceeded(data) {
+                var qType = data.XHR ? "remote" : "local";
+                logger.log(qType + " " + queryType + " query succeeded");
+                setCurrentSeries(data.results);
+                $rootScope.$broadcast('seriesDataChange');
+                return data.results;
+            }
         }
 
         function dateAsString(date) {
@@ -191,65 +195,40 @@ dashboard.factory('datacontext',
             }
         }
 
-        function createPredicate(personId) {
-            var predicate = breeze.Predicate("category", "!=", null);
-            if (personId !== null) {
-                predicate = predicate.and("device.personId", "==", personId);
-            }
-            return predicate;
-        }
-
         function getDevices(forceRefresh) {
-
             var query = breeze.EntityQuery
                 .from("Devices");
-                //.expand("People")
-                //.orderBy("personId desc");
-                //.orderBy("timestamp");
-
             if (initializedDevices && !forceRefresh) {
                 query = query.using(breeze.FetchStrategy.FromLocalCache);
             }
-
             return manager.executeQuery(query)
                 .then(getDevicesSucceeded); // caller to handle failure
+
+            function getDevicesSucceeded(data) {
+                var qType = data.XHR ? "remote" : "local";
+                logger.log(qType + " devices query succeeded");
+                initializedDevices = true;
+                return data.results;
+            }
         }
 
         function getPeople(forceRefresh) {
-
             var query = breeze.EntityQuery
                 .from("People")
                 //.expand("Devices")
                 .orderBy("personId");
-
             if (initializedPeople && !forceRefresh) {
                 query = query.using(breeze.FetchStrategy.FromLocalCache);
             }
-
             return manager.executeQuery(query)
                 .then(getPeopleSucceeded); // caller to handle failure
-        }
 
-        function getCatTotalsSucceeded(data) {
-            var qType = data.XHR ? "remote" : "local";
-            logger.log(qType + " category totals query succeeded");
-            setCurrentSeries(data.results);
-            $rootScope.$broadcast('seriesDataChange');
-            return data.results;
-        }
-
-        function getPeopleSucceeded(data) {
-            var qType = data.XHR ? "remote" : "local";
-            logger.log(qType + " people query succeeded");
-            initializedPeople = true;
-            return data.results;
-        }
-
-        function getDevicesSucceeded(data) {
-            var qType = data.XHR ? "remote" : "local";
-            logger.log(qType + " devices query succeeded");
-            initializedDevices = true;
-            return data.results;
+            function getPeopleSucceeded(data) {
+                var qType = data.XHR ? "remote" : "local";
+                logger.log(qType + " people query succeeded");
+                initializedPeople = true;
+                return data.results;
+            }
         }
 
         function createDevice() {
@@ -284,7 +263,6 @@ dashboard.factory('datacontext',
                     masterEntity.birthdate = birthdate.toString('M/d/yyyy');
                 } catch (e) { }
             }
-
             var description = describeSaveOperation(masterEntity);
             return manager.saveChanges().then(saveSucceeded).fail(saveFailed);
 
