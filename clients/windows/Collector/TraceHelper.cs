@@ -47,18 +47,21 @@ namespace Collector
         /// </summary>
         public static void AddMessage(string msg)
         {
-            if (traceMessages.Count == 0)
-                traceMessages.Add("Session: " + SessionToken);
+            lock (traceMessages)
+            {
+                if (traceMessages.Count == 0)
+                    traceMessages.Add("Session: " + SessionToken);
 
-            TimeSpan ts = DateTime.Now - startTime;
-            double ms = ts.TotalMilliseconds;
+                TimeSpan ts = DateTime.Now - startTime;
+                double ms = ts.TotalMilliseconds;
 #if IOS     // IOS appears to express this in microseconds
             ms /= 1000d;
 #endif
-            string str = String.Format("  {0}: {1}", ms, msg);
-            traceMessages.Add(str);
+                string str = String.Format("  {0}: {1}", ms, msg);
+                traceMessages.Add(str);
 
-            Output();
+                Output();
+            }
         }
 
         /// <summary>
@@ -66,21 +69,27 @@ namespace Collector
         /// </summary>
         public static void ClearMessages()
         {
-            traceMessages.Clear();
+            lock (traceMessages)
+            {
+                traceMessages.Clear();
+            }
         }
 
         public static void StartMessage(string msg)
         {
-            if (traceMessages.Count == 0)
-                traceMessages.Add("Session: " + SessionToken);
+            lock (traceMessages)
+            {
+                if (traceMessages.Count == 0)
+                    traceMessages.Add("Session: " + SessionToken);
 
-            // capture current time
-            startTime = DateTime.Now;
+                // capture current time
+                startTime = DateTime.Now;
 
-            // trace app start
-            traceMessages.Add(String.Format("  {0}: {1}", msg, startTime));
+                // trace app start
+                traceMessages.Add(String.Format("  {0}: {1}", msg, startTime));
 
-            Output();
+                Output();
+            }
         }
 
         /// <summary>
@@ -89,10 +98,13 @@ namespace Collector
         /// <returns>String of all the messages concatenated</returns>
         public static string GetMessages()
         {
-            StringBuilder sb = new StringBuilder();
-            foreach (string msg in traceMessages)
-                sb.AppendLine(msg);
-            return sb.ToString();
+            lock (traceMessages)
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (string msg in traceMessages)
+                    sb.AppendLine(msg);
+                return sb.ToString();
+            }
         }
 
         /*
@@ -192,7 +204,7 @@ namespace Collector
             {
                 lock (writeLock)
                 {
-                    // enter a retry loop writing the sitemap to the trace file
+                    // enter a retry loop writing the record to the trace file
                     int retryCount = 2;
                     while (retryCount > 0)
                     {

@@ -20,15 +20,38 @@ namespace CaptureService
 
         protected override void OnStart(string[] args)
         {
-            TraceHelper.TraceDestination = TraceHelper.Destination.File;
-            CollectorClient.Start();
-            UploadClient.Start();
+            try
+            {
+                // set the current directory to the service directory (default is SYSTEM32)
+                System.IO.Directory.SetCurrentDirectory(System.AppDomain.CurrentDomain.BaseDirectory); 
+
+                // set the trace destination
+                TraceLog.TraceDestination = TraceLog.Destination.File;
+
+                TraceLog.TraceInfo("Starting Collector Service");
+                CollectorClient.Start();
+                UploadClient.Start();
+            }
+            catch (Exception ex)
+            {
+                TraceLog.TraceException("OnStart: Caught exception ", ex);
+                throw;
+            }
         }
 
         protected override void OnStop()
         {
-            CollectorClient.Stop();
-            UploadClient.Stop();
+            try
+            {
+                TraceLog.TraceInfo("Stopping Collector Service");
+                CollectorClient.Stop();
+                UploadClient.Stop();
+            }
+            catch (Exception ex)
+            {
+                TraceLog.TraceException("OnStop: Caught exception ", ex);
+                throw;
+            }
         }
     }
 }

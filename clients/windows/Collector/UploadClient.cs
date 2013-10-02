@@ -40,7 +40,14 @@ namespace Collector
         {
             while (uploadFlag)
             {
-                Send();
+                try
+                {
+                    Send();
+                }
+                catch (Exception ex)
+                {
+                    TraceLog.TraceException("SendLoop failed", ex);
+                }
                 
                 // sleep for a minute
                 Thread.Sleep(60000);
@@ -49,30 +56,38 @@ namespace Collector
 
         private static void Send()
         {
-            // snap the record list
-            var recordList = CollectorClient.GetRecords();
-
-            var sendQueue = new List<Record>();
-
-            // compact the record list
-            var uniqueHosts = recordList.Select(r => r.HostName).Distinct();
-            foreach (var host in uniqueHosts)
+            try
             {
-                var uniqueDests = recordList.Where(r => r.HostName == host).Select(r => r.WebsiteName).Distinct();
-                foreach (var dest in uniqueDests)
+                // snap the record list
+                var recordList = CollectorClient.GetRecords();
+
+                var sendQueue = new List<Record>();
+
+                // compact the record list
+                var uniqueHosts = recordList.Select(r => r.HostName).Distinct();
+                foreach (var host in uniqueHosts)
                 {
-                    var record = recordList.FirstOrDefault(r => r.HostName == host && r.WebsiteName == dest);
-                    if (record != null)
-                        sendQueue.Add(record);
+                    var uniqueDests = recordList.Where(r => r.HostName == host).Select(r => r.WebsiteName).Distinct();
+                    foreach (var dest in uniqueDests)
+                    {
+                        var record = recordList.FirstOrDefault(r => r.HostName == host && r.WebsiteName == dest);
+                        if (record != null)
+                            sendQueue.Add(record);
+                    }
+                }
+
+                if (sendQueue.Count > 0)
+                {
+                    // send the queue to the web service
+                    // BUGBUG: remove hardcoded creds
+                    WebServiceHelper.PostRecords(new User { Name = "ogazitt", Password = "zrc022.." }, sendQueue, null, null);
+
+                    // BUGBUG: need to create a callback that handles failure modes - right now the records are lost if the service is down
                 }
             }
-
-            if (sendQueue.Count > 0)
+            catch (Exception ex)
             {
-                // send the queue to the web service
-                WebServiceHelper.PostRecords(new User { Name = "ogazitt", Password = "zrc022.." }, sendQueue, null, null);
-
-                // BUGBUG: need to create a callback that handles failure modes - right now the records are lost if the service is down
+                TraceLog.TraceException("Send failed", ex);
             }
         }
 

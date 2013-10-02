@@ -23,7 +23,7 @@ namespace Collector
         {
             // Print SharpPcap version
             string ver = SharpPcap.Version.VersionString;
-            TraceHelper.AddMessage(string.Format("Starting collector with version {0}", ver));
+            TraceLog.TraceInfo(string.Format("Starting collector with version {0}", ver));
 
             // Retrieve the device list
             devices = CaptureDeviceList.Instance;
@@ -31,7 +31,7 @@ namespace Collector
             // If no devices were found print an error
             if(devices.Count < 1)
             {
-                TraceHelper.AddMessage("No devices were found on this machine");
+                TraceLog.TraceFatal("No devices were found on this machine");
                 return;
             }
 
@@ -40,7 +40,7 @@ namespace Collector
             // Print out the devices
             foreach(var dev in devices)
             {
-                TraceHelper.AddMessage(string.Format("Devices: {0}) {1} {2}", i, dev.Name, dev.Description));
+                TraceLog.TraceInfo(string.Format("Devices: {0}) {1} {2}", i, dev.Name, dev.Description));
                 i++;
             }
 
@@ -54,7 +54,7 @@ namespace Collector
                 int readTimeoutMilliseconds = 1000;
                 device.Open(DeviceMode.Promiscuous, readTimeoutMilliseconds);
 
-                TraceHelper.AddMessage(string.Format("-- Listening on {0} {1}, hit 'Enter' to stop...",
+                TraceLog.TraceInfo(string.Format("-- Listening on {0} {1}",
                     device.Name, device.Description));
 
                 // DNS only
@@ -71,7 +71,7 @@ namespace Collector
         /// </summary>
         public static void Stop()
         {
-            TraceHelper.AddMessage("Capture stopped");
+            TraceLog.TraceInfo("Capture stopped");
 
             if (devices != null)
             {
@@ -166,14 +166,20 @@ namespace Collector
                         }
                         catch (Exception ex)
                         {
-                            TraceHelper.AddMessage(String.Format("GetHostByAddress failed for {0}; ex: {1}", hostIpAddress, ex.Message));
+                            TraceLog.TraceException(String.Format("GetHostByAddress failed for {0}", hostIpAddress), ex);
                         }
                     }
                     var destMacAddress = eth.DestinationHwAddress.ToString();
-                    TraceHelper.AddMessage(String.Format("Source: [{0}; {1}:{2}; {3}]; Dest: [{4}; {5}:{6}; Website: {7}", 
-                        hostMacAddress, hostIpAddress, sourcePort, hostName, 
-                        destMacAddress, destIpAddress, destPort,
-                        websiteName));
+                    
+                    // only log this level of detail if we're logging to the console
+                    if (TraceLog.TraceDestination == TraceLog.Destination.Console)
+                    {
+                        TraceLog.TraceInfo(String.Format("Source: [{0}; {1}:{2}; {3}]; Dest: [{4}; {5}:{6}; Website: {7}",
+                            hostMacAddress, hostIpAddress, sourcePort, hostName,
+                            destMacAddress, destIpAddress, destPort,
+                            websiteName));
+                    }
+
                     lock (records)
                     {
                         records.Add(new Record() 

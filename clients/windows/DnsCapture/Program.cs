@@ -15,7 +15,7 @@ namespace DnsCapture
     {
         static void Main(string[] args)
         {
-            TraceHelper.TraceDestination = TraceHelper.Destination.Console;
+            TraceLog.TraceDestination = TraceLog.Destination.Console;
             CollectorClient.Start();
             UploadClient.Start();
 

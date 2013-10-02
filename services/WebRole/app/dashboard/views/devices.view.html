@@ -3,6 +3,9 @@
     <p class="error" data-ng-show="error">{{error}}</p>
     <br/>
     <article class="todoList" data-ng-repeat="device in devices">
+        <div class="icon">
+            <div data-ng-class="device.deviceType" />
+        </div>
         <header>
             <form role="form"">
                 <input  data-ng-model="device.name" 
@@ -19,11 +22,21 @@
                     <select class="form-control"
                             data-ng-model="device.deviceType" 
                             data-ng-click="clearErrorMessage(device)" 
-                            data-on-blur="endEdit(device)" 
-                            data-on-enter="endEdit(device)">
+                            data-on-change="endEdit(device)">
                         <option>Computer</option>
                         <option>Phone</option>
                         <option>Tablet</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Used by</label>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <select class="form-control"
+                            data-ng-options="person.name for person in people"
+                            data-ng-model="device.person" 
+                            data-ng-click="clearErrorMessage(device)" 
+                            data-on-change="endEditPerson(device)">
                     </select>
                 </div>
             </div>

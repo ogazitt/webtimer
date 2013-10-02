@@ -3,6 +3,7 @@
     <p class="error" data-ng-show="error">{{error}}</p>
     <br/>
     <article class="todoList" data-ng-repeat="person in people">
+        <span class="glyphicon glyphicon-user glyphicon-huge person-adornment"></span>
         <header>
             <form role="form">
                 <input  data-ng-model="person.name" 

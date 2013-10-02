@@ -56,9 +56,9 @@ namespace ProcessorWorker
                 stopwatch.ElapsedMilliseconds / 1000));
 
             // run an infinite loop doing the following:
-            //   grab sitemaps from the collector database
-            //   process sitemaps into session sitemaps in the user database
-            //   mark the processed sitemaps
+            //   grab records from the collector database
+            //   process records into session records in the user database
+            //   mark the processed records
             //   sleep for the timeout period
             while (true)
             {
@@ -90,7 +90,7 @@ namespace ProcessorWorker
                             var userId = newRecords.First().UserId;
                             var sessions = UserContext.WebSessions.Where(ws => ws.Device.UserId == userId).OrderBy(ws => ws.Start);
 
-                            // process the sitemaps against the existing sessions
+                            // process the records against the existing sessions
                             var workingSessions = RecordProcessor.ProcessRecords(
                                 SiteMapRepository, 
                                 sessions.ToList<WebSession>(), 
@@ -122,7 +122,7 @@ namespace ProcessorWorker
                                                 session.DeviceId,
                                                 device.UserId));
                                             
-                                            // TODO: do something smarter than ignoring the sitemap
+                                            // TODO: do something smarter than ignoring the record
                                             continue;
                                         }
                                     }
@@ -142,7 +142,7 @@ namespace ProcessorWorker
                             // save all the sessions 
                             UserContext.SaveChanges();
 
-                            // mark the sitemaps as processed using batch semantics
+                            // mark the records as processed using batch semantics
                             foreach (var record in newRecords)
                                 record.State = RecordState.Processed;
                             CollectorContext.Update(newRecords);
@@ -161,7 +161,7 @@ namespace ProcessorWorker
 #endif
                         }
 
-                        // keep reading sitemaps until they are all processed
+                        // keep reading records until they are all processed
                         continue;
                     }
                 }

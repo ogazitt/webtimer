@@ -124,7 +124,7 @@ namespace Collector
             catch (Exception ex) 
             {
                 // trace the exception
-                TraceHelper.AddMessage("GetWebResponse: ex: " + ex.Message);
+                TraceLog.TraceException("GetWebResponse: EndGetResponse failed", ex);
 
                 // communication exception
                 isRequestInProgress = false;
@@ -147,9 +147,9 @@ namespace Collector
                 if (wrapper.StatusCode > 0)
                     return wrapper;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                TraceHelper.AddMessage("Bad response format received");
+                TraceLog.TraceException("GetWebResponse: Bad response format received", ex);
                 return null;
             }
 
@@ -173,7 +173,7 @@ namespace Collector
             if (Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out uri) == false ||
                 uri.Scheme != "http" && uri.Scheme != "https")
             {
-                TraceHelper.AddMessage("InvokeWebServiceRequest: bad URL: " + url);
+                TraceLog.TraceError("InvokeWebServiceRequest: bad URL: " + url);
                 return;
             }
 
@@ -200,7 +200,7 @@ namespace Collector
             }
 
             // set the session ID header
-            var sessionToken = TraceHelper.SessionToken;
+            var sessionToken = TraceLog.Session;
             if (sessionToken != null)
                 request.Headers[HttpApplicationHeaders.Session] = sessionToken;
 
@@ -224,7 +224,7 @@ namespace Collector
                     isRequestInProgress = false;
 
                     // trace the exception
-                    TraceHelper.AddMessage("Exception in BeginGetResponse: " + ex.Message);
+                    TraceLog.TraceException("Exception in BeginGetResponse", ex);
 
                     // signal that a network operation is done and unsuccessful
                     if (netOpInProgressDel != null)
@@ -420,7 +420,7 @@ namespace Collector
             }
             catch (Exception ex)
             {
-                TraceHelper.AddMessage("ProcessResponse: exception from GetBody or DynamicInvoke; ex: " + ex.Message);
+                TraceLog.TraceException("ProcessResponse: exception from GetBody or DynamicInvoke", ex);
                 if (del == null)
                     return;  // if no delegate was passed, the results can't be processed
                 del.DynamicInvoke(null);

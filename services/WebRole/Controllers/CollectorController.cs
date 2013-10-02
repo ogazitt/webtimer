@@ -69,7 +69,7 @@ namespace WebRole.Controllers
                     });
                 }
 
-                // add all sitemaps at once
+                // add all records at once
                 Repository.AddRecords(list);
 
                 TraceLog.TraceInfo(string.Format("Added {0} records for user {1}", list.Count, Repository.UserId));
@@ -82,7 +82,7 @@ namespace WebRole.Controllers
         // GET colapi/collector/5
         public int Get(int id)
         {
-            // THIS API IS FOR TESTING ONLY - it is for creating synthetic sitemaps
+            // THIS API IS FOR TESTING ONLY - it is for creating synthetic records
 
             var userName = CurrentUser.Identity.Name;
             using (var userDataRepository = new UserDataRepository(userName))
@@ -91,7 +91,7 @@ namespace WebRole.Controllers
                 var collectorContext = Storage.CollectorContextFor(userName);
                 var list = collectorContext.MockRecords(device, id);
                 collectorContext.AddRecords(list);
-                TraceLog.TraceInfo(string.Format("Added {0} sitemaps for user {1}", list.Count, Repository.UserId));
+                TraceLog.TraceInfo(string.Format("Added {0} records for user {1}", list.Count, Repository.UserId));
                 return id;
             }
         }
@@ -99,9 +99,9 @@ namespace WebRole.Controllers
         // GET colapi/collector
         public int Get()
         {
-            // THIS API IS FOR TESTING ONLY - it is for creating synthetic sitemaps  
+            // THIS API IS FOR TESTING ONLY - it is for creating synthetic records  
           
-            // create 100 new sitemaps
+            // create 100 new records
             return Get(100);
         }
 #endif

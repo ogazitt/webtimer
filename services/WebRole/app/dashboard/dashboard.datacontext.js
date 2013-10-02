@@ -197,7 +197,8 @@ dashboard.factory('datacontext',
 
         function getDevices(forceRefresh) {
             var query = breeze.EntityQuery
-                .from("Devices");
+                .from("Devices")
+                .expand("Person");
             if (initializedDevices && !forceRefresh) {
                 query = query.using(breeze.FetchStrategy.FromLocalCache);
             }

@@ -41,6 +41,16 @@ dashboard.directive('onFocus', function () {
         }
     };
 })
+.directive('onChange', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, elm, attrs) {
+            elm.bind('change', function () {
+                scope.$apply(attrs.onChange);
+            });
+        }
+    };
+})
 .directive('onEnter', function () {
     return function (scope, element, attrs) {
         element.bind("keydown keypress", function (event) {

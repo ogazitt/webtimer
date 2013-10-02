@@ -336,7 +336,7 @@ namespace ServiceHost
 
         public static void WriteLine(string message, string level)
         {
-            // create a json sitemap
+            // create a json record
             var record = new TraceRecord()
             {
                 Deployment = HostEnvironment.DeploymentName,
@@ -405,7 +405,7 @@ namespace ServiceHost
         
         public static void WriteLine(string message, string level)
         {
-            // create a json sitemap
+            // create a json record
             var record = new TraceRecord()
             { 
                 Deployment = HostEnvironment.DeploymentName, 
@@ -419,7 +419,7 @@ namespace ServiceHost
 
             lock (writeLock)
             {
-                // enter a retry loop writing the sitemap to the trace file
+                // enter a retry loop writing the record to the trace file
                 int retryCount = 2;
                 while (retryCount > 0)
                 {

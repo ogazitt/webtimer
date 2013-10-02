@@ -44,8 +44,18 @@
     text-align: center;
 }
 
+.person-adornment {
+    margin-top: -50px;
+}
+
+.device-adornment {
+    margin-top: -50px;
+}
+
+/* http://cssdeck.com/labs/css3-monochrome-icon-set */
+
 /* Phone */
-div.icon div.phone {
+div.icon div.Phone {
     position: absolute;
     width: 20px;
     height: 32px;
@@ -56,7 +66,7 @@ div.icon div.phone {
     margin-left: 6px;
 }
 
-div.icon div.phone:before {
+div.icon div.Phone:before {
     position: absolute;
     content: '';
     width: 16px;
@@ -66,7 +76,7 @@ div.icon div.phone:before {
     top: 5px;
 }
 
-div.icon div.phone:after {
+div.icon div.Phone:after {
     position: absolute;
     content: '';
     background: #eee;
@@ -118,7 +128,7 @@ div.icon div.ipod:before {
 }
 
 /* Tab */
-div.icon div.tab {
+div.icon div.Tablet {
     position: absolute;
     width: 28px;
     height: 32px;
@@ -126,10 +136,10 @@ div.icon div.tab {
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
-    left: 2px;
+    left: 5px;
 }
 
-div.icon div.tab:before {
+div.icon div.Tablet:before {
     position: absolute;
     content: '';
     width: 24px;
@@ -139,7 +149,7 @@ div.icon div.tab:before {
     top: 2px;
 }
 
-div.icon div.tab:after {
+div.icon div.Tablet:after {
     position: absolute;
     content: '';
     background: #eee;
@@ -195,29 +205,31 @@ div.icon div.bars:after {
 }
 
 /* Screen */
-div.icon div.screen {
+div.icon div.Computer {
+    position: absolute;
     width: 28px;
     height: 24px;
     border: 2px solid #333;
     background: #eee;
+    left: 5px;
 }
 
-div.icon div.screen:before {
+div.icon div.Computer:before {
     position: absolute;
     content: '';
     width: 10px;
     height: 3px;
     background: #333;
-    bottom: 2px;
-    left: 11px
+    bottom: -4px;
+    left: 7px
 }
 
-div.icon div.screen:after {
+div.icon div.Computer:after {
     position: absolute;
     content: '';
     width: 22px;
     height: 2px;
     background: #333;
-    bottom: 0;
-    left: 5px;
+    bottom: -6px;
+    left: 1px;
 }

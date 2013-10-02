@@ -1,30 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?define Version="$(var.BuildVersion)" ?>
+<?define ProductName="WebTimer Capture Service" ?>
+<?define CompanyName="WebTimer, LLC" ?>
+<?define UpgradeCode="6B74A48B-639F-42F9-80C2-7922A968BE8D"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="WebTimer Capture Service" Language="1033" Version="1.0.0.0" Manufacturer="WebTimer" UpgradeCode="48dc066c-97cc-4512-8fa3-52bbe195e075">
+	<Product Id="*" 
+           Name="$(var.ProductName)" 
+           Language="1033" 
+           Version="$(var.BuildVersion)" 
+           Manufacturer="$(var.CompanyName)" 
+           UpgradeCode="$(var.UpgradeCode)">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
-		<MajorUpgrade DowngradeErrorMessage="A newer version of WebTimer Capture Service is already installed." />
-		<MediaTemplate />
+    <!-- ensure administrator -->
+    <Condition Message="You need to be an administrator to install this product.">
+      Privileged
+    </Condition>
 
-		<Feature Id="ProductFeature" Title="WebTimer Capture Service" Level="1">
-			<ComponentGroupRef Id="ProductComponents" />
-		</Feature>
-	</Product>
+    <!-- ensure windows version -->
+    <Condition Message="You must be running Windows XP SP2 or higher.">
+      (VersionNT = 501 AND ServicePackLevel &gt;= 2) OR VersionNT &gt;= 502
+    </Condition>
 
-	<Fragment>
-		<Directory Id="TARGETDIR" Name="SourceDir">
-			<Directory Id="ProgramFilesFolder">
-				<Directory Id="INSTALLFOLDER" Name="WebTimer Capture Service" />
-			</Directory>
-		</Directory>
-	</Fragment>
+    <!-- ensure .NET version -->
+    <PropertyRef Id="NETFRAMEWORK35" />
+    <Condition Message="Please install the .NET Framework 3.5 before installing [ProductName].">
+      <![CDATA[Installed OR NETFRAMEWORK35]]>
+    </Condition>
+    <PropertyRef Id="NETFRAMEWORK30_SP_LEVEL" />
+    <Condition Message="Please install the .NET Framework 3.0 SP2 before installing [ProductName].">
+      <![CDATA[Installed OR (NETFRAMEWORK30_SP_LEVEL AND NOT NETFRAMEWORK30_SP_LEVEL = "#1" AND NOT NETFRAMEWORK30_SP_LEVEL = "#0")]]>
+    </Condition>
+    <PropertyRef Id="NETFRAMEWORK20_SP_LEVEL" />
+    <Condition Message="Please install the .NET Framework 2.0 SP2 before installing [ProductName].">
+      <![CDATA[Installed OR (NETFRAMEWORK20_SP_LEVEL AND NOT NETFRAMEWORK20_SP_LEVEL = "#1" AND NOT NETFRAMEWORK20_SP_LEVEL = "#0")]]>
+    </Condition>
+    
+    <!-- handle major upgrades by disallowing downgrades and uninstalling previous version -->
+    <MajorUpgrade DowngradeErrorMessage="A newer version of WebTimer Capture Service is already installed." />
 
-	<Fragment>
+    <!-- embed the cab in the MSI -->
+    <MediaTemplate EmbedCab="yes" />
+
+    <Feature Id="ProductFeature" Title="WebTimer Capture Service" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="LogDir" />
+    </Feature>
+
+    <!-- prevent modify and repair in control panel -->
+    <Property Id="ARPNOREPAIR" Value="yes" Secure="yes" /> 
+    <Property Id="ARPNOMODIFY" Value="yes" Secure="yes" />
+
+    <!-- set the product information and icon -->
+    <Property Id="ARPURLINFOABOUT"><![CDATA[http://www.webtimer.co]]></Property>
+    <Property Id="ARPURLUPDATEINFO"><![CDATA[http://www.webtimer.co]]></Property>
+    <Property Id="ARPHELPLINK"><![CDATA[http://www.webtimer.co]]></Property>
+    <!-- later
+    <Property Id="ARPPRODUCTICON">MainIcon.ico</Property>
+    <Icon Id="MainIcon.ico" SourceFile="webtimer.ico" />
+    -->
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="WebTimer Capture Service" >
+          <Directory Id="LOGFOLDER" Name="Logs" />
+        </Directory>
+      </Directory>
+    </Directory>
+
+  </Product>
+
+  <Fragment>
 		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">			
 			<Component Id="$(var.CaptureService.TargetFileName)">
-				<!--<File Id="Insert dll name" Name="Insert dll name again" Source="Insert path to dll" Vital="yes" KeyPath="no" DiskId="1"/>-->
-        <File Id="$(var.CaptureService.TargetFileName)" Name="$(var.CaptureService.TargetFileName)" Source="$(var.CaptureService.TargetPath)" Vital="yes" KeyPath="yes" />
-        <File Id="$(var.CaptureService.TargetFileName).config" Name="$(var.CaptureService.TargetFileName).config" Source="$(var.CaptureService.TargetPath).config" Vital="yes" KeyPath="no" />
+        <File Id="$(var.CaptureService.TargetFileName)" 
+              Name="$(var.CaptureService.TargetFileName)" 
+              Source="$(var.CaptureService.TargetPath)" 
+              Vital="yes" 
+              KeyPath="yes" />
+        <File Id="$(var.CaptureService.TargetFileName).config" 
+              Name="$(var.CaptureService.TargetFileName).config" 
+              Source="$(var.CaptureService.TargetPath).config" 
+              Vital="yes" 
+              KeyPath="no" />
+        <!-- comment out the PDB file in the production version -->
+        <File Id="$(var.CaptureService.TargetName).pdb" 
+              Name="$(var.CaptureService.TargetName).pdb" 
+              Source="$(var.CaptureService.TargetDir)\$(var.CaptureService.TargetName).pdb" 
+              Vital="yes" 
+              KeyPath="no" />
         <ServiceInstall
 					Id="ServiceInstaller"
 					Type="ownProcess"
@@ -42,10 +106,14 @@
 			</Component>
 
       <Component>
-        <File Id="Collector.Output"
+        <File Id="$(var.Collector.TargetFileName)"
               Name="$(var.Collector.TargetFileName)"
               Source="$(var.Collector.TargetPath)"
               KeyPath="yes" />
+        <File Id="$(var.Collector.TargetName).pdb"
+              Name="$(var.Collector.TargetName).pdb"
+              Source="$(var.Collector.TargetDir)\$(var.Collector.TargetName).pdb"
+              KeyPath="no" />
       </Component>
 
       <Component>
@@ -62,10 +130,20 @@
               KeyPath="yes" />
       </Component>
 
-      <!--<Component Id="Collector" Guid="*">
-        <File Id="$(var.Collector.TargetName)" Name="$(var.Collector.TargetFileName)" Source="$(var.Collector.TargetDir)" />
-      </Component>-->
+      <Component>
+        <File Id="Collector.JsonDotNetDependency"
+              Name="Newtonsoft.Json.dll"
+              Source="$(var.Collector.TargetDir)\Newtonsoft.Json.dll"
+              KeyPath="yes" />
+      </Component>
 
     </ComponentGroup>
-	</Fragment>
+
+    <ComponentGroup Id="LogDir">
+      <Component Id="CreateLogsFolder" Directory="LOGFOLDER" Guid="">
+        <CreateFolder />
+      </Component>
+    </ComponentGroup>
+
+  </Fragment>
 </Wix>

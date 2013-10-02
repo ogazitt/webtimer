@@ -23,6 +23,9 @@ dashboard.factory('model', function () {
     function deviceInitializer(device) {
         device.errorMessage = "";
         device.isEditingDeviceName = false;
+        if (device.personId !== null && device.person != null) {
+            device.personName = device.person.name;
+        }
     }
 
     function personInitializer(person) {

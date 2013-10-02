@@ -11,31 +11,49 @@ dashboard.controller('DevicesController',
 
         logger.log("creating DevicesController");
 
+        $scope.people = getPeople();
         $scope.devices = [];
         $scope.error = "";
-        $scope.getDevices = getDevices;
         $scope.refresh = refresh;
         $scope.endEdit = endEdit;
         $scope.clearErrorMessage = clearErrorMessage;
 
         // load Devices immediately (from cache if possible)
-        $scope.getDevices();
+        getDevices();
 
         //#region private functions 
-        function getDevices(forceRefresh) {
-            datacontext.getDevices(forceRefresh)
+        function getDevices() {
+            datacontext.getDevices()
                 .then(getSucceeded).fail(failed).fin(refreshView);
+            function getSucceeded(data) {
+                $scope.devices = data;
+            }
+        }
+        function getPeople() {
+            datacontext.getPeople()
+                .then(getSucceeded);
+            function getSucceeded(data) {
+                $scope.people = data;
+            }
         }
         function refresh() { getDevices(true); }
 
-        function getSucceeded(data) {
-            $scope.devices = data;
-        }
         function failed(error) {
             $scope.error = error.message;
         }
         function refreshView() {
             $scope.$apply();
+        }
+        function endEditPerson(entity) {
+            // set the correct personId based on the name
+            for (var i in $scope.people) {
+                var person = $scope.people[i];
+                if (person === entity.person) {
+                    entity.personId = person.personId;
+                    break;
+                }
+            }
+            endEdit(entity);
         }
         function endEdit(entity) {
             datacontext.saveEntity(entity).fin(refreshView);
