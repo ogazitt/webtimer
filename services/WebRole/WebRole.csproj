@@ -311,6 +311,7 @@
     <Content Include="Content\images\linkedin_signin.png" />
     <Content Include="Content\images\twitter.png" />
     <Content Include="Content\images\twitter_32.png" />
+    <Content Include="Content\images\WebTimer_logo_nu.png" />
     <Content Include="Content\jquery-colorPicker.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />

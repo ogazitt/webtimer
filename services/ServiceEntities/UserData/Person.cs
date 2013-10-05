@@ -12,7 +12,7 @@ namespace ServiceEntities.UserData
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PersonId { get; set; }
 
-        [Required, MaxLength(30)]
+        [Required]
         public string Name { get; set; }
 
         // this is the account the person belongs to

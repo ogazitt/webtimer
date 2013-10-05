@@ -5,7 +5,7 @@ window.toolbar = angular.module('toolbar', [])
     function ($scope, datacontext, $location) {
 
         $scope.settings = {
-            period: 'day',
+            period: Periods.Day,
             person: null,
             value: datacontext.getCurrentDate(),
             format: 'shortDate',
@@ -47,6 +47,7 @@ window.toolbar = angular.module('toolbar', [])
                     datacontext.setCurrentCategory(null);
                     datacontext.setCurrentQuery(Queries.Categories);
                     datacontext.getData().then(getSucceeded).fail(getFailed);
+                    datacontext.getData(Queries.Timeline).then(getSucceeded).fail(getFailed);
                     function getSucceeded(data) {
                         $scope.$apply();
                     }
@@ -63,46 +64,58 @@ window.toolbar = angular.module('toolbar', [])
         });
 
         $scope.selectDay = function $selectDay() {
-            this.settings.period = 'day';
+            $scope.settings.period = Periods.Day;
             datacontext.setCurrentPeriod(this.settings.period);
-            this.settings.value = datacontext.getCurrentDate();
-            this.settings.format = 'shortDate';
-            this.settings.buttonTitle = 'Today';
+            $scope.settings.value = datacontext.getCurrentDate();
+            $scope.settings.format = 'shortDate';
+            $scope.settings.buttonTitle = 'Today';
             datacontext.getData();
+            if ($scope.settings.person !== null) {
+                datacontext.getData(Queries.Timeline);
+            }
         };
 
         $scope.selectWeek = function $selectWeek() {
-            this.settings.period = 'week';
+            $scope.settings.period = Periods.Week;
             datacontext.setCurrentPeriod(this.settings.period);
-            this.settings.value = datacontext.getCurrentDate();
-            this.settings.format = 'shortDate';
-            this.settings.buttonTitle = 'This Week';
+            $scope.settings.value = datacontext.getCurrentDate();
+            $scope.settings.format = 'shortDate';
+            $scope.settings.buttonTitle = 'This Week';
             datacontext.getData();
         };
 
         $scope.selectMonth = function $selectMonth() {
-            this.settings.period = 'month';
+            $scope.settings.period = Periods.Month;
             datacontext.setCurrentPeriod(this.settings.period);
-            this.settings.value = datacontext.getCurrentDate();
-            this.settings.format = 'MMMM';
-            this.settings.buttonTitle = 'This Month';
+            $scope.settings.value = datacontext.getCurrentDate();
+            $scope.settings.format = 'MMMM';
+            $scope.settings.buttonTitle = 'This Month';
             datacontext.getData();
         };
 
         $scope.selectNow = function $selectNow() {
-            this.settings.value = Date.today();
+            $scope.settings.value = Date.today();
             datacontext.setCurrentDate(this.settings.value);
             datacontext.getData();
+            if ($scope.settings.person !== null && $scope.settings.period === Periods.Day) {
+                datacontext.getData(Queries.Timeline);
+            }
         };
 
         $scope.forward = function $forward() {
             datacontext.moveForward();
             datacontext.getData();
+            if ($scope.settings.person !== null && $scope.settings.period === Periods.Day) {
+                datacontext.getData(Queries.Timeline);
+            }
         };
 
         $scope.back = function $back() {
             datacontext.moveBack();
             datacontext.getData();
+            if ($scope.settings.person !== null && $scope.settings.period === Periods.Day) {
+                datacontext.getData(Queries.Timeline);
+            }
         };
 
         function getPeople() {

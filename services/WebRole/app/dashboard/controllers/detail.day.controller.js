@@ -12,12 +12,21 @@ dashboard.controller('DetailController',
         $scope.error = "";
         $scope.currentDate = datacontext.getCurrentDate();
         $scope.refresh = refresh;
-        $scope.clearErrorMessage = clearErrorMessage;        
+        $scope.clearErrorMessage = clearErrorMessage;
+        $scope.showTimeline = showTimeline;
 
         $scope.columnChartConfig = {
             options: {
                 chart: {
                     type: 'column'
+                },
+                yAxis: {
+                    title: {
+                        text: 'Total number of minutes'
+                    }
+                },
+                legend: {
+                    enabled: false
                 },
                 plotOptions: {
                     series: {
@@ -44,32 +53,16 @@ dashboard.controller('DetailController',
                                 }
                             }
                         },
-/*
-                        dataLabels: {
-                            enabled: true,
-                            color: colors[0],
-                            style: {
-                                fontWeight: 'bold'
-                            },
-                            formatter: function () {
-                                return this.y + '%';
-                            }
-                        }
-                        */
                     }
-                },
-                yAxis: {
-                    title: {
-                        text: 'Total number of minutes'
-                    }
-                },
-                title: {
-                    text: ''
                 },
             },
             series: [],
             xAxis: {
+                type: "category",
                 categories: []
+            },
+            title: {
+                text: null
             },
             loading: false
         };
@@ -79,54 +72,106 @@ dashboard.controller('DetailController',
                 chart: {
                     type: 'pie'
                 },
+                /*
+                dataLabels: {
+                    enabled: true,
+                    color: colors[0],
+                    style: {
+                        fontWeight: 'bold'
+                    },
+                    formatter: function () {
+                        return this.y + '%';
+                    }
+                }
+                */
             },
             series: [],
             xAxis: {
                 categories: []
             },
+            title: {
+                text: null
+            },
             loading: false
         };
 
-        /*
-        $scope.timeChartConfig = {
+        $scope.timelineChartConfig = {
             options: {
                 chart: {
-                    type: 'bar'
+                    type: 'area',
+                    height: 88,
+                    plotBorderWidth: 1
+                },
+                legend: {
+                    enabled: false
                 },
                 plotOptions: {
-                    series: {
-                        stacking: 'normal'
+                    area: {
+                        marker: {
+                            enabled: false,
+                            states: {
+                                hover: {
+                                    enabled: false
+                                }
+                            }
+                        }
                     }
+                },
+                tooltip: {
+                    enabled: false,
+                },
+                yAxis: {
+                    title: {
+                        text: null
+                    },
+                    labels: {
+                        enabled: false
+                    },
+                    min: 0,
+                    max: 1
                 },
             },
             series: [],
-            loading: false
+            xAxis: {
+                type: "category",
+                categories: [],
+                tickmarkPlacement: "on"
+            },
+            title: {
+                text: null
+            },
+            loading: false,
         };
-        */
 
-        $scope.$on('seriesDataChange', function $seriesDataChange() {
-            $scope.columnChartConfig.series = datacontext.getCurrentSeries();
-            //$scope.pieChartConfig.series = calcPieChartSeries();
-            $scope.pieChartConfig.series = $scope.columnChartConfig.series;
-            $scope.currentDate = datacontext.getCurrentDate();
-            $scope.columnChartConfig.xAxis.categories = [];
+        $scope.$on('seriesDataChange', function $seriesDataChange(event, dataType) {
+            switch (dataType) {
+                case Queries.Categories:
+                case Queries.Sites:
+                    $scope.columnChartConfig.series = datacontext.getCurrentSeries(dataType);
+                    $scope.pieChartConfig.series = $scope.columnChartConfig.series;
+                    $scope.currentDate = datacontext.getCurrentDate();
+                    break;
+                case Queries.Timeline:
+                    $scope.timelineChartConfig.series = datacontext.getCurrentSeries(dataType);
+                    break;
+            }
             refreshView();
         });
 
+        // get the main data for column and pie charts
         getData();
-
-        //#region private functions 
-        function getData() {
-            return datacontext.getData().fail(failed).fin(refreshView);
+        // get the timeline data if the person isn't null
+        if (datacontext.getCurrentPerson() !== null && datacontext.getCurrentPeriod() === Periods.Day) {
+            getData(Queries.Timeline);
         }
 
-        function calcPieChartSeries() {
-            if ($scope.columnChartConfig.series === null || $scope.columnChartConfig.series.length == 0) {
-                return;
-            }
-            var data = $scope.columnChartConfig.series[0].data;
-            //return [ { data: pieData } ];
-            return $scope.columnChartConfig.series;
+        //#region private functions 
+        function getData(queryType) {
+            return datacontext.getData(queryType).fail(failed);
+        }
+
+        function showTimeline() {
+            return datacontext.getCurrentPerson() !== null && datacontext.getCurrentPeriod() === Periods.Day;
         }
 
         function refresh() { getCategoryTotals(true); }

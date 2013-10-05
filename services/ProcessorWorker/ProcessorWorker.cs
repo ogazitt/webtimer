@@ -10,6 +10,7 @@ using Processor;
 using ServiceEntities.Collector;
 using ServiceEntities.UserData;
 using ServiceHost;
+using System.Data.Entity.Validation;
 
 namespace ProcessorWorker
 {
@@ -106,10 +107,24 @@ namespace ProcessorWorker
                                     var device = UserContext.Devices.FirstOrDefault(d => d.DeviceId == session.DeviceId);
                                     if (device == null)
                                     {
-                                        // create a new device and save it immediately
-                                        device = UserDataContext.CreateDeviceFromSession(session);
-                                        UserContext.Devices.Add(device);
-                                        UserContext.SaveChanges();
+                                        try
+                                        {
+                                            // create a new device and save it immediately
+                                            device = UserDataContext.CreateDeviceFromSession(session);
+                                            UserContext.Devices.Add(device);
+                                            UserContext.SaveChanges();
+                                        }
+                                        catch (DbEntityValidationException ex)
+                                        {
+                                            var str = new StringBuilder("Failed to create new device.  Validation errors:\n");
+                                            foreach (var errors in ex.EntityValidationErrors)
+                                                foreach (var result in errors.ValidationErrors)
+                                                    str.AppendLine(string.Format("\tProperty: {0}; Error: {1}", result.PropertyName, result.ErrorMessage));
+                                            TraceLog.TraceException(str.ToString(), ex);
+                                            TraceLog.TraceError(string.Format("Session dump: {0}; Device dump: {1}", JsonSerializer.Serialize(session), JsonSerializer.Serialize(device)));
+                                            // fail fast
+                                            throw;
+                                        }
                                     }
                                     else
                                     {

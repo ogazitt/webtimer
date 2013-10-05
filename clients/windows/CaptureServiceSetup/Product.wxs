@@ -4,7 +4,7 @@
 <?define CompanyName="WebTimer, LLC" ?>
 <?define UpgradeCode="6B74A48B-639F-42F9-80C2-7922A968BE8D"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" 
+	<Product Id="E0B46EFB-AF7C-4B42-990C-39FB8EB83212" 
            Name="$(var.ProductName)" 
            Language="1033" 
            Version="$(var.BuildVersion)" 
@@ -39,6 +39,13 @@
     <!-- handle major upgrades by disallowing downgrades and uninstalling previous version -->
     <MajorUpgrade DowngradeErrorMessage="A newer version of WebTimer Capture Service is already installed." />
 
+    <!-- bind the CMD command -->
+    <Property Id="CMD" Secure="yes">
+      <DirectorySearch Id="Cmddir" Path="[SystemFolder]">
+        <FileSearch Id="CmdExe" Name="cmd.exe" />
+      </DirectorySearch>
+    </Property>
+
     <!-- embed the cab in the MSI -->
     <MediaTemplate EmbedCab="yes" />
 
@@ -67,6 +74,15 @@
         </Directory>
       </Directory>
     </Directory>
+
+    <!-- define custom action to remove logs folder -->
+    <CustomAction Id="CA_RemoveLogFolderCmd" Property="CA_RemoveLogFolder" Value="&quot;[CMD]&quot; /c rd /s /q &quot;[LOGFOLDER]&quot;" />
+    <CustomAction Id="CA_RemoveLogFolder" BinaryKey="WixCA" DllEntry="CAQuietExec" Execute="deferred" Return="ignore" Impersonate="no" />
+
+    <InstallExecuteSequence>
+      <Custom Action="CA_RemoveLogFolderCmd" After="CostFinalize">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
+      <Custom Action="CA_RemoveLogFolder" Before="ProcessComponents">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
+    </InstallExecuteSequence>
 
   </Product>
 

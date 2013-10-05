@@ -20,21 +20,21 @@ dashboard.controller('DayController',
                         text: 'Total number of minutes'
                     }
                 },
-                title: {
-                    text: chartTitle()
-                },
             },
-            series: datacontext.getCurrentSeries(),
+            series: [],
             xAxis: {
                 categories: []
+            },
+            title: {
+                text: chartTitle()
             },
             loading: false
         };
 
-        $scope.$on('seriesDataChange', function $seriesDataChange() {
-            $scope.chartConfig.series = datacontext.getCurrentSeries();
+        $scope.$on('seriesDataChange', function $seriesDataChange(event, dataType) {
+            $scope.chartConfig.series = datacontext.getCurrentSeries(Queries.Categories);
             $scope.currentDate = datacontext.getCurrentDate();
-            $scope.chartConfig.options.title.text = chartTitle();
+            $scope.chartConfig.title = { text: chartTitle() };
             refreshView();
         });
 
@@ -49,7 +49,7 @@ dashboard.controller('DayController',
         //#region private functions 
         function getData() {
             return datacontext.getData()
-                .then(getSucceeded).fail(failed).fin(refreshView);
+                .then(getSucceeded).fail(failed);
             function getSucceeded(data) {
             }
         }

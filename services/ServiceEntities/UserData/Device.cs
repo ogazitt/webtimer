@@ -14,7 +14,7 @@ namespace ServiceEntities.UserData
         public string DeviceId { get; set; }
 
         // user-assigned friendly name for the device
-        [Required, MaxLength(30), Display(Name = "Device")]
+        [Display(Name = "Device")]
         public string Name { get; set; }
 
         [Display(Name = "Host Name")]

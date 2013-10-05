@@ -49,14 +49,20 @@ angular.module('highcharts-ng', [])
       };
 
       var getMergedOptions = function(scope, element, config) {
-          var mergedOptions = {};
+          // OG 2013-10-04
+          //var mergedOptions = {};
+          var mergedOptions = angular.copy(defaultOptions);
           if (config.options) {
-              mergedOptions = deepExtend(defaultOptions, config.options);
+              // OG 2013-10-04
+              //mergedOptions = deepExtend(defaultOptions, config.options);
+              mergedOptions = deepExtend(mergedOptions, config.options);
           } else {
-              mergedOptions = defaultOptions;
+              // OG 2013-10-04
+              //mergedOptions = defaultOptions;
           }
           mergedOptions.chart.renderTo = element[0];
           if (scope.config.xAxis) {
+              /*
               prependMethod(mergedOptions.chart.events, 'selection', function(e) {
                   var thisChart = this;
                   if (e.xAxis) {
@@ -77,6 +83,7 @@ angular.module('highcharts-ng', [])
                   scope.config.xAxis.currentMin = this.xAxis[0].min || scope.config.xAxis.currentMin;
                   scope.config.xAxis.currentMax = this.xAxis[0].max || scope.config.xAxis.currentMax;
               });
+              */
           }
 
           if (config.xAxis) {
@@ -174,10 +181,13 @@ angular.module('highcharts-ng', [])
                   }
               });
 
+              /*
+               * avoid the cycle caused by initializeChart triggering the useHighStocks event 
               scope.$watch("config.useHighStocks", function(useHighStocks) {
                   chart.destroy();
                   chart = initialiseChart(scope, element, scope.config);
               });
+              */
 
               scope.$watch("config.xAxis", function(newAxes, oldAxes) {
                   if (newAxes === oldAxes) return;

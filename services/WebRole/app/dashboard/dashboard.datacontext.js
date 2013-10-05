@@ -3,7 +3,14 @@
 var Queries = {
     Categories: "CategoryTotals",
     Sites: "ConsolidatedWebSessions",
+    Timeline: "WebSessionTimeline",
 };
+
+var Periods = {
+    Day: "day",
+    Week: "week",
+    Month: "month"
+}
 
 // create and add datacontext to the Ng injector
 // constructor function relies on Ng injector
@@ -18,7 +25,7 @@ dashboard.factory('datacontext',
         // model variables
         var currentDate = Date.today();
         var currentPeriod = 'day';
-        var currentSeries = [];
+        var currentSeries = {};
         var currentPerson = null;
         var currentCategory = null;
         var currentQuery = Queries.Categories;
@@ -31,6 +38,7 @@ dashboard.factory('datacontext',
             metadataStore:      manager.metadataStore,
             getCurrentDate:     getCurrentDate,
             setCurrentDate:     setCurrentDate,
+            getCurrentPeriod:   getCurrentPeriod,
             setCurrentPeriod:   setCurrentPeriod,
             getCurrentPerson:   getCurrentPerson,
             setCurrentPerson:   setCurrentPerson,
@@ -64,16 +72,20 @@ dashboard.factory('datacontext',
             currentDate = value;
         }
 
+        function getCurrentPeriod() {
+            return currentPeriod;
+        }
+
         function setCurrentPeriod(value) {
             currentPeriod = value;
             switch (value) {
-                case 'day':
+                case Periods.Day:
                     break;
-                case 'week':
+                case Periods.week:
                     // move to the previous Sunday
                     currentDate.moveToDayOfWeek(0, -1);
                     break;
-                case 'month':
+                case Periods.Month:
                     // move to the first day of the current month
                     currentDate.moveToFirstDayOfMonth();
                     break;
@@ -108,13 +120,13 @@ dashboard.factory('datacontext',
 
         function moveForward() {
             switch (currentPeriod) {
-                case 'day':
+                case Periods.Day:
                     currentDate.addDays(1);
                     break;
-                case 'week':
+                case Periods.Week:
                     currentDate.addDays(7);
                     break;
-                case 'month':
+                case Periods.Month:
                     // move to the first day of the next month
                     currentDate.addMonths(1).moveToFirstDayOfMonth();
                     break;
@@ -125,13 +137,13 @@ dashboard.factory('datacontext',
 
         function moveBack() {
             switch (currentPeriod) {
-                case 'day':
+                case Periods.Day:
                     currentDate.addDays(-1);
                     break;
-                case 'week':
+                case Periods.Week:
                     currentDate.addDays(-7);
                     break;
-                case 'month':
+                case Periods.Month:
                     // move to the first day of the next month
                     currentDate.addMonths(-1).moveToFirstDayOfMonth();
                     break;
@@ -140,12 +152,12 @@ dashboard.factory('datacontext',
             }
         }
 
-        function getCurrentSeries() {
-            return currentSeries;
+        function getCurrentSeries(query) {
+            return currentSeries[query];
         }
 
-        function setCurrentSeries(series) {
-            currentSeries = series;
+        function setCurrentSeries(query, series) {
+            currentSeries[query] = series;
         }
 
         function getData(queryType, category) {
@@ -167,8 +179,8 @@ dashboard.factory('datacontext',
             function getSucceeded(data) {
                 var qType = data.XHR ? "remote" : "local";
                 logger.log(qType + " " + queryType + " query succeeded");
-                setCurrentSeries(data.results);
-                $rootScope.$broadcast('seriesDataChange');
+                setCurrentSeries(queryType, data.results);
+                $rootScope.$broadcast('seriesDataChange', queryType);
                 return data.results;
             }
         }
@@ -181,13 +193,13 @@ dashboard.factory('datacontext',
 
         function getEndDate(date, period) {
             switch (period) {
-                case 'day':
+                case Periods.Day:
                     return date.clone().addDays(1);
                     break;
-                case 'week':
+                case Periods.Week:
                     return date.clone().addDays(7);
                     break;
-                case 'month':
+                case Periods.Month:
                     return date.clone().moveToLastDayOfMonth().addDays(1);
                     break;
                 default:
