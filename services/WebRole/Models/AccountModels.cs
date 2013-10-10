@@ -59,7 +59,7 @@ namespace WebRole.Models
     public class LoginModel
     {
         [Required]
-        [Display(Name = "User name")]
+        [Display(Name = "Email")]
         public string UserName { get; set; }
 
         [Required]
@@ -87,6 +87,9 @@ namespace WebRole.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "Name")]
+        public string Name { get; set; }
     }
 
     public class ExternalLogin

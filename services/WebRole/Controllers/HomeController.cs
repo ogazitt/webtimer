@@ -17,14 +17,24 @@ namespace WebRole.Controllers
         public ActionResult About()
         {
             ViewBag.Message = "About WebTimer";
-
             return View();
         }
 
         public ActionResult Contact()
         {
             ViewBag.Message = "Contact";
+            return View();
+        }
 
+        public ActionResult Terms()
+        {
+            ViewBag.Message = "Terms of Service";
+            return View();
+        }
+
+        public ActionResult Download()
+        {
+            ViewBag.Message = "Download";
             return View();
         }
     }

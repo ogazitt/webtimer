@@ -28,14 +28,14 @@ namespace CaptureService
                 // set the trace destination
                 TraceLog.TraceDestination = TraceLog.Destination.File;
 
-                TraceLog.TraceInfo("Starting Collector Service");
+                TraceLog.TraceInfo("Starting Capture Service");
                 CollectorClient.Start();
                 UploadClient.Start();
             }
             catch (Exception ex)
             {
-                TraceLog.TraceException("OnStart: Caught exception ", ex);
-                throw;
+                TraceLog.TraceException("OnStart: Caught exception, Start aborted", ex);
+                throw ex;
             }
         }
 
@@ -43,14 +43,14 @@ namespace CaptureService
         {
             try
             {
-                TraceLog.TraceInfo("Stopping Collector Service");
+                TraceLog.TraceInfo("Stopping Capture Service");
                 CollectorClient.Stop();
                 UploadClient.Stop();
             }
             catch (Exception ex)
             {
-                TraceLog.TraceException("OnStop: Caught exception ", ex);
-                throw;
+                TraceLog.TraceException("OnStop: Caught exception", ex);
+                throw ex;
             }
         }
     }

@@ -16,6 +16,12 @@ namespace WebRole
                 defaults: new { id = RouteParameter.Optional }
             );
 
+            config.Routes.MapHttpRoute(
+                name: "AccountApi",
+                routeTemplate: "accountapi/{action}/{id}",
+                defaults: new { controller = "accountapi", id = RouteParameter.Optional }
+            );
+
             config.EnableQuerySupport();
 
             // To disable tracing in your application, please comment out or remove the following line of code

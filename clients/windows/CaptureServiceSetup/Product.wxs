@@ -4,7 +4,7 @@
 <?define CompanyName="WebTimer, LLC" ?>
 <?define UpgradeCode="6B74A48B-639F-42F9-80C2-7922A968BE8D"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="E0B46EFB-AF7C-4B42-990C-39FB8EB83212" 
+	<Product Id="*" 
            Name="$(var.ProductName)" 
            Language="1033" 
            Version="$(var.BuildVersion)" 
@@ -52,11 +52,12 @@
     <Feature Id="ProductFeature" Title="WebTimer Capture Service" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
       <ComponentGroupRef Id="LogDir" />
+      <ComponentRef Id="ApplicationShortcut" />
     </Feature>
 
     <!-- prevent modify and repair in control panel -->
     <Property Id="ARPNOREPAIR" Value="yes" Secure="yes" /> 
-    <Property Id="ARPNOMODIFY" Value="yes" Secure="yes" />
+    <!--<Property Id="ARPNOMODIFY" Value="yes" Secure="yes" />-->
 
     <!-- set the product information and icon -->
     <Property Id="ARPURLINFOABOUT"><![CDATA[http://www.webtimer.co]]></Property>
@@ -68,22 +69,79 @@
     -->
 
     <Directory Id="TARGETDIR" Name="SourceDir">
+      <!-- installation folder -->
       <Directory Id="ProgramFilesFolder">
         <Directory Id="INSTALLFOLDER" Name="WebTimer Capture Service" >
           <Directory Id="LOGFOLDER" Name="Logs" />
         </Directory>
       </Directory>
+      
+      <!-- program menu folder -->
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="WebTimer"/>
+      </Directory>
     </Directory>
 
+
+    <!-- define the shortcut component -->
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="ApplicationShortcut">
+        <Shortcut Id="ApplicationStartMenuShortcut"
+                  Name="WebTimer Configuration"
+                  Description="Configure WebTimer"
+                  Target="[#$(var.CaptureConfig.TargetFileName)]"
+                  WorkingDirectory="INSTALLFOLDER"/>
+        <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\Microsoft\WebTimer" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+
     <!-- define custom action to remove logs folder -->
-    <CustomAction Id="CA_RemoveLogFolderCmd" Property="CA_RemoveLogFolder" Value="&quot;[CMD]&quot; /c rd /s /q &quot;[LOGFOLDER]&quot;" />
+    <CustomAction Id="CA_RemoveLogFolderCmd" Property="CA_RemoveLogFolder" Value="&quot;[CMD]&quot; /c rd /s /q &quot;[INSTALLFOLDER]&quot;" />
     <CustomAction Id="CA_RemoveLogFolder" BinaryKey="WixCA" DllEntry="CAQuietExec" Execute="deferred" Return="ignore" Impersonate="no" />
 
     <InstallExecuteSequence>
       <Custom Action="CA_RemoveLogFolderCmd" After="CostFinalize">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
       <Custom Action="CA_RemoveLogFolder" Before="ProcessComponents">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
+      <Custom Action="LaunchApplication" After="InstallFinalize"><![CDATA[&ProductFeature=3 and NOT INSTALLED]]></Custom>
     </InstallExecuteSequence>
 
+    <!-- define minimal UI to launch the application -->
+    <!-- don't need this anymore because launching a custom action from the no-UI installer 
+    <UI Id="UserInterface">
+      <Property Id="WIXUI_INSTALLDIR" Value="TARGETDIR" />
+      <Property Id="WixUI_Mode" Value="Custom" />
+
+      <TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
+      <TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="9" Bold="yes" />
+      <TextStyle Id="WixUI_Font_Title"  FaceName="Tahoma" Size="9" Bold="yes" />
+
+      <Property Id="DefaultUIFont" Value="WixUI_Font_Normal" />
+
+      <DialogRef Id="ProgressDlg" />
+      <DialogRef Id="ErrorDlg" />
+      <DialogRef Id="FilesInUse" />
+      <DialogRef Id="FatalError" />
+      <DialogRef Id="UserExit" />
+
+      <Publish Dialog="ExitDialog"
+          Control="Finish"
+          Event="DoAction"
+          Value="LaunchApplication" Order="999">1</Publish>
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="EndDialog" Value="Return" Order="2"></Publish>
+    </UI>
+    <UIRef Id="WixUI_Common" />
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch WebTimer Setup" />
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOX" Value="1"/>
+    -->
+
+    <!-- define custom action to launch the application -->
+    <Property Id="WixShellExecTarget" Value="[#$(var.CaptureConfig.TargetFileName)]" />
+    <CustomAction Id="LaunchApplication"
+        BinaryKey="WixCA"
+        DllEntry="WixShellExec"
+        Impersonate="yes" />
+    
   </Product>
 
   <Fragment>
@@ -133,6 +191,21 @@
       </Component>
 
       <Component>
+        <File Id="$(var.CaptureConfig.TargetFileName)"
+              Name="$(var.CaptureConfig.TargetFileName)"
+              Source="$(var.CaptureConfig.TargetPath)"
+              KeyPath="yes" />
+        <File Id="$(var.CaptureConfig.TargetFileName).config"
+              Name="$(var.CaptureConfig.TargetFileName).config"
+              Source="$(var.CaptureConfig.TargetPath).config"
+              KeyPath="no" />
+        <File Id="$(var.CaptureConfig.TargetName).pdb"
+              Name="$(var.CaptureConfig.TargetName).pdb"
+              Source="$(var.CaptureConfig.TargetDir)\$(var.Collector.TargetName).pdb"
+              KeyPath="no" />
+      </Component>
+
+      <Component>
         <File Id="Collector.SharpPcapDependency"
               Name="SharpPcap.dll"
               Source="$(var.Collector.TargetDir)\SharpPcap.dll"
@@ -160,6 +233,6 @@
         <CreateFolder />
       </Component>
     </ComponentGroup>
-
+    
   </Fragment>
 </Wix>

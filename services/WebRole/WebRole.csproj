@@ -244,6 +244,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AccountApiController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\OldDashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -257,6 +258,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AuthHelper.cs" />
     <Compile Include="Helpers\ServerSideInclude.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\UserDataRepository.cs" />
@@ -301,6 +303,8 @@
     <Content Include="Content\font-awesome\css\font-awesome.min.css" />
     <Content Include="Content\font-awesome\font\fontawesome-webfont.svg" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\images\android.png" />
+    <Content Include="Content\images\apple-logo.png" />
     <Content Include="Content\images\facebook.png" />
     <Content Include="Content\images\facebook_32.png" />
     <Content Include="Content\images\glyphicons-halflings-white.png" />
@@ -309,9 +313,11 @@
     <Content Include="Content\images\google_32.png" />
     <Content Include="Content\images\linkedin_32.png" />
     <Content Include="Content\images\linkedin_signin.png" />
+    <Content Include="Content\images\mac.png" />
     <Content Include="Content\images\twitter.png" />
     <Content Include="Content\images\twitter_32.png" />
     <Content Include="Content\images\WebTimer_logo_nu.png" />
+    <Content Include="Content\images\windows.png" />
     <Content Include="Content\jquery-colorPicker.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -755,6 +761,8 @@
     <Content Include="Views\Dashboard\Raw.cshtml" />
     <Content Include="Views\Home\Old.cshtml" />
     <Content Include="Views\Shared\_LoginMenu.cshtml" />
+    <Content Include="Views\Home\Terms.cshtml" />
+    <Content Include="Views\Home\Download.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

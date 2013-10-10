@@ -5,6 +5,11 @@ a.navbar-brand.brand-padding {
     height: 50px;
 }
 
+.download-logo {
+    width: 150px;
+    margin-top: 20px;
+}
+
 /* toolbar */
 
 .now-button {
@@ -47,6 +52,10 @@ a.navbar-brand.brand-padding {
 }
 
 .main-view {
+    text-align: center;
+}
+
+.center {
     text-align: center;
 }
 

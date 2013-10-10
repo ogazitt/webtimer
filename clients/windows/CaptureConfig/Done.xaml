@@ -1,0 +1,25 @@
+﻿<Page x:Class="CaptureConfig.Done"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="WebTimer Setup" Height="450" Width="510">
+    <Grid Margin="0,0,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="405*"/>
+            <RowDefinition Height="45*"/>
+        </Grid.RowDefinitions>
+        <!-- graphic -->
+        <Image HorizontalAlignment="Left" VerticalAlignment="Top" Width="360" Margin="-30,70,-30,-70" Source="WebTimer_graphic.png" Opacity="0.07" />
+
+        <!-- page controls -->
+        <TextBlock Text="That's it!" HorizontalAlignment="Left" TextAlignment="Center" Height="23" Margin="0,25,0,0" VerticalAlignment="Top" Width="510" FontWeight="Bold" FontSize="16"/>
+        <TextBlock Text="WebTimer has finished installing and you're all set up and ready to go.  Thanks for using WebTimer.  We hope you enjoy it!" TextWrapping="Wrap" HorizontalAlignment="Left" Height="44" Margin="20,55,0,0" VerticalAlignment="Top" Width="470" />
+        <Image HorizontalAlignment="Left" VerticalAlignment="Top" Width="300" Margin="100,100,0,0" Source="WebTimer_graphic.png" />
+
+        <!-- navigation buttons -->
+        <Separator HorizontalAlignment="Left"  Margin="0,-2,0,-2" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Top" Width="510" />
+        <Canvas HorizontalAlignment="Left" Height="45" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Top" Width="510" Background="#FFF0F0F0">
+            <Button Content="Done" Height="23" Canvas.Left="423" Canvas.Top="12"  Width="72" IsDefault="True" Click="NextButton_Click"/>
+        </Canvas>
+
+    </Grid>
+</Page>

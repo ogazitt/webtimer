@@ -28,8 +28,16 @@ namespace Collector
 
     public class User
     {
-        public string Name { get; set; }
+        public string UserName { get; set; }
         public string Password { get; set; }
+    }
+
+    public class RegisterUser
+    {
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public string VerifyPassword { get; set; }
+        public string Name { get; set; }
     }
 
     public enum OperationStatus
@@ -46,8 +54,6 @@ namespace Collector
         const string authResponseHeader = "Set-Cookie";
         const string authRequestHeader = "Cookie";
         static string authCookie = null;
-        static HttpWebRequest request = null;
-        static bool isRequestInProgress = false;        // only one network operation at a time
 
         private static string baseUrl = null;
         private static string appSettingsBaseUrl = null;
@@ -57,8 +63,7 @@ namespace Collector
         {
             get
             {
-                //return "http://localhost:3212";
-                return ConfigurationManager.AppSettings["Url"];
+                return "http://www.webtimer.co";
             }
         }
         
@@ -68,13 +73,17 @@ namespace Collector
             get
             {
                 if (appSettingsBaseUrl == null && !triedGettingAppSettingsBaseUrl)
+                {
                     appSettingsBaseUrl = ConfigurationManager.AppSettings["Url"];
+                    triedGettingAppSettingsBaseUrl = true;
+                }
                 return appSettingsBaseUrl;
             }
             set
             {
                 ConfigurationManager.AppSettings["Url"] = value;
                 appSettingsBaseUrl = value;
+                triedGettingAppSettingsBaseUrl = true;
             }
         }
 
@@ -87,22 +96,32 @@ namespace Collector
             get
             {
                 return baseUrl ?? (AppSettingsBaseUrl ?? defaultBaseUrl);
-                //return baseUrl ?? defaultBaseUrl;
             }
             set
             {
                 baseUrl = value;
-                //AppSettingsBaseUrl = value;
             }
         }
 
         #region // Web Service calls
 
-        public static void PostRecords(User user, List<Record> records, Delegate del, Delegate netOpInProgressDel)
+        public static void CreateAcccount(RegisterUser user, Delegate del, Delegate netOpInProgressDel)
+        {
+            InvokeWebServiceRequest(null, BaseUrl + "/accountapi/register", "POST", user, del, netOpInProgressDel, new AsyncCallback(ProcessResponse<string>));
+        }
+
+        public static void PostRecords(string userCreds, List<Record> records, Delegate del, Delegate netOpInProgressDel)
         {
             //InvokeWebServiceRequest(user, BaseUrl + "/colapi/collector", "POST", records, del, netOpInProgressDel, new AsyncCallback(ProcessResponse<List<Record>>));
-            InvokeWebServiceRequest(user, BaseUrl + "/colapi/collector", "POST", records, del, netOpInProgressDel, new AsyncCallback(ProcessResponse<int>));
+            InvokeWebServiceRequest(userCreds, BaseUrl + "/colapi/collector", "POST", records, del, netOpInProgressDel, new AsyncCallback(ProcessResponse<int>));
         }
+
+        public static void VerifyAccount(User user, Delegate del, Delegate netOpInProgressDel)
+        {
+            InvokeWebServiceRequest(null, BaseUrl + "/accountapi/validateuser", "POST", user, del, netOpInProgressDel, new AsyncCallback(ProcessResponse<string>));
+        }
+
+        public delegate void AccountDelegate(string username);
 
         #endregion
 
@@ -111,23 +130,32 @@ namespace Collector
         //private static HttpWebResponseWrapper<T> GetWebResponse<T>(IAsyncResult result)
         private static HttpWebResponse GetWebResponse<T>(IAsyncResult result)
         {
+            WebServiceState state = result.AsyncState as WebServiceState;
+            if (state == null)
+            {
+                TraceLog.TraceError("Web Service State not found");
+                return null;
+            }
+
+            var request = state.Request;
+            if (request == null)
+            {
+                TraceLog.TraceError("Web Service Request not found");
+                return null;
+            }
+
             HttpWebResponse resp = null;
 
             // get response and mark request as not in progress
             try
             {
                 resp = (HttpWebResponse)request.EndGetResponse(result);
-                isRequestInProgress = false;
                 if (resp == null)
                     return null;
             }
             catch (Exception ex) 
             {
-                // trace the exception
                 TraceLog.TraceException("GetWebResponse: EndGetResponse failed", ex);
-
-                // communication exception
-                isRequestInProgress = false;
                 return null;
             }
 
@@ -159,12 +187,8 @@ namespace Collector
         // Common code for invoking all the web service calls.  
         // GET requests will be served directly from this method,
         // POST/PUT/DELETE requests are served from the InvokeWebServiceRequest_Inner method (which is an async callback)
-        private static void InvokeWebServiceRequest(User user, string url, string verb, object obj, Delegate del, Delegate netOpInProgressDel, AsyncCallback callback)
+        private static void InvokeWebServiceRequest(string userCreds, string url, string verb, object obj, Delegate del, Delegate netOpInProgressDel, AsyncCallback callback)
         {
-            // this code is non-reentrant
-            if (isRequestInProgress == true)
-                return;
-
             // signal that a network operation is starting
             if (netOpInProgressDel != null)
                 netOpInProgressDel.DynamicInvoke(true, OperationStatus.Started);
@@ -177,7 +201,7 @@ namespace Collector
                 return;
             }
 
-			request = (HttpWebRequest) WebRequest.Create(uri);
+			var request = (HttpWebRequest) WebRequest.Create(uri);
             //request.UserAgent = UserAgents.IOSPhone;
             request.Accept = "application/json";
             request.Method = verb == null ? "GET" : verb;
@@ -186,16 +210,14 @@ namespace Collector
             {   // send auth cookie
                 request.Headers[authRequestHeader] = authCookie;
             }
-            else if (user != null)
+            else if (userCreds != null)
             {   // send credentials in authorization header
 
                 // url form encoded
-                //string credentials = string.Format("UserName={0}&Password={1}", user.Name, user.Password);
+                //string credentials = string.Format("UserName={0}&Password={1}", user.UserName, user.Password);
 
                 // basic auth encoded
-                string credentials = string.Format("{0}:{1}", user.Name, user.Password);
-                string encodedCreds = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(credentials));
-                request.Headers[authorizationHeader] = string.Format("Basic {0}", encodedCreds);
+                request.Headers[authorizationHeader] = string.Format("Basic {0}", userCreds);
                 request.Headers[HttpApplicationHeaders.RequestedWith] = UserAgents.WebTimerWindows;
             }
 
@@ -212,18 +234,14 @@ namespace Collector
                 {
                     WebServiceState reqState = new WebServiceState()
                     {
+                        Request = request,
                         Delegate = del,
                         NetworkOperationInProgressDelegate = netOpInProgressDel
                     };
-                    IAsyncResult result = request.BeginGetResponse(callback, reqState);
-                    if (result != null)
-                        isRequestInProgress = true;
+                    request.BeginGetResponse(callback, reqState);
                 }
                 catch (Exception ex)
                 {
-                    isRequestInProgress = false;
-
-                    // trace the exception
                     TraceLog.TraceException("Exception in BeginGetResponse", ex);
 
                     // signal that a network operation is done and unsuccessful
@@ -239,24 +257,27 @@ namespace Collector
                 // need to nest another async call - this time to get the request stream
                 try
                 {
-                    IAsyncResult result = request.BeginGetRequestStream(
+                    request.BeginGetRequestStream(
                         new AsyncCallback(InvokeWebServiceRequest_Inner),
                         new WebInvokeServiceState()
                         {
+                            Request = request,
                             Callback = callback,
                             Delegate = del,
                             NetworkOperationInProgressDelegate = netOpInProgressDel,
                             RequestBody = obj
                         });
-                    if (result != null)
-                        isRequestInProgress = true;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    isRequestInProgress = false;
+                    // trace the exception
+                    TraceLog.TraceException("Exception in BeginGetResponse", ex);
+
                     // signal that a network operation is done and unsuccessful
                     if (netOpInProgressDel != null)
+                    {
                         netOpInProgressDel.DynamicInvoke(false, OperationStatus.Failed);
+                    }
                 }
             }
         }
@@ -265,7 +286,17 @@ namespace Collector
         {
             WebInvokeServiceState state = res.AsyncState as WebInvokeServiceState;
             if (state == null)
-                throw new Exception("Web Service State not found");
+            {
+                TraceLog.TraceError("Web Service State not found");
+                return;
+            }
+
+            var request = state.Request;
+            if (request == null)
+            {
+                TraceLog.TraceError("Web Service Request not found");
+                return;
+            }
 
             Stream stream = null;
             try
@@ -273,9 +304,9 @@ namespace Collector
                 // this will throw if the connection can't be established
                 stream = request.EndGetRequestStream(res);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                isRequestInProgress = false;
+                TraceLog.TraceException("Can't obtain stream", ex);
                 return;
             }
 
@@ -326,26 +357,25 @@ namespace Collector
 
             // complete the invocation (this is not done inline because the InvokeWebServiceRequest_Inner_Complete() method
             // is reused by external callers that want to write to a stream directly and then invoke the operation)
-            InvokeWebServiceRequest_Invoke(state.Delegate, state.NetworkOperationInProgressDelegate, state.Callback);
+            InvokeWebServiceRequest_Invoke(request, state.Delegate, state.NetworkOperationInProgressDelegate, state.Callback);
         }
 
-        private static void InvokeWebServiceRequest_Invoke(Delegate del, Delegate netOpInProgressDel, AsyncCallback callback)
+        private static void InvokeWebServiceRequest_Invoke(HttpWebRequest request, Delegate del, Delegate netOpInProgressDel, AsyncCallback callback)
         {
             // execute the web request and get the response
             try
             {
                 WebServiceState reqState = new WebServiceState()
                 {
+                    Request = request,
                     Delegate = del,
                     NetworkOperationInProgressDelegate = netOpInProgressDel
                 };
-                IAsyncResult result = request.BeginGetResponse(callback, reqState);
-                if (result != null)
-                    isRequestInProgress = true;
+                request.BeginGetResponse(callback, reqState);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                isRequestInProgress = false;
+                TraceLog.TraceException("BeginGetResponse failed", ex);
 
                 // signal the operation is done and unsuccessful
                 if (netOpInProgressDel != null)
@@ -361,7 +391,10 @@ namespace Collector
         {
             WebServiceState state = result.AsyncState as WebServiceState;
             if (state == null)
+            {
+                TraceLog.TraceError("Web Service State not found");
                 return;
+            }
 
             // get the network operation status delegate
             Delegate netOpInProgressDel = state.NetworkOperationInProgressDelegate as Delegate;
@@ -371,6 +404,8 @@ namespace Collector
             HttpWebResponse resp = GetWebResponse<T>(result);
             if (resp == null)
             {
+                TraceLog.TraceError("GetWebResponse failed");
+
                 // signal that the network operation completed unsuccessfully
                 if (netOpInProgressDel != null)
                 {
@@ -399,6 +434,7 @@ namespace Collector
                     netOpInProgressDel.DynamicInvoke(false, status);
                     if (status == OperationStatus.Retry)
                     {   // delegate will retry, exit now
+                        TraceLog.TraceInfo("Received a Retry response from Service");
                         return;
                     }
                 }
@@ -438,6 +474,7 @@ namespace Collector
 
         private class WebInvokeServiceState
         {
+            public HttpWebRequest Request { get; set; }  // HttpWebRequest for this call
             public AsyncCallback Callback { get; set; }  // callback for the GetResponse
             public Delegate Delegate { get; set; }  // delegate passed in by the caller
             public Delegate NetworkOperationInProgressDelegate { get; set; }  // delegate passed in by the caller
@@ -446,6 +483,7 @@ namespace Collector
 
         private class WebServiceState
         {
+            public HttpWebRequest Request { get; set; }  // HttpWebRequest for this call
             public Delegate Delegate { get; set; }  // delegate passed in by the caller
             public Delegate NetworkOperationInProgressDelegate { get; set; }  // delegate passed in by the caller
         }

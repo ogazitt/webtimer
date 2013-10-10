@@ -24,6 +24,14 @@
     <Compile Include="Product.wxs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CaptureConfig\CaptureConfig.csproj">
+      <Name>CaptureConfig</Name>
+      <Project>{3dc7bc63-dfea-438c-b03e-c41a61616834}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\CaptureService\CaptureService.csproj">
       <Name>CaptureService</Name>
       <Project>{eab4e383-b00d-4ed9-83bd-52f0c2ec9ff2}</Project>
@@ -45,6 +53,10 @@
     <Folder Include="foo" />
   </ItemGroup>
   <ItemGroup>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
+      <Name>WixUIExtension</Name>
+    </WixExtension>
     <WixExtension Include="WixUtilExtension">
       <HintPath>$(WixExtDir)\WixUtilExtension.dll</HintPath>
       <Name>WixUtilExtension</Name>
