@@ -16,6 +16,7 @@ dashboard.controller('DevicesController',
         $scope.error = "";
         $scope.refresh = refresh;
         $scope.endEdit = endEdit;
+        $scope.endEditPerson = endEditPerson;
         $scope.clearErrorMessage = clearErrorMessage;
 
         // load Devices immediately (from cache if possible)

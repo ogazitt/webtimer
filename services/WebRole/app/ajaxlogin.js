@@ -42,7 +42,7 @@
     };
 
     $("#showRegister").click(function () {
-        $("#loginPanel").fadeOut("fast", function () {
+        $(".loginPanel").fadeOut("fast", function () {
             $("#registerPanel").fadeIn("fast", function () {
                 $("#registerName").focus();
             });
@@ -51,7 +51,7 @@
 
     $("#showLogin").click(function () {
         $("#registerPanel").fadeOut("fast", function () {
-            $("#loginPanel").fadeIn("fast", function () {
+            $(".loginPanel").fadeIn("fast", function () {
                 $("#loginName").focus();
             });
         });

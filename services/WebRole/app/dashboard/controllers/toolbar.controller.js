@@ -118,6 +118,13 @@ window.toolbar = angular.module('toolbar', [])
             }
         };
 
+        $scope.refresh = function $refresh() {
+            datacontext.getData();
+            if ($scope.settings.person !== null && $scope.settings.period === Periods.Day) {
+                datacontext.getData(Queries.Timeline);
+            }
+        };
+
         function getPeople() {
             datacontext.getPeople().then(getSucceeded);
             function getSucceeded(data) {

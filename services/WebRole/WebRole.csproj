@@ -259,6 +259,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\AuthHelper.cs" />
+    <Compile Include="Helpers\BrowserAgent.cs" />
     <Compile Include="Helpers\ServerSideInclude.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\UserDataRepository.cs" />
@@ -307,6 +308,7 @@
     <Content Include="Content\images\apple-logo.png" />
     <Content Include="Content\images\facebook.png" />
     <Content Include="Content\images\facebook_32.png" />
+    <Content Include="Content\images\frame.png" />
     <Content Include="Content\images\glyphicons-halflings-white.png" />
     <Content Include="Content\images\glyphicons-halflings.png" />
     <Content Include="Content\images\google.png" />
@@ -314,9 +316,14 @@
     <Content Include="Content\images\linkedin_32.png" />
     <Content Include="Content\images\linkedin_signin.png" />
     <Content Include="Content\images\mac.png" />
+    <Content Include="Content\images\omri.png" />
+    <Content Include="Content\images\screenshot.png" />
+    <Content Include="Content\images\sheri.png" />
     <Content Include="Content\images\twitter.png" />
     <Content Include="Content\images\twitter_32.png" />
-    <Content Include="Content\images\WebTimer_logo_nu.png" />
+    <Content Include="Content\images\WebTimer.png" />
+    <Content Include="Content\images\WebTimer_logo.png" />
+    <Content Include="Content\images\WebTimer_tagline.png" />
     <Content Include="Content\images\windows.png" />
     <Content Include="Content\jquery-colorPicker.css" />
     <Content Include="favicon.ico" />
@@ -763,6 +770,7 @@
     <Content Include="Views\Shared\_LoginMenu.cshtml" />
     <Content Include="Views\Home\Terms.cshtml" />
     <Content Include="Views\Home\Download.cshtml" />
+    <Content Include="Views\Home\MobileIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

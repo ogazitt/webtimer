@@ -1,8 +1,11 @@
-﻿    <div class="todoList" id="loginPanel">
+﻿@using WebRole.Helpers;
+@if (!BrowserAgent.IsMobile(Request.UserAgent)) {
+    <div class="todoList loginPanel" id="loginPanel">
         <section id="localLoginPanel">
             <h2>Log in</h2>
             @Html.Partial("_Login")
         </section>
+
         <section id="socialLoginPanel">
             <h2>Log in using</h2>
             <p> </p>
@@ -12,6 +15,16 @@
             </div>            
         </section>
     </div>
+}
+else {
+    <div class="todoList loginPanel" id="loginPanelMobile">
+        <section id="localLoginPanelMobile">
+            <h2>Log in</h2>
+            @Html.Partial("_Login")
+            <p><button class="btn btn-success" id="showRegister">Sign up</button>&nbsp; for a new account</p>
+        </section>
+    </div>
+}
     <div class="todoList" id="registerPanel">
         <h2>Sign up</h2>
         @Html.Partial("_Register")

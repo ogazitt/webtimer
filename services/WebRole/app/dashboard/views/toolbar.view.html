@@ -1,7 +1,7 @@
 ﻿<!-- toolbar partial view -->
 <div class="toolbar" data-ng-show="showToolbar()" data-ng-controller="ToolbarController">
     <!-- period selector -->
-    <div class="btn-toolbar well col-lg-offset-2 col-lg-10 col-md-offset-2 col-md-10 col-sm-12 col-xs-12">
+    <div class="well col-lg-offset-2 col-lg-10 col-md-offset-2 col-md-10 col-sm-12 col-xs-12">
         <!-- navigation controls -->
         <div class="btn-group now-button">
     <!--        <button class="btn btn-default"><span data-ng-cloak="">{{settings.buttonTitle}}</span></button>-->
@@ -25,12 +25,11 @@
     </div>
 
     <!-- people selector -->
-    <div class="btn-toolbar well col-lg-2 col-md-2 col-sm-3 col-xs-6">
-        <div class="btn-group-vertical">
+    <div class="well col-lg-2 col-md-2 col-sm-3 col-xs-6">
+        <div class="people-selector btn-group-vertical">
             <a  href="#/" 
                 data-ng-class="{ active: isActivePerson(null) }"
                 class="btn btn-default"
-                style="min-width: 125px;" 
                 data-ng-click="selectPerson(null)">All</a>
 
             <a  data-ng-repeat="person in people" 
@@ -38,7 +37,6 @@
                 data-ng-bind="person.name"
                 data-ng-class="{ active: isActivePerson(person) }"
                 class="btn btn-default"
-                style="min-width: 125px;" 
                 data-ng-click="selectPerson(person)"></a>
         </div>
     </div>

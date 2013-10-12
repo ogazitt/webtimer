@@ -1,11 +1,18 @@
-﻿<ul class="nav navbar-nav navbar-right">
+﻿@using WebRole.Helpers;
+
+<ul class="nav navbar-nav navbar-right">
+@if (!BrowserAgent.IsMobile(Request.UserAgent)) {
     <li><a href="/home/download"><span class="glyphicon glyphicon-save"></span><strong>&nbsp; Download</strong></a></li>
+}
 @if (Request.IsAuthenticated) {
     <li class="nav-divider"></li>
     <li class="dropdown active">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="glyphicon glyphicon-user"></i>
-            <strong>&nbsp; @User.Identity.Name</strong>
+            @if (!BrowserAgent.IsMobile(Request.UserAgent)) {
+                <strong>@User.Identity.Name</strong>
+            }
+            &nbsp; 
             <b class="caret"></b>
         </a>
         <ul class="dropdown-menu">

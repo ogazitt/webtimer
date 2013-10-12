@@ -113,6 +113,7 @@ namespace ProcessorWorker
                                             device = UserDataContext.CreateDeviceFromSession(session);
                                             UserContext.Devices.Add(device);
                                             UserContext.SaveChanges();
+                                            TraceLog.TraceInfo(string.Format("Added device {0} to user {1}; Device dump: {2}", device.Name, userId, JsonSerializer.Serialize(device)));
                                         }
                                         catch (DbEntityValidationException ex)
                                         {

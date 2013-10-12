@@ -11,7 +11,6 @@ dashboard.controller('DetailController',
 
         $scope.error = "";
         $scope.currentDate = datacontext.getCurrentDate();
-        $scope.refresh = refresh;
         $scope.clearErrorMessage = clearErrorMessage;
         $scope.showTimeline = showTimeline;
 

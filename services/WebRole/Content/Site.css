@@ -89,7 +89,6 @@ header {
     #registerForm input[type=text], #registerForm input[type=password],
     #loginForm input[type=text], #loginForm input[type=password] {
         background: white;
-        width: 220px;
     }
 
 #loginForm input[type=checkbox]{
@@ -103,25 +102,42 @@ header {
 #registerPanel{
     display: none;
     position: relative;
-    float: left;
     text-align: left;
     padding: 25px;
+    width: 250px;
 }
 
 #loginPanel {
     display: block;
     position: relative;
-    float: left;
     text-align: left;
-    padding: 25px;
-    width: 600px;
+    padding: 25px 0px 25px 25px;
+    margin-left: -20px;
+    width:480px;
+    height: 300px;
 }
 
-#registerPanel h2,
-#loginPanel h2 {
-    padding-bottom: .5em;
-    margin: 0;
+#loginPanelMobile {
+    display: block;
+    position: relative;
+    text-align: left;
+    padding: 25px;
+    width: 250px;
+    min-height: 330px;
 }
+
+    #registerPanel h2,
+    #loginPanelMobile h2,
+    #loginPanel h2 {
+        padding-bottom: .5em;
+        margin: 0;
+        font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+        font-size: 1.6em;
+    }
+
+    #registerForm {
+        width: 200px;
+    }
 
 #registerPanel a,
 #loginPanel a {
@@ -138,12 +154,17 @@ header {
 #localLoginPanel {
     border-right: solid 2px #c8c8c8;
     float: left;
-    width: 45%;
+    width: 48%;
+    text-align: left;
+}
+
+#localLoginPanelMobile {
+    float: left;
     text-align: left;
 }
 
 #socialLoginPanel {
-    margin-left: 40px;
+    margin-left: 20px;
     float: left;
     width: 45%;
     text-align: left;

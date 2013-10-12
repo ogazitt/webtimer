@@ -64,7 +64,7 @@ namespace WebRole.Models
         {
             try
             {
-                // add the user and the "uncategorized" person
+                // add the user and the "Shared" bucket
                 var person = new Person()
                 {
                     Name = "Shared",
@@ -81,13 +81,6 @@ namespace WebRole.Models
                     IsChild = false
                 };
                 AddPerson(person);
-
-#if DEBUG
-                // add a dummy device for testing
-                var device = Device.CreateNewDevice(UserId);
-                device.PersonId = person.PersonId;
-                AddDevice(device);
-#endif
             }
             catch (Exception ex)
             {

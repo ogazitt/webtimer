@@ -22,52 +22,72 @@
     <!--[if lt IE 9]><p class="error" style="clear:both;">'Breeze + Angular' requires browser support for defined properties.</p><![endif]-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
-            <div class="navbar-header">
-                <a class="navbar-brand brand-padding" href="/"><img src="~/Content/images/WebTimer_logo_nu.png" height="46" alt="WebTimer" /></a>
-            </div>             
-               
-            <!-- login menu -->
-            @Html.Partial("_LoginMenu")
-
-            <!-- header bar -->
-            @if (User.Identity.IsAuthenticated && Request.Url.AbsolutePath.Equals("/")) {
-                @Html.Include("~/app/dashboard/views/header.view.html")
-            }
-        </div>
-    </nav> 
-
-    <div class="container">
-        @if (ViewData.ContainsKey("CustomBody"))
+        @if (BrowserAgent.IsMobile(Request.UserAgent))
         {
-            @RenderBody()
+            <div class="navbar-header">
+                <a class="navbar-brand brand-padding" href="/"><img src="~/Content/images/WebTimer_graphic_small.png" height="46" alt="WebTimer" /></a>
+            </div>             
         }
         else
         {
-            <div id="userSettings">
-                @Html.Partial("_UserSettings")
-            </div>
-
-            <div id="body">
-                @RenderBody()
-            </div>
+            <div class="navbar-header">
+                <a class="navbar-brand brand-padding" href="/"><img src="~/Content/images/WebTimer.png" height="46" alt="WebTimer" /></a>
+            </div>             
         }
-        <!-- <hr /> -->
-    </div>
+               
+        <!-- login menu -->
+        @Html.Partial("_LoginMenu")
+
+        <!-- header bar -->
+        @if (User.Identity.IsAuthenticated && Request.Url.AbsolutePath.Equals("/")) {
+            @Html.Include("~/app/dashboard/views/header.view.html")
+        }
+        </div>
+    </nav> 
+
+    @if (ViewData.ContainsKey("LandingPage"))
+    {
+        <div id="userSettings">
+            @Html.Partial("_UserSettings")
+        </div>
+
+        <div id="body">
+            @RenderBody()
+        </div>
+    }
+    else
+    {
+        <div class="container main-container">
+            @if (ViewData.ContainsKey("CustomBody"))
+            {
+                @RenderBody()
+            }
+            else
+            {
+                <div id="userSettings">
+                    @Html.Partial("_UserSettings")
+                </div>
+
+                <div id="body">
+                    @RenderBody()
+                </div>
+            }
+            <!-- <hr /> -->
+        </div>
+    }
 
     <div class="navbar navbar-inverse navbar-fixed-bottom">
         <div class="navbar-inner">
-            <div class="container">
-                <footer class="pull-right">
-                    <nav>
-                        <ul id="menu">
-                            <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, null)</li>
-                            <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, null)</li>
-                            <li>@Html.ActionLink("Terms", "Terms", "Home", new { area = "" }, null)</li>
-                            @*<li>@Html.ActionLink("API", "Index", "Help", new { area = "HelpPage" }, null)</li>*@
-                            <li><a href="/">WebTimer, LLC &copy; @DateTime.Now.Year</a></li>
-                        </ul>
-                    </nav>
-                </footer>
+            <div class="container pull-right">
+                <ul class="nav navbar-nav" id="menu">
+                    <li><a href="/home/about"><strong>About</strong></a></li>
+                    <li><a href="/home/contact"><strong>Contact</strong></a></li>
+                    <li><a href="/home/terms"><strong>Terms</strong></a></li>
+                    @*<li>@Html.ActionLink("API", "Index", "Help", new { area = "HelpPage" }, null)</li>*@
+                    @if (!BrowserAgent.IsMobile(Request.UserAgent)) {
+                        <li><a href="/"><strong>WebTimer, LLC &copy; @DateTime.Now.Year</strong></a></li>
+                    }
+                </ul>
             </div>
         </div>
     </div>
@@ -78,10 +98,5 @@
 
     @RenderSection("scripts", required: false)
 
-    <script type="text/javascript">
-        // document ready handler 
-        $(document).ready(function () {
-        });
-    </script>
 </body>
 </html>
