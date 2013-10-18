@@ -8,7 +8,6 @@
 dashboard.controller('PeopleController',
     ['$scope', 'breeze', 'datacontext', 'logger',
     function ($scope, breeze, datacontext, logger) {
-
         logger.log("creating PeopleController");
         var removeList = breeze.core.arrayRemoveItem;
 
@@ -50,11 +49,13 @@ dashboard.controller('PeopleController',
             $scope.$apply();
         }
         function endEdit(entity) {
+            Events.Track(Events.Categories.People, Events.People.Change);
             datacontext.saveEntity(entity)
                 .then(clearEditMode)
                 .fin(refreshView);
         }
         function addPerson() {
+            Events.Track(Events.Categories.People, Events.People.Add);
             var person = datacontext.createPerson();
             person.isEditingPersonName = true;
             datacontext.saveEntity(person)
@@ -71,6 +72,7 @@ dashboard.controller('PeopleController',
             }
         }
         function deletePerson(person) {
+            Events.Track(Events.Categories.People, Events.People.Delete);
             removeList($scope.people, person);
             datacontext.deletePerson(person)
                 .fail(deleteFailed)
@@ -81,6 +83,7 @@ dashboard.controller('PeopleController',
             }
         }
         function toggleIsChild(person) {
+            Events.Track(Events.Categories.People, Events.People.IsChildChange);
             person.isChild = !person.isChild;
             endEdit(person);
         }

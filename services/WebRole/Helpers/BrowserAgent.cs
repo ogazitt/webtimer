@@ -36,6 +36,12 @@ namespace WebRole.Helpers
             return ((int)deviceType & (int)DeviceType.Mobile) > 0;
         }
 
+        public static bool IsTablet(string userAgent)
+        {
+            var deviceType = GetDeviceType(userAgent);
+            return ((int)deviceType & (int)DeviceType.iPad) > 0;
+        }
+
         public static DeviceType GetDeviceType(string userAgent)
         {
             if (userAgent.Contains(iPhone))

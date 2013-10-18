@@ -1,10 +1,14 @@
-﻿@{
+﻿@using WebRole.Helpers;
+@{
     ViewBag.Title = "Contact";
+    var isMobile = BrowserAgent.IsMobile(Request.UserAgent);
+    var containerClass = isMobile ? "" : "jumbotron main-container";
 }
-<div class="jumbotron">
-    <div class="container">
+<div class="@containerClass">
+    @if (!isMobile) {
         <img class="webtimer-jumbotron" src="~/Content/images/WebTimer_logo.png" alt="WebTimer" />
         <br />
+    }
         <section>
             <p><strong>Address</strong></p>
             <address>
@@ -20,5 +24,4 @@
                 <i class="icon-envelope"></i><strong> General:</strong> <a href="mailto:info@webtimer.co">info@webtimer.co</a>
             </address>
         </section>
-    </div>
 </div>

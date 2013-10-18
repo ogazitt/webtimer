@@ -1,0 +1,18 @@
+﻿<!-- Header partial view -->
+<div data-ng-controller="HeaderController">
+    <button class="navbar-toggle mobile-menu" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </button>
+    <div class="nav-collapse collapse">
+        <br />
+        <br />
+        <ul class="nav navbar-nav pull-right">
+            <li><a data-ng-click="dashboard()" href="#/"><span class="glyphicon glyphicon-stats"></span><strong>&nbsp; Dashboard</strong></a></li>
+            <li><a data-ng-click="people()" href="#/people"><span class="glyphicon glyphicon-user"></span><strong>&nbsp; People</strong></a></li>
+            <li><a data-ng-click="devices()" href="#/devices"><span class="icon icon-desktop"></span><strong>&nbsp; Devices</strong></a></li>
+            <li><a data-ng-click="signout()" href="javascript:document.getElementById('logoutForm').submit()"><span class="glyphicon glyphicon-off"></span><strong>&nbsp; Sign Out</strong></a></li>
+        </ul>
+    </div>
+</div>

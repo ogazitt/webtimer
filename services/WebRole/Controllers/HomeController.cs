@@ -12,8 +12,10 @@ namespace WebRole.Controllers
         public ActionResult Index(string returnUrl)
         {
             // if this is a mobile client, redirect to the mobile sign-in page
-            if (BrowserAgent.IsMobile(Request.UserAgent))
-                return RedirectToAction("MobileIndex", "Home");
+            /*
+             if (BrowserAgent.IsMobile(Request.UserAgent))
+                 return RedirectToAction("MobileIndex", "Home");
+             */
 
             ViewBag.ReturnUrl = returnUrl;
             return View();

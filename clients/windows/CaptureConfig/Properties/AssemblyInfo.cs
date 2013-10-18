@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("WebTimer Capture Configation")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("WebTimer LLC")]
 [assembly: AssemblyProduct("WebTimer")]
-[assembly: AssemblyCopyright("Copyright © WebTimer, LLC 2013")]
+[assembly: AssemblyCopyright("Copyright © 2013 WebTimer LLC")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

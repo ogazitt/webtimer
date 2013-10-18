@@ -3,7 +3,6 @@ window.toolbar = angular.module('toolbar', [])
 .controller('ToolbarController',
     ['$scope', 'datacontext', '$location',
     function ($scope, datacontext, $location) {
-
         $scope.settings = {
             period: Periods.Day,
             person: null,
@@ -36,6 +35,8 @@ window.toolbar = angular.module('toolbar', [])
 
             // only do anything if the person actually changed
             if (oldPerson !== newPerson) {
+                Events.Track(Events.Categories.DashboardToolbar, Events.DashboardToolbar.PersonFilter);
+
                 // set the new person
                 datacontext.setCurrentPerson(newPerson);
                 $scope.settings.person = newPerson;
@@ -64,6 +65,7 @@ window.toolbar = angular.module('toolbar', [])
         });
 
         $scope.selectDay = function $selectDay() {
+            Events.Track(Events.Categories.DashboardToolbar, Events.DashboardToolbar.Day);
             $scope.settings.period = Periods.Day;
             datacontext.setCurrentPeriod(this.settings.period);
             $scope.settings.value = datacontext.getCurrentDate();
@@ -76,6 +78,7 @@ window.toolbar = angular.module('toolbar', [])
         };
 
         $scope.selectWeek = function $selectWeek() {
+            Events.Track(Events.Categories.DashboardToolbar, Events.DashboardToolbar.Week);
             $scope.settings.period = Periods.Week;
             datacontext.setCurrentPeriod(this.settings.period);
             $scope.settings.value = datacontext.getCurrentDate();
@@ -85,6 +88,7 @@ window.toolbar = angular.module('toolbar', [])
         };
 
         $scope.selectMonth = function $selectMonth() {
+            Events.Track(Events.Categories.DashboardToolbar, Events.DashboardToolbar.Month);
             $scope.settings.period = Periods.Month;
             datacontext.setCurrentPeriod(this.settings.period);
             $scope.settings.value = datacontext.getCurrentDate();
@@ -94,6 +98,7 @@ window.toolbar = angular.module('toolbar', [])
         };
 
         $scope.selectNow = function $selectNow() {
+            Events.Track(Events.Categories.DashboardToolbar, Events.DashboardToolbar.Now);
             $scope.settings.value = Date.today();
             datacontext.setCurrentDate(this.settings.value);
             datacontext.getData();
@@ -103,6 +108,7 @@ window.toolbar = angular.module('toolbar', [])
         };
 
         $scope.forward = function $forward() {
+            Events.Track(Events.Categories.DashboardToolbar, Events.DashboardToolbar.Forward);
             datacontext.moveForward();
             datacontext.getData();
             if ($scope.settings.person !== null && $scope.settings.period === Periods.Day) {
@@ -111,6 +117,7 @@ window.toolbar = angular.module('toolbar', [])
         };
 
         $scope.back = function $back() {
+            Events.Track(Events.Categories.DashboardToolbar, Events.DashboardToolbar.Back);
             datacontext.moveBack();
             datacontext.getData();
             if ($scope.settings.person !== null && $scope.settings.period === Periods.Day) {
@@ -119,6 +126,7 @@ window.toolbar = angular.module('toolbar', [])
         };
 
         $scope.refresh = function $refresh() {
+            Events.Track(Events.Categories.DashboardToolbar, Events.DashboardToolbar.Refresh);
             datacontext.getData();
             if ($scope.settings.person !== null && $scope.settings.period === Periods.Day) {
                 datacontext.getData(Queries.Timeline);

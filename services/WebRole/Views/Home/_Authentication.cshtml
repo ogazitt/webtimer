@@ -1,5 +1,8 @@
 ﻿@using WebRole.Helpers;
-@if (!BrowserAgent.IsMobile(Request.UserAgent)) {
+@{
+    var isMobile = BrowserAgent.IsMobile(Request.UserAgent);
+}
+@if (!isMobile) {
     <div class="todoList loginPanel" id="loginPanel">
         <section id="localLoginPanel">
             <h2>Log in</h2>

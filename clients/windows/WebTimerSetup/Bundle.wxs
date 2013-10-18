@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?define Version="$(var.BuildVersion)" ?>
 <?define ProductName="WebTimer" ?>
-<?define CompanyName="WebTimer, LLC" ?>
+<?define CompanyName="WebTimer LLC" ?>
 <?define HelpPhone="+1 425-765-0079" ?>
 <?define HelpUrl="http://www.webtimer.co/home/help" ?>
 <?define AboutUrl="http://www.webtimer.co/home/about" ?>

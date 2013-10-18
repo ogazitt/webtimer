@@ -16,9 +16,7 @@
         errorSummary.find('ul').empty().append(items);
     };
 
-    var formSubmitHandler = function (e) {
-        var $form = $(this);
-
+    var formSubmitHandler = function ($form, e) {
         // We check if jQuery.validator exists on the form
         if (!$form.valid || $form.valid()) {
             $.post($form.attr('action'), $form.serializeArray())
@@ -42,6 +40,7 @@
     };
 
     $("#showRegister").click(function () {
+        Events.Track(Events.Categories.LandingPage, Events.LandingPage.SignUpButton);
         $(".loginPanel").fadeOut("fast", function () {
             $("#registerPanel").fadeIn("fast", function () {
                 $("#registerName").focus();
@@ -50,6 +49,7 @@
     });
 
     $("#showLogin").click(function () {
+        Events.Track(Events.Categories.LandingPage, Events.LandingPage.SignInButton);
         $("#registerPanel").fadeOut("fast", function () {
             $(".loginPanel").fadeIn("fast", function () {
                 $("#loginName").focus();
@@ -57,6 +57,12 @@
         });
     });
 
-    $("#loginForm").submit(formSubmitHandler);
-    $("#registerForm").submit(formSubmitHandler);
+    $("#loginForm").submit(function (e) {
+        Events.Track(Events.Categories.LandingPage, Events.LandingPage.SignInFormPost);
+        return formSubmitHandler($(this), e);
+    });
+    $("#registerForm").submit(function (e) {
+        Events.Track(Events.Categories.LandingPage, Events.LandingPage.SignUpFormPost);
+        return formSubmitHandler($(this), e);
+    });
 });

@@ -1,78 +1,107 @@
-﻿@{
+﻿@using WebRole.Helpers;
+@{
     ViewBag.Title = "About";
+    var isMobile = BrowserAgent.IsMobile(Request.UserAgent);
+    var containerClass = isMobile ? "" : "jumbotron container main-container";
 }
-<div class="jumbotron">
-    <div class="container">
-        <img class="webtimer-jumbotron" src="~/Content/images/WebTimer_logo.png" alt="WebTimer" />
-        <br />
+<div class="@containerClass">
+@if (!isMobile) {
+    <img class="webtimer-jumbotron" src="~/Content/images/WebTimer_logo.png" alt="WebTimer" />
+    <br />
+}
 
-        <div class="list-group col-lg-3 col-md-3 col-sm-12 col-xs-12">
-            <a href="#webtimer" class="list-group-item active">WebTimer</a>
-            <a href="#how" class="list-group-item">How does it work?</a>
-            <a href="#company" class="list-group-item">The company</a>
-            <a href="#start" class="list-group-item">Getting started</a>
-        </div>
+    <div class="list-group col-lg-3 col-md-3 col-sm-12 col-xs-12">
+        <a href="#webtimer" class="list-group-item active">WebTimer</a>
+        <a href="#how" class="list-group-item">How does it work?</a>
+        <a href="#privacy" class="list-group-item">Your privacy</a>
+        <a href="#company" class="list-group-item">The company</a>
+        <a href="#start" class="list-group-item">Getting started</a>
+    </div>
 
-        <div class="tab-content col-lg-9 col-md-9 col-sm-12 col-xs-12">
-            <div class="tab-pane active" id="webtimer">
-                <p>If you're like us, your kids are spending lots of time on the Web.</p>
-                <p>
-                    The Web is great - it's an incredible and indispensible resource for our kids as they grow and mature.
-                    It is also increasingly how our kids socialize with others - it's impossible to be a teenager without being online.
-                </p>
-                <p>But too much of anything can be a bad thing, and studies have shown that spending too much time online can become unhealthy and habit-forming.</p>
-                <p><i>WebTimer</i> was created to help parents get a better idea of how their kids are spending time online.</p>
-            </div>
-            <div class="tab-pane" id="how">
-                <p>
-                    <i>WebTimer</i> unobtrusively collects information from every device it is installed on.  
-                    It forwards this information to a cloud service.  You can sign into the <i>WebTimer</i> 
-                    website from any device with a browser, and view everything that's been going on.
-                </p>
-                <p>
-                    <i>WebTimer</i> automatically picks up the names of each of the devices it is installed on,
-                    and allows you to associate each device with a person.  This way, you can get a complete picture of 
-                    how each kid is spending their time on the Web.
-                </p>
-            </div>
-            <div class="tab-pane" id="company">
-                <p>
-                    <i>WebTimer, LLC</i> is an early-stage startup in the beautiful Seattle area.
-                    It was started by two parents just like you.
-                    <div class="team-members">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <div class="team-member-photo">
-                                <a onclick="window.open('http://www.linkedin.com/in/sherigazitt')">
-                                    <img class="team-member-image" src="~/Content/images/sheri.png" alt="Sheri Gazitt" />
-                                </a>
-                            </div>
-                            <p>
-                                Sheri has a Masters in Psychology and is a certified teen life coach.  She is the founder of <a onclick="window.open('http://www.teenwiseseattle.com')">TeenWise</a> 
-                                and gives talks to teens and adults in the Seattle area.
-                            </p>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <div class="team-member-photo">
-                                <a onclick="window.open('http://www.linkedin.com/in/ogazitt')">
-                                    <img class="team-member-image" src="~/Content/images/omri.png" alt="Omri Gazitt" />
-                                </a>
-                            </div>
-                            <p>
-                                Omri is a software exec and the co-founder of <a onclick="window.open('http://www.builtsteady.com')">BuiltSteady</a>. 
-                                He's worked on many things over his 20 year career, but considers raising his three girls to be his greatest achievement.
-                            </p>
-                        </div>
-                    </div>
-                </p>
-            </div>
-            <div class="tab-pane" id="start">
-                <p>
-                    To get started, sign up for an account, and <a href="/home/download">download</a> and install the <i>WebTimer</i> software on 
-                    each of your devices.
-                </p>
+    <div class="tab-content col-lg-9 col-md-9 col-sm-12 col-xs-12">
+        <div class="tab-pane active" id="webtimer">
+            <div class="hidden-lg hidden-md"><p>&nbsp;</p><p>&nbsp;</p></div>
+            <p>If you're like us, your kids are spending lots of time on the Web.</p>
+            <p>
+                The Web is great - it's an incredible and indispensible resource for our kids as they grow and mature.
+                It is also increasingly how our kids socialize with others - it's impossible to be a teenager without being online.
+            </p>
+            <p>But too much of anything can be a bad thing, and studies have shown that spending too much time online can become unhealthy and habit-forming.</p>
+            <p><i>WebTimer</i> was created to help parents get a better idea of how their kids are spending time online.</p>
+            <div class="hidden-lg hidden-md">
                 <br />
-                <p><a href="/" class="btn btn-primary btn-lg">Sign Up</a></p>
+                <p><a href="#" class="btn btn-default">Back to top</a></p>
             </div>
+        </div>
+        <div class="tab-pane" id="how">
+            <div class="hidden-lg hidden-md"><p>&nbsp;</p><p>&nbsp;</p></div>
+            <p>
+                <i>WebTimer</i> unobtrusively collects information from every device it is installed on.  
+                It forwards this information to a cloud service.  You can sign into the <i>WebTimer</i> 
+                website from any device with a browser, and view everything that's been going on.
+            </p>
+            <p>
+                <i>WebTimer</i> automatically picks up the names of each of the devices it is installed on,
+                and allows you to associate each device with a person.  This way, you can get a complete picture of 
+                how each kid is spending their time on the Web.
+            </p>
+            <div class="hidden-lg hidden-md">
+                <br />
+                <p><a href="#" class="btn btn-default">Back to top</a></p>
+            </div>
+        </div>
+        <div class="tab-pane" id="privacy">
+            <div class="hidden-lg hidden-md"><p>&nbsp;</p><p>&nbsp;</p></div>
+            <p>
+                <i>WebTimer</i> treats your information with the utmost respect.  We will never sell your personal 
+                information.  To anyone.  EVER.  
+            </p>
+            <div class="hidden-lg hidden-md">
+                <br />
+                <p><a href="#" class="btn btn-default">Back to top</a></p>
+            </div>
+        </div>
+        <div class="tab-pane" id="company">
+            <div class="hidden-lg hidden-md"><p>&nbsp;</p><p>&nbsp;</p></div>
+            <i>WebTimer LLC</i> is an early-stage startup in the beautiful Seattle area.
+            It was started by two parents just like you.
+            <div class="team-members">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="team-member-photo">
+                        <a onclick="window.open('http://www.linkedin.com/in/sherigazitt')">
+                            <img class="team-member-image" src="~/Content/images/sheri.png" alt="Sheri Gazitt" />
+                        </a>
+                    </div>
+                    <p>
+                        Sheri has a Masters in Psychology and is a certified teen life coach.  She is the founder of <a onclick="window.open('http://www.teenwiseseattle.com')">Teen Wise</a> 
+                        and gives talks to teens and adults in the Seattle area.
+                    </p>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="team-member-photo">
+                        <a onclick="window.open('http://www.linkedin.com/in/ogazitt')">
+                            <img class="team-member-image" src="~/Content/images/omri.png" alt="Omri Gazitt" />
+                        </a>
+                    </div>
+                    <p>
+                        Omri is a software exec and the co-founder of <a onclick="window.open('http://www.builtsteady.com')">BuiltSteady</a>. 
+                        He's worked on many things over his 20 year career, but considers raising his three girls to be his greatest achievement.
+                    </p>
+                </div>
+            </div>
+            <div class="hidden-lg hidden-md">
+                <br />
+                <p><a href="#" class="btn btn-default">Back to top</a></p>
+            </div>
+        </div>
+        <div class="tab-pane" id="start">
+            <div class="hidden-lg hidden-md"><p>&nbsp;</p><p>&nbsp;</p></div>
+            <p>
+                To get started, sign up for an account, and <a href="/home/download">download</a> and install the <i>WebTimer</i> software on 
+                each of your devices.
+            </p>
+            <br />
+            <p><a href="/" class="btn btn-primary btn-lg">Sign Up</a></p>
         </div>
     </div>
 </div>

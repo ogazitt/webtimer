@@ -1,7 +1,6 @@
 ﻿@model WebRole.Models.LoginModel
 @{
     ViewBag.Title = "WebTimer";
-    ViewData["LandingPage"] = true;
 }
 @using WebRole.Helpers;
 @functions{
@@ -27,18 +26,8 @@
 }
 else
 {
-    <div class="container main-container landing-main">
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 logo-image-container">
-            <img class="logo-image" src="~/Content/images/WebTimer_tagline.png" alt="Stay on top of how your kids use the Web." />
-            <a href="#product-info" class="btn btn-primary btn-lg learn-more-btn topLink">Learn more</a>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 login-container">
-            @Html.Partial("_Authentication")
-        </div>
-    </div>
-    
-    <div id="product-info">
-        <img class="screenshot-image" src="/Content/images/screenshot.png" alt="screenshot"/>
+    <div class="col-sm-12 col-xs-12 login-container">
+        @Html.Partial("_Authentication")
     </div>
 }
 
@@ -52,25 +41,5 @@ else
         @Scripts.Render("~/bundles/extras")
         @Scripts.Render("~/bundles/highcharts")
         @Scripts.Render("~/bundles/dashboard")
-    }
-    
+    }    
 }
-
-<script type="text/javascript">
-    // document ready handler 
-    $(document).ready(function () {
-        window.UserName = "@User.Identity.Name";
-
-        $("a.topLink").click(function () {
-            $("html, body").animate({
-                scrollTop: $($(this).attr("href")).offset().top + "px"
-            }, {
-                duration: 500,
-                easing: "swing"
-            });
-            return false;
-        });
-    });
-</script>
-
-

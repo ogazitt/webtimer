@@ -17,6 +17,7 @@
       <Import moduleName="RemoteForwarder" />
     </Imports>
     <ConfigurationSettings>
+      <Setting name="DeploymentName" />
       <Setting name="UserDataConnectionString" />
       <Setting name="UserProfileConnectionString" />
       <Setting name="MongoUri" />
@@ -31,6 +32,7 @@
       <Import moduleName="RemoteAccess" />
     </Imports>
     <ConfigurationSettings>
+      <Setting name="DeploymentName" />
       <Setting name="UserDataConnectionString" />
       <Setting name="UserProfileConnectionString" />
       <Setting name="MongoUri" />

@@ -1,14 +1,9 @@
 ﻿<!-- Day page partial view -->
 <div class="row">
-    <highchart config="columnChartConfig" class="col-xs-4 col-sm-6 col-md-6 col-lg-6" ></highchart>
-    <highchart config="pieChartConfig" class="col-xs-2 col-sm-6 col-md-3 col-lg-3" ></highchart>
+    <highchart config="columnChartConfig" class="col-xs-8 col-sm-6 col-md-6 col-lg-6 main-chart" ></highchart>
+    <highchart config="pieChartConfig" class="hidden-xs col-sm-3 col-md-3 col-lg-3" ></highchart>
     <div data-ng-show="showTimeline()">
-        <highchart config="timelineChartConfig" class="col-xs-12 col-sm-12 col-md-offset-2 col-md-10 col-lg-offset-2 col-lg-10"></highchart>
+        <highchart config="timelineChartConfig" class="hidden-xs col-sm-offset-2 col-sm-10 col-md-offset-2 col-md-10 col-lg-offset-2 col-lg-10"></highchart>
     </div>
 </div>
-<!--
-<div class="row">
-    <highchart config="timelineChartConfig" class="col-xs-12 col-sm-12 col-md-offset-2 col-md-10 col-lg-offset-2 col-lg-10" ></highchart>
-</div>
--->
 <p class="error" data-ng-show="error">{{error}}</p>

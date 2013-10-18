@@ -275,6 +275,7 @@
     <Content Include="angular-highcharts-demo.html" />
     <Content Include="app\dashboard\controllers\detail.day.controller.js" />
     <Content Include="app\dashboard\controllers\header.controller.js" />
+    <Content Include="app\dashboard\views\header.mobile.view.html" />
     <Content Include="app\dashboard\views\detail.day.view.html" />
     <Content Include="app\dashboard\views\header.view.html" />
     <Content Include="app\dashboard\controllers\devices.controller.js" />
@@ -322,6 +323,7 @@
     <Content Include="Content\images\twitter.png" />
     <Content Include="Content\images\twitter_32.png" />
     <Content Include="Content\images\WebTimer.png" />
+    <Content Include="Content\images\WebTimer_graphic_small.png" />
     <Content Include="Content\images\WebTimer_logo.png" />
     <Content Include="Content\images\WebTimer_tagline.png" />
     <Content Include="Content\images\windows.png" />
@@ -387,6 +389,7 @@
     <Content Include="Scripts\angular-colorpicker.js" />
     <Content Include="Scripts\angular-btnswitch.js" />
     <Content Include="Scripts\date.js" />
+    <Content Include="Scripts\google-analytics.js" />
     <Content Include="Scripts\highcharts\adapters\mootools-adapter.js" />
     <Content Include="Scripts\highcharts\adapters\mootools-adapter.src.js" />
     <Content Include="Scripts\highcharts\adapters\prototype-adapter.js" />
@@ -771,6 +774,9 @@
     <Content Include="Views\Home\Terms.cshtml" />
     <Content Include="Views\Home\Download.cshtml" />
     <Content Include="Views\Home\MobileIndex.cshtml" />
+    <Content Include="Views\Shared\_MobileMenu.cshtml" />
+    <Content Include="Views\Shared\_Header.cshtml" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

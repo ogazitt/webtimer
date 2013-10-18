@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("WebTimer Capture Service")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("WebTimer, LLC")]
+[assembly: AssemblyCompany("WebTimer LLC")]
 [assembly: AssemblyProduct("WebTimer")]
-[assembly: AssemblyCopyright("Copyright © WebTimer, LLC 2013")]
+[assembly: AssemblyCopyright("Copyright © 2013 WebTimer LLC")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

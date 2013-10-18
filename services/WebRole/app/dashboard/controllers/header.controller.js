@@ -10,5 +10,21 @@ header.controller('HeaderController',
             }
             return viewLocation === $location.path();
         };
+        $scope.dashboard = function () {
+            Events.Track(Events.Categories.DashboardHeader, Events.DashboardHeader.Dashboard);
+            collapse();
+        }
+        $scope.people = function () {
+            Events.Track(Events.Categories.DashboardHeader, Events.DashboardHeader.People);
+            collapse();
+        }
+        $scope.devices = function () {
+            Events.Track(Events.Categories.DashboardHeader, Events.DashboardHeader.Devices);
+            collapse();
+        }
+
+        function collapse() {
+            $(".nav-collapse").collapse('hide');
+        }
         //$scope.username = window.UserName;
     }]);

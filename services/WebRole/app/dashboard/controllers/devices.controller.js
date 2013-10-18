@@ -57,6 +57,7 @@ dashboard.controller('DevicesController',
             endEdit(entity);
         }
         function endEdit(entity) {
+            Events.Track(Events.Categories.Devices, Events.Devices.Change);
             datacontext.saveEntity(entity).fin(refreshView);
         }
         function clearErrorMessage(obj) {

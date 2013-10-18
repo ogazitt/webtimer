@@ -1,31 +1,29 @@
 ﻿<!-- toolbar partial view -->
 <div class="toolbar" data-ng-show="showToolbar()" data-ng-controller="ToolbarController">
     <!-- period selector -->
-    <div class="well col-lg-offset-2 col-lg-10 col-md-offset-2 col-md-10 col-sm-12 col-xs-12">
+    <div class="well well-sm col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <!-- navigation controls -->
         <div class="btn-group now-button">
-    <!--        <button class="btn btn-default"><span data-ng-cloak="">{{settings.buttonTitle}}</span></button>-->
             <button class="btn btn-default" data-ng-bind="settings.buttonTitle" data-ng-click="selectNow()"></button>
         </div>
         <div class="btn-group">
             <button class="btn btn-default" data-ng-click="back()"><span class="glyphicon glyphicon-chevron-left"></span></button>
-    <!--        <button class="btn btn-default disabled"><span>{{ settings.value | date:'shortDate' }}</span></button>-->
             <button class="btn btn-default disabled date-display" data-ng-bind="settings.value | date:settings.format"></button>
             <button class="btn btn-default" data-ng-click="forward()"><span class="glyphicon glyphicon-chevron-right"></span></button>
         </div>
 
         <!-- time period controls -->
-        <div class="btn-group pull-right">
+        <div class="btn-group pull-right time-period-controls">
             <button class="btn btn-default btn-active" data-ng-class="{ active: isActivePeriod('day')}" data-ng-click="selectDay()">Day</button> 
             <button class="btn btn-default" data-ng-class="{ active: isActivePeriod('week')}" data-ng-click="selectWeek()">Week</button> 
             <button class="btn btn-default" data-ng-class="{ active: isActivePeriod('month')}" data-ng-click="selectMonth()">Month</button> 
-            <a href="#/log" class="btn btn-default">Log</a> 
-            <a data-ng-click="refresh()" class="btn btn-default">Refresh</a>     
+            <a href="#/log" class="btn btn-default hidden-xs">Log</a> 
+            <a data-ng-click="refresh()" class="btn btn-default hidden-xs">Refresh</a>     
         </div>  
     </div>
 
     <!-- people selector -->
-    <div class="well col-lg-2 col-md-2 col-sm-3 col-xs-6">
+    <div class="well well-sm col-lg-2 col-md-2 col-sm-2 col-xs-3">
         <div class="people-selector btn-group-vertical">
             <a  href="#/" 
                 data-ng-class="{ active: isActivePerson(null) }"
@@ -36,9 +34,8 @@
                 href="#/detail" 
                 data-ng-bind="person.name"
                 data-ng-class="{ active: isActivePerson(person) }"
-                class="btn btn-default"
+                class="btn btn-default btn-overflow-hidden"
                 data-ng-click="selectPerson(person)"></a>
         </div>
     </div>
-
 </div>

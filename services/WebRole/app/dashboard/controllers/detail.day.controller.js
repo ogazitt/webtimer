@@ -39,11 +39,13 @@ dashboard.controller('DetailController',
                                     var currentQuery = datacontext.getCurrentQuery();
                                     switch (currentQuery) {
                                         case Queries.Categories:
+                                            Events.Track(Events.Categories.DashboardDetail, Events.DashboardDetail.ChartZoomIn);
                                             datacontext.setCurrentQuery(Queries.Sites)
                                             datacontext.setCurrentCategory(this.name);
                                             getData();
                                             break;
                                         case Queries.Sites:
+                                            Events.Track(Events.Categories.DashboardDetail, Events.DashboardDetail.ChartZoomOut);
                                             datacontext.setCurrentQuery(Queries.Categories)
                                             datacontext.setCurrentCategory(null);
                                             getData();

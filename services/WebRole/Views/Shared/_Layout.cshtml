@@ -1,4 +1,15 @@
 ﻿@using WebRole.Helpers;
+@using ServiceHost;
+@{
+    var isLandingPage = false;
+    if (!User.Identity.IsAuthenticated && 
+        (Request.Url.AbsolutePath.Equals("/") || 
+         Request.Url.AbsolutePath.ToLower().Equals("/home/index"))) {
+        isLandingPage = true;
+    }
+    var isMobile = BrowserAgent.IsMobile(Request.UserAgent);
+    var enableEvents = HostEnvironment.DeploymentName.Equals("Production", StringComparison.OrdinalIgnoreCase);    
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,81 +27,37 @@
 	@*@Styles.Render("~/Content/bootstrap/theme")*@ 			
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/google-analytics")
     @*@Styles.Render("~/Content/themes/base/css")*@
+    @if (enableEvents || true) { 
+    <script type="text/javascript">
+        // enable google analytics events
+        $(function () {
+            Events.Enable(); 
+        });
+    </script>
+    }
 </head>
 <body data-ng-app="dashboard">
     <!--[if lt IE 9]><p class="error" style="clear:both;">'Breeze + Angular' requires browser support for defined properties.</p><![endif]-->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="navbar-inner">
-        @if (BrowserAgent.IsMobile(Request.UserAgent))
-        {
-            <div class="navbar-header">
-                <a class="navbar-brand brand-padding" href="/"><img src="~/Content/images/WebTimer_graphic_small.png" height="46" alt="WebTimer" /></a>
-            </div>             
-        }
-        else
-        {
-            <div class="navbar-header">
-                <a class="navbar-brand brand-padding" href="/"><img src="~/Content/images/WebTimer.png" height="46" alt="WebTimer" /></a>
-            </div>             
-        }
-               
-        <!-- login menu -->
-        @Html.Partial("_LoginMenu")
+    @Html.Partial("_Header")
 
-        <!-- header bar -->
-        @if (User.Identity.IsAuthenticated && Request.Url.AbsolutePath.Equals("/")) {
-            @Html.Include("~/app/dashboard/views/header.view.html")
-        }
-        </div>
-    </nav> 
-
-    @if (ViewData.ContainsKey("LandingPage"))
+    @if (ViewData.ContainsKey("CustomBody"))
+    {
+        @RenderBody()
+    }
+    else
     {
         <div id="userSettings">
             @Html.Partial("_UserSettings")
         </div>
 
-        <div id="body">
+        <div id="body" class="container">
             @RenderBody()
         </div>
     }
-    else
-    {
-        <div class="container main-container">
-            @if (ViewData.ContainsKey("CustomBody"))
-            {
-                @RenderBody()
-            }
-            else
-            {
-                <div id="userSettings">
-                    @Html.Partial("_UserSettings")
-                </div>
 
-                <div id="body">
-                    @RenderBody()
-                </div>
-            }
-            <!-- <hr /> -->
-        </div>
-    }
-
-    <div class="navbar navbar-inverse navbar-fixed-bottom">
-        <div class="navbar-inner">
-            <div class="container pull-right">
-                <ul class="nav navbar-nav" id="menu">
-                    <li><a href="/home/about"><strong>About</strong></a></li>
-                    <li><a href="/home/contact"><strong>Contact</strong></a></li>
-                    <li><a href="/home/terms"><strong>Terms</strong></a></li>
-                    @*<li>@Html.ActionLink("API", "Index", "Help", new { area = "HelpPage" }, null)</li>*@
-                    @if (!BrowserAgent.IsMobile(Request.UserAgent)) {
-                        <li><a href="/"><strong>WebTimer, LLC &copy; @DateTime.Now.Year</strong></a></li>
-                    }
-                </ul>
-            </div>
-        </div>
-    </div>
+    @Html.Partial("_Footer")
 
     @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/ajaxlogin")

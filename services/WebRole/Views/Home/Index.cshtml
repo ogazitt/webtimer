@@ -1,7 +1,8 @@
 ﻿@model WebRole.Models.LoginModel
 @{
     ViewBag.Title = "WebTimer";
-    ViewData["LandingPage"] = true;
+    var isMobile = BrowserAgent.IsMobile(Request.UserAgent);
+    var isTablet = BrowserAgent.IsTablet(Request.UserAgent);
 }
 @using WebRole.Helpers;
 @functions{
@@ -9,7 +10,7 @@
     {
         string cookieToken, formToken;
         AntiForgery.GetTokens(null, out cookieToken, out formToken);
-        return cookieToken + ":" + formToken;                
+        return cookieToken + ":" + formToken;
     }
 }
 
@@ -17,29 +18,42 @@
 @if (@User.Identity.IsAuthenticated)
 {
 <!-- main dashboard div, which contains the app views -->
-    <div class="dashboard main-container">
+    <div class="dashboard">
         <!-- toolbar -->
         @Html.Include("~/app/dashboard/views/toolbar.view.html")
-        <br />
+
         <!-- view -->
         <div data-ng-view=""></div> 
     </div>
 }
 else
 {
+    if (isMobile) {
+    <div class="col-sm-12 col-xs-12 login-container">
+        @Html.Partial("_Authentication")
+    </div>
+    }
+    else {        
     <div class="container main-container landing-main">
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 logo-image-container">
             <img class="logo-image" src="~/Content/images/WebTimer_tagline.png" alt="Stay on top of how your kids use the Web." />
-            <a href="#product-info" class="btn btn-primary btn-lg learn-more-btn topLink">Learn more</a>
+            <a href="#product-info" onClick="productInfoClick()" class="btn btn-primary btn-lg learn-more-btn topLink">Learn more</a>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 login-container">
             @Html.Partial("_Authentication")
         </div>
     </div>
     
+    <script type="text/javascript">
+        function productInfoClick() {
+            Events.Track(Events.Categories.LandingPage, Events.LandingPage.LearnMoreButton);
+        }
+    </script>
+    
     <div id="product-info">
         <img class="screenshot-image" src="/Content/images/screenshot.png" alt="screenshot"/>
     </div>
+    }
 }
 
 @if (@User.Identity.IsAuthenticated)
@@ -56,6 +70,7 @@ else
     
 }
 
+@if (!isMobile) {
 <script type="text/javascript">
     // document ready handler 
     $(document).ready(function () {
@@ -72,5 +87,4 @@ else
         });
     });
 </script>
-
-
+}
