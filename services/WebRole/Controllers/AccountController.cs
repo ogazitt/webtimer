@@ -79,6 +79,8 @@ namespace WebRole.Controllers
                         repository.InitializeNewUserAccount();
                     }
 
+                    EmailProcessor.SendWelcomeEmail(model.UserName);
+
                     FormsAuthentication.SetAuthCookie(model.UserName, createPersistentCookie: false);
                     return Json(new { success = true, redirect = returnUrl });
                 }
@@ -354,6 +356,22 @@ namespace WebRole.Controllers
 
             ViewBag.ShowRemoveButton = externalLogins.Count > 1 || OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             return PartialView("_RemoveExternalLoginsPartial", externalLogins);
+        }
+
+        //
+        // POST: /Account/Delete
+
+        public ActionResult Delete()
+        {
+            var account = User.Identity.Name;
+            WebSecurity.Logout();
+            ((SimpleMembershipProvider)Membership.Provider).DeleteAccount(account);
+            ((SimpleMembershipProvider)Membership.Provider).DeleteUser(account, true);
+            using (var repository = new UserDataRepository(User))
+            {
+                repository.RemoveUserData();
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         #region Helpers

@@ -54,7 +54,7 @@
         color: #999;
     }
 
-    .todoList input[type=text], .addTodo {
+    .todoList input[type=text], .todoList input[type=password], .addTodo {
         width: 200px;
         border: none;
         background: none;

@@ -34,6 +34,8 @@ namespace WebRole.Controllers
                         repository.InitializeNewUserAccount();
                     }
 
+                    EmailProcessor.SendWelcomeEmail(model.UserName);
+
                     FormsAuthentication.SetAuthCookie(model.UserName, createPersistentCookie: false);
                     return model.UserName;
                 }

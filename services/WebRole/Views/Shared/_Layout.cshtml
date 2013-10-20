@@ -1,12 +1,6 @@
 ﻿@using WebRole.Helpers;
 @using ServiceHost;
 @{
-    var isLandingPage = false;
-    if (!User.Identity.IsAuthenticated && 
-        (Request.Url.AbsolutePath.Equals("/") || 
-         Request.Url.AbsolutePath.ToLower().Equals("/home/index"))) {
-        isLandingPage = true;
-    }
     var isMobile = BrowserAgent.IsMobile(Request.UserAgent);
     var enableEvents = HostEnvironment.DeploymentName.Equals("Production", StringComparison.OrdinalIgnoreCase);    
 }

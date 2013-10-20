@@ -4,6 +4,7 @@ using System.Data.Entity.Infrastructure;
 using System.Security;
 using System.Security.Principal;
 using Breeze.WebApi;
+using EntityFramework.Extensions;
 
 using ServiceHost;
 using ServiceEntities.UserData;
@@ -126,6 +127,20 @@ namespace WebRole.Models
             base.SaveChanges();
         }
 
+        public void RemoveUserData()
+        {
+            try
+            {
+                base.WebSessions.Delete(ws => ws.UserId == UserId);
+                base.Devices.Delete(ws => ws.UserId == UserId);
+                base.People.Delete(ws => ws.UserId == UserId);
+            }
+            catch (Exception ex)
+            {
+                TraceLog.TraceException("Could not remove user data", ex);                
+            }
+        }
+
         /*
         #region IDisposable
 
@@ -152,5 +167,6 @@ namespace WebRole.Models
 
         #endregion
          * */
+
     }
 }

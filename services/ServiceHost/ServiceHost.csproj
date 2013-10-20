@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="ConfigurationSettings.cs" />
     <Compile Include="CollectorContext.cs" />
+    <Compile Include="EmailProcessor.cs" />
     <Compile Include="HostEnvironment.cs" />
     <Compile Include="IWorker.cs" />
     <Compile Include="JsonSerializer.cs" />

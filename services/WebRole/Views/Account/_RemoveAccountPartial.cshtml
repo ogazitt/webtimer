@@ -1,0 +1,4 @@
+﻿@using (Html.BeginForm("Delete", "Account")) {
+    @Html.AntiForgeryToken()
+    <input type="submit" class="btn btn-default" value="Delete Account" />
+}
