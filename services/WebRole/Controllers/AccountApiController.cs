@@ -17,7 +17,7 @@ namespace WebRole.Controllers
         // POST: /AccountApi/Register
         [HttpPost]
         [AllowAnonymous]
-        public string Register(LoginModel model)
+        public string Register(RegisterModel model)
         {
             // BUGBUG: access to this API must be controlled - e.g. the client must send a secret
             if (ModelState.IsValid)
@@ -25,7 +25,14 @@ namespace WebRole.Controllers
                 // Attempt to register the user
                 try
                 {
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
+                    WebSecurity.CreateUserAndAccount(
+                        model.UserName,
+                        model.Password,
+                        propertyValues: new
+                        {
+                            Name = model.Name,
+                        },
+                        requireConfirmationToken: false);
                     WebSecurity.Login(model.UserName, model.Password);
                     TraceLog.TraceInfo(string.Format("Created user {0}", model.UserName));
 

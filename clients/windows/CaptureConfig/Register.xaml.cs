@@ -31,7 +31,7 @@ namespace CaptureConfig
                         VerifyPasswordBox.Password.Length > 0 &&
                         PasswordBox.Password == VerifyPasswordBox.Password &&
                         ComputerNameBox.Text.Length > 0 &&
-                        TermsBox.IsEnabled);
+                        TermsBox.IsChecked.HasValue && TermsBox.IsChecked.Value);
             }
         }
 
@@ -61,7 +61,7 @@ namespace CaptureConfig
             {
                 UserName = EmailBox.Text,
                 Password = PasswordBox.Password,
-                VerifyPassword = VerifyPasswordBox.Password,
+                ConfirmPassword = VerifyPasswordBox.Password,
                 Name = NameBox.Text
             };
 

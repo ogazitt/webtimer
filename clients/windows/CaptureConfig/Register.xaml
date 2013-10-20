@@ -24,7 +24,7 @@
         <TextBox Name="ComputerNameBox" HorizontalAlignment="Left" Height="23" Margin="200,225,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="200" KeyUp="TextBoxKeyUp" />
         
         <StackPanel Margin="0,300,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
-            <CheckBox Name="TermsBox" HorizontalAlignment="Center" Checked="TextBoxKeyUp" />
+            <CheckBox Name="TermsBox" HorizontalAlignment="Center" Checked="TextBoxKeyUp" Unchecked="TextBoxKeyUp" />
             <TextBlock Text="  I have read and agree to the " Margin="0,-2,0,0"/>
             <TextBlock Margin="0,-2,0,0" >
                 <Hyperlink RequestNavigate="TOS_Click" NavigateUri="http://www.webtimer.co/home/terms">Terms of Service</Hyperlink>
