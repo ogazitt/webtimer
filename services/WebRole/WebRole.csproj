@@ -272,6 +272,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\EmailAddressAttribute.cs" />
     <Compile Include="Models\UserDataRepository.cs" />
     <Compile Include="Models\DashboardRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

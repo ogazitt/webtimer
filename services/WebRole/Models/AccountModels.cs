@@ -76,7 +76,7 @@ namespace WebRole.Models
 
     public class RegisterModel
     {
-        [Required]
+        [Required, EmailAddress]
         [Display(Name = "Email")]
         public string UserName { get; set; }
 
@@ -91,6 +91,7 @@ namespace WebRole.Models
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
+        [Required]
         [Display(Name = "Name")]
         public string Name { get; set; }
     }

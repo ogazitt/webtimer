@@ -12,6 +12,11 @@ namespace WebRole.Controllers
     {
         public ActionResult Index(string returnUrl)
         {
+            // redirect production to https endpoint
+            var url = Request.Url;
+            if (url.Scheme == "http" && url.Host == "www.webtimer.co")
+                return Redirect("https://www.webtimer.co");
+
             ViewBag.ReturnUrl = returnUrl;
             if (User.Identity.IsAuthenticated)
             {
