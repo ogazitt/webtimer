@@ -262,6 +262,15 @@
     <Compile Include="Helpers\AuthHelper.cs" />
     <Compile Include="Helpers\BrowserAgent.cs" />
     <Compile Include="Helpers\ServerSideInclude.cs" />
+    <Compile Include="Migrations\201310200137436_InitialUserProfile.cs" />
+    <Compile Include="Migrations\201310200137436_InitialUserProfile.Designer.cs">
+      <DependentUpon>201310200137436_InitialUserProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201310200147599_AddNameToUserProfile.cs" />
+    <Compile Include="Migrations\201310200147599_AddNameToUserProfile.Designer.cs">
+      <DependentUpon>201310200147599_AddNameToUserProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\UserDataRepository.cs" />
     <Compile Include="Models\DashboardRepository.cs" />
@@ -762,7 +771,6 @@
     <Content Include="Views\Shared\_LoginMenu.cshtml" />
     <Content Include="Views\Home\Terms.cshtml" />
     <Content Include="Views\Home\Download.cshtml" />
-    <Content Include="Views\Home\MobileIndex.cshtml" />
     <Content Include="Views\Shared\_MobileMenu.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
@@ -783,6 +791,14 @@
       <Project>{6f88f47f-3542-442f-95da-60be368053e1}</Project>
       <Name>ServiceHost</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201310200137436_InitialUserProfile.resx">
+      <DependentUpon>201310200137436_InitialUserProfile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201310200147599_AddNameToUserProfile.resx">
+      <DependentUpon>201310200147599_AddNameToUserProfile.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -138,6 +138,16 @@ namespace WebRole.Controllers
                 : "";
             ViewBag.HasLocalPassword = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             ViewBag.ReturnUrl = Url.Action("Manage");
+
+            // get the appropriate user name
+            using (var context = new UsersContext())
+            {
+                var user = context.UserProfiles.FirstOrDefault(u => u.UserName == User.Identity.Name);
+                if (user != null)
+                    ViewBag.UserName = user.Name;
+                else
+                    ViewBag.UserName = null;
+            }
             return View();
         }
 

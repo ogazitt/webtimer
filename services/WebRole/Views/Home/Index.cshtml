@@ -74,8 +74,6 @@ else
 <script type="text/javascript">
     // document ready handler 
     $(document).ready(function () {
-        window.UserName = "@User.Identity.Name";
-
         $("a.topLink").click(function () {
             $("html, body").animate({
                 scrollTop: $($(this).attr("href")).offset().top + "px"

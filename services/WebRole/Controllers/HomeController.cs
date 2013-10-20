@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WebRole.Helpers;
+using WebRole.Models;
 
 namespace WebRole.Controllers
 {
@@ -11,28 +12,21 @@ namespace WebRole.Controllers
     {
         public ActionResult Index(string returnUrl)
         {
-            // if this is a mobile client, redirect to the mobile sign-in page
-            /*
-             if (BrowserAgent.IsMobile(Request.UserAgent))
-                 return RedirectToAction("MobileIndex", "Home");
-             */
-
             ViewBag.ReturnUrl = returnUrl;
+            if (User.Identity.IsAuthenticated)
+            {
+                using (var context = new UsersContext())
+                {
+                    var user = context.UserProfiles.FirstOrDefault(u => u.UserName == User.Identity.Name);
+                    if (user != null)
+                        ViewBag.UserName = user.Name;
+                    else
+                        ViewBag.UserName = null;
+                }
+            }
             return View();
         }
-
-        public ActionResult MobileIndex(string returnUrl)
-        {
-            /*
-            // if this is a non-mobile client, redirect to the standard landing page
-            if (!BrowserAgent.IsMobile(Request.UserAgent))
-                return RedirectToAction("Index", "Home");
-            */
-
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
-        }
-
+      
         public ActionResult About()
         {
             ViewBag.Message = "About WebTimer";

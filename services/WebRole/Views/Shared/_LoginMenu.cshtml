@@ -1,4 +1,7 @@
 ﻿@using WebRole.Helpers;
+@{
+    var name = ViewBag.UserName ?? @User.Identity.Name;
+}
 
 <ul class="nav navbar-nav navbar-right">
     <li><a id="downloadButton" href="/home/download"><span class="glyphicon glyphicon-save"></span><strong>&nbsp; Download</strong></a></li>
@@ -6,7 +9,7 @@
     <li class="nav-divider"></li>
     <li class="dropdown active">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="glyphicon glyphicon-user"></i><strong>&nbsp; @User.Identity.Name</strong>&nbsp;<b class="caret"></b>
+            <i class="glyphicon glyphicon-user"></i><strong>&nbsp; @name</strong>&nbsp;<b class="caret"></b>
         </a>
         <ul class="dropdown-menu">
             <li><a id="dashboardButton" href="/"><span class="glyphicon glyphicon-stats"></span>&nbsp; Dashboard</a></li>

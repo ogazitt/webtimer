@@ -65,6 +65,14 @@ namespace WebRole.Models
         {
             try
             {
+                var name = UserId;
+                using (var context = new UsersContext())
+                {
+                    var user = context.UserProfiles.FirstOrDefault(u => u.UserName == UserId);
+                    if (user != null)
+                        name = user.Name;
+                }
+
                 // add the user and the "Shared" bucket
                 var person = new Person()
                 {
@@ -76,7 +84,7 @@ namespace WebRole.Models
                 AddPerson(person);
                 person = new Person()
                 {
-                    Name = UserId,
+                    Name = name,
                     UserId = UserId,
                     Birthdate = null,
                     IsChild = false

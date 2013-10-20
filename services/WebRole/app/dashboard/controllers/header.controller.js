@@ -26,5 +26,4 @@ header.controller('HeaderController',
         function collapse() {
             $(".nav-collapse").collapse('hide');
         }
-        //$scope.username = window.UserName;
     }]);
