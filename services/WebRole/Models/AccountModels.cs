@@ -26,6 +26,9 @@ namespace WebRole.Models
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
         public string UserName { get; set; }
+        
+        // additional properties
+        public string Name { get; set; }
     }
 
     public class RegisterExternalLoginModel
@@ -74,7 +77,7 @@ namespace WebRole.Models
     public class RegisterModel
     {
         [Required]
-        [Display(Name = "User name")]
+        [Display(Name = "Email")]
         public string UserName { get; set; }
 
         [Required]

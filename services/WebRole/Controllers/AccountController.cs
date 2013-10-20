@@ -14,8 +14,6 @@ using ServiceHost;
 namespace WebRole.Controllers
 {
     [Authorize]
-    //[InitializeSimpleMembership]
-    //[InitializeTodoSchema]
     public class AccountController : Controller
     {
         //
@@ -68,11 +66,16 @@ namespace WebRole.Controllers
                 // Attempt to register the user
                 try
                 {
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
+                    WebSecurity.CreateUserAndAccount(
+                        model.UserName,
+                        model.Password,
+                        propertyValues: new
+                        {
+                            Name = model.Name,
+                        },
+                        requireConfirmationToken:false);
                     WebSecurity.Login(model.UserName, model.Password);
                     TraceLog.TraceInfo(string.Format("Created user {0}", model.UserName));
-
-                    InitiateDatabaseForNewUser(model.UserName);
 
                     using (var repository = new UserDataRepository(model.UserName))
                     {
@@ -92,33 +95,6 @@ namespace WebRole.Controllers
 
             // If we got this far, something failed
             return Json(new { errors = GetErrorsFromModelState() });
-        }
-
-        /// <summary>
-        /// Initiate a new todo list for new user
-        /// </summary>
-        /// <param name="userName"></param>
-        private static void InitiateDatabaseForNewUser(string userName)
-        {
-            try
-            {
-                TodoItemContext db = new TodoItemContext();
-                TodoList todoList = new TodoList();
-                todoList.UserId = userName;
-                todoList.Title = "My Todo List #1";
-                todoList.Todos = new List<TodoItem>();
-                db.TodoLists.Add(todoList);
-                db.SaveChanges();
-
-                todoList.Todos.Add(new TodoItem() { Title = "Todo item #1", TodoListId = todoList.TodoListId, IsDone = false });
-                todoList.Todos.Add(new TodoItem() { Title = "Todo item #2", TodoListId = todoList.TodoListId, IsDone = false });
-                db.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                TraceLog.TraceException(string.Format("Database initialization failed for user {0}", userName), ex);
-                throw;
-            }
         }
 
         //
@@ -301,7 +277,10 @@ namespace WebRole.Controllers
                         db.UserProfiles.Add(new UserProfile { UserName = model.UserName });
                         db.SaveChanges();
 
-                        InitiateDatabaseForNewUser(model.UserName);
+                        using (var repository = new UserDataRepository(model.UserName))
+                        {
+                            repository.InitializeNewUserAccount();
+                        }
 
                         OAuthWebSecurity.CreateOrUpdateAccount(provider, providerUserId, model.UserName);
                         OAuthWebSecurity.Login(provider, providerUserId, createPersistentCookie: false);
