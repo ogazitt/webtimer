@@ -1,0 +1,27 @@
+﻿@model WebRole.Models.PersonalInfoModel
+
+<h3>Personal information</h3>
+<p></p>
+@using (Html.BeginForm("ManagePersonalInfo", "Account", FormMethod.Post, new { id = "changePersonalInfoForm" }))
+{
+    @Html.AntiForgeryToken()
+    <fieldset>
+        <legend>Change Personal Info Form</legend>
+        <ol>
+            <li>
+                <p />
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Name" })
+            </li>
+            <li>
+                <p />
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email" })
+            </li>
+            <li>
+                <p />
+                @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", @placeholder = "Phone (for SMS)"})
+            </li>
+        </ol>
+        <input type="submit" class="btn btn-primary" value="Change" />
+        @Html.ValidationSummary()
+    </fieldset>
+}

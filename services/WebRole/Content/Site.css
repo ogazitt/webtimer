@@ -76,6 +76,7 @@ header {
 
 /*#region forms */
 
+#changePersonalInfoForm input,
 #changePasswordForm input,
 #registerForm input,
 #loginForm input {
@@ -85,6 +86,7 @@ header {
     border-radius: 5px;
 }
 
+    #changePersonalInfoForm input[type=text],
     #changePasswordForm input[type=text], #changePasswordForm input[type=password],
     #registerForm input[type=text], #registerForm input[type=password],
     #loginForm input[type=text], #loginForm input[type=password] {
@@ -95,6 +97,7 @@ header {
     border: none;
 }
 
+#changePersonalInfoForm input[type=submit],
 #changePasswordForm input[type=submit] {
     margin-bottom: .8em;
 }

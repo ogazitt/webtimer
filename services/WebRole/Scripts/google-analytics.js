@@ -52,6 +52,8 @@ Events.LandingPage.SignUpFormPost = 'SignUpFormPost';
 Events.LandingPage.SignInButton = 'SignInButton';
 Events.LandingPage.SignInFormPost = 'SignInFormPost';
 Events.LandingPage.LearnMoreButton = 'LearnMoreButton';
+Events.LandingPage.DownloadButton = 'DownloadButton';
+Events.LandingPage.BigSignUpButton = 'BigSignUpButton';
 
 // Header actions
 Events.Header = {};

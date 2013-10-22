@@ -126,18 +126,16 @@ namespace WebRole.Controllers
             return RedirectToAction("Manage", new { Message = message });
         }
 
+
         //
         // GET: /Account/Manage
 
-        public ActionResult Manage(ManageMessageId? message)
+        public ActionResult Manage(ManageMessageId? message = null, string anchor = null)
         {
-            ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
-                : "";
+            ViewBag.StatusMessage = SuccessCodeToString(message);
             ViewBag.HasLocalPassword = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             ViewBag.ReturnUrl = Url.Action("Manage");
+            ViewBag.Anchor = anchor;
 
             // get the appropriate user name
             using (var context = new UsersContext())
@@ -152,11 +150,11 @@ namespace WebRole.Controllers
         }
 
         //
-        // POST: /Account/Manage
+        // POST: /Account/ManagePassword
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Manage(LocalPasswordModel model)
+        public ActionResult ManagePassword(LocalPasswordModel model)
         {
             bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             ViewBag.HasLocalPassword = hasLocalAccount;
@@ -178,13 +176,15 @@ namespace WebRole.Controllers
 
                     if (changePasswordSucceeded)
                     {
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
+                        return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess, Anchor = "password" });
                     }
                     else
                     {
                         ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
                     }
                 }
+                else
+                    ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
             }
             else
             {
@@ -201,7 +201,7 @@ namespace WebRole.Controllers
                     try
                     {
                         WebSecurity.CreateAccount(User.Identity.Name, model.NewPassword);
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
+                        return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
                     }
                     catch (Exception e)
                     {
@@ -213,6 +213,48 @@ namespace WebRole.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
+
+        //
+        // POST: /Account/ManagePersonalInfo
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ManagePersonalInfo(PersonalInfoModel model)
+        {
+            bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
+            ViewBag.HasLocalPassword = hasLocalAccount;
+            ViewBag.ReturnUrl = Url.Action("Manage");
+            if (ModelState.IsValid)
+            {
+                using (var context = new UsersContext())
+                {
+                    var userProfile = context.UserProfiles.FirstOrDefault(u => u.UserName == User.Identity.Name);
+                    if (userProfile != null)
+                    {
+                        try
+                        {
+                            userProfile.Name = model.Name;
+                            userProfile.UserName = model.Email;
+                            userProfile.Phone = model.Phone;
+                            context.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            TraceLog.TraceException("Could not save personal information", ex);
+                            return View(model);
+                        }
+                    }
+                }
+                return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePersonalInfoSuccess });
+            }
+            else
+                ModelState.AddModelError("", "One of the values is invalid.");
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
 
         //
         // POST: /Account/ExternalLogin
@@ -318,6 +360,39 @@ namespace WebRole.Controllers
             return View();
         }
 
+        /* the following methods are used by the page to get HTML partials at runtime */
+
+        [AllowAnonymous]
+        [ChildActionOnly]
+        public ActionResult ChangePersonalInfo(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            var userInfo = new PersonalInfoModel();
+            using (var context = new UsersContext())
+            {
+                var profile = context.UserProfiles.FirstOrDefault(u => u.UserName == User.Identity.Name);
+                userInfo.Name = profile.Name;
+                userInfo.Email = profile.UserName;
+                userInfo.Phone = profile.Phone;
+            }
+            return PartialView("_ChangePersonalInfoPartial", userInfo);
+        }
+
+        [AllowAnonymous]
+        [ChildActionOnly]
+        public ActionResult ChangePassword()
+        {
+            return PartialView("_ChangePasswordPartial");
+        }
+
+        [AllowAnonymous]
+        [ChildActionOnly]
+        public ActionResult SetPassword(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return PartialView("_SetPasswordPartial");
+        }
+
         [AllowAnonymous]
         [ChildActionOnly]
         public ActionResult ExternalLoginsList(string returnUrl)
@@ -381,6 +456,7 @@ namespace WebRole.Controllers
             ChangePasswordSuccess,
             SetPasswordSuccess,
             RemoveLoginSuccess,
+            ChangePersonalInfoSuccess,
         }
 
         internal class ExternalLoginResult : ActionResult
@@ -440,6 +516,25 @@ namespace WebRole.Controllers
 
                 default:
                     return "An unknown error occurred. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
+            }
+        }
+
+        private static string SuccessCodeToString(ManageMessageId? messageId)
+        {
+            if (!messageId.HasValue)
+                return "";
+            switch (messageId.Value)
+            {
+                case ManageMessageId.ChangePasswordSuccess:
+                    return "Your password has been changed.";
+                case ManageMessageId.SetPasswordSuccess:
+                    return "Your password has been set.";
+                case ManageMessageId.RemoveLoginSuccess:
+                    return "The external login was removed.";
+                case ManageMessageId.ChangePersonalInfoSuccess:
+                    return "Your personal information has been changed.";
+                default:
+                    return "";
             }
         }
         #endregion

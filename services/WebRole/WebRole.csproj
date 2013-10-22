@@ -270,6 +270,10 @@
     <Compile Include="Migrations\201310200147599_AddNameToUserProfile.Designer.cs">
       <DependentUpon>201310200147599_AddNameToUserProfile.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201310220058528_AddPhoneToProfile.cs" />
+    <Compile Include="Migrations\201310220058528_AddPhoneToProfile.Designer.cs">
+      <DependentUpon>201310220058528_AddPhoneToProfile.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\EmailAddressAttribute.cs" />
@@ -718,10 +722,12 @@
     <Content Include="Scripts\jquery-2.0.3.js" />
     <Content Include="Scripts\jquery-2.0.3.min.js" />
     <Content Include="Scripts\jquery-2.0.3.min.map" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-migrate-1.2.1.js" />
+    <Content Include="Scripts\jquery-migrate-1.2.1.min.js" />
     <Content Include="Scripts\jquery.colorPicker.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -776,6 +782,7 @@
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Account\_RemoveAccountPartial.cshtml" />
+    <Content Include="Views\Account\_ChangePersonalInfoPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -799,6 +806,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201310200147599_AddNameToUserProfile.resx">
       <DependentUpon>201310200147599_AddNameToUserProfile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201310220058528_AddPhoneToProfile.resx">
+      <DependentUpon>201310220058528_AddPhoneToProfile.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

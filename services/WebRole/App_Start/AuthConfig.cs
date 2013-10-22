@@ -25,14 +25,15 @@ namespace WebRole
             //    clientId: "",
             //    clientSecret: "");
 
+            /*
             OAuthWebSecurity.RegisterTwitterClient(
                 consumerKey: "358635997554397",
                 consumerSecret: "f1e505d41b79380fe9da309f8ce3b984");
-
+            */
             OAuthWebSecurity.RegisterFacebookClient(
-                appId: "358635997554397",
-                appSecret: "f1e505d41b79380fe9da309f8ce3b984");
-
+                appId: "307251696084143",
+                appSecret: "0fa520aac1c6d4d1c5f71a00ea5c6438");
+            
             OAuthWebSecurity.RegisterGoogleClient();
         }
 

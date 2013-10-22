@@ -14,7 +14,7 @@
             <p> </p>
             @Html.Action("ExternalLoginsList", "Account", new { ReturnUrl = ViewBag.ReturnUrl })
             <div class="signup-button">
-                <p><button class="btn btn-success" id="showRegister">Sign up</button>&nbsp; for a new account</p>
+                <p><button class="btn btn-success showRegister">Sign up</button>&nbsp; for a new account</p>
             </div>            
         </section>
     </div>
@@ -24,12 +24,12 @@ else {
         <section id="localLoginPanelMobile">
             <h2>Log in</h2>
             @Html.Partial("_Login")
-            <p><button class="btn btn-success" id="showRegister">Sign up</button>&nbsp; for a new account</p>
+            <p><button class="btn btn-success showRegister">Sign up</button>&nbsp; for a new account</p>
         </section>
     </div>
 }
     <div class="todoList" id="registerPanel">
         <h2>Sign up</h2>
         @Html.Partial("_Register")
-        <p>Already signed up? &nbsp;<button class="btn btn-success" id="showLogin">Log in</button></p>
+        <p>Already signed up? &nbsp;<button class="btn btn-success showLogin">Log in</button></p>
     </div>

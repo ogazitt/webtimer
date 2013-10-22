@@ -1,6 +1,9 @@
 ﻿@using WebRole.Helpers;
 @{
     var isMobile = BrowserAgent.IsMobile(Request.UserAgent);
+    var isDashboard = User.Identity.IsAuthenticated &&
+                        (Request.Url.AbsolutePath.Equals("/") ||
+                         Request.Url.AbsolutePath.ToLower().Equals("/home/index"));
 }
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -17,27 +20,25 @@
         }
 
         <!-- mobile header bar -->
-        if (User.Identity.IsAuthenticated && 
-                (Request.Url.AbsolutePath.Equals("/") || 
-                    Request.Url.AbsolutePath.ToLower().Equals("/home/index"))) {
+        if (isDashboard) {
             @Html.Include("~/app/dashboard/views/header.mobile.view.html")
         }
     }
     else
     {
-        <div class="navbar-header">
-            <a id="brandButton" class="navbar-brand brand-padding" href="/"><img src="~/Content/images/WebTimer.png" height="46" alt="WebTimer" /></a>
-        </div>             
+        <div class="navbar-inner">
+            <div class="navbar-header">
+                <a id="brandButton" class="navbar-brand brand-padding" href="/"><img src="~/Content/images/WebTimer.png" height="46" alt="WebTimer" /></a>
+            </div>             
 
-        <!-- login menu -->
-        @Html.Partial("_LoginMenu")
+            <!-- login menu -->
+            @Html.Partial("_LoginMenu")
             
-        <!-- header bar -->
-        if (User.Identity.IsAuthenticated && 
-                (Request.Url.AbsolutePath.Equals("/") || 
-                    Request.Url.AbsolutePath.ToLower().Equals("/home/index"))) {
-            @Html.Include("~/app/dashboard/views/header.view.html")
-        }
+            <!-- header bar -->
+            @if (isDashboard) {
+                @Html.Include("~/app/dashboard/views/header.view.html")
+            }
+        </div>
     }               
     </nav> 
 

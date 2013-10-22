@@ -1,37 +1,74 @@
-﻿@model WebRole.Models.LocalPasswordModel
-@{
+﻿@{
     ViewBag.Title = "Settings";
+    var anchor = ViewBag.Anchor ?? "personal";
 }
 
-<header>
-    <h1 class="toolbar well">@ViewBag.Title</h1>
-</header>
+<div id="main-content" class="jumbotron container main-container">
+    <div class="list-group col-lg-4 col-md-4 col-sm-6">
+        <a href="#personal" class="list-group-item active">Personal Information</a>
+        <a href="#password" class="list-group-item">Manage Password</a>
+        <a href="#social" class="list-group-item">Social Logins</a>
+        <a href="#account" class="list-group-item">Account Information</a>
+    </div>
 
-<div id="main-content">
-    <p class="message-success">@ViewBag.StatusMessage</p>
+    <div class="tab-content col-lg-8 col-md-8 col-sm-6 manage">
+        <div class="tab-pane active" id="personal">
+            <section class="todoList">
+                @Html.Action("ChangePersonalInfo")
+                @*@Html.Partial("_ChangePersonalInfoPartial")*@
+            </section>
+        </div>
+        <div class="tab-pane" id="password">
+            <section class="todoList">
+            @if (ViewBag.HasLocalPassword)
+            {
+                @Html.Action("ChangePassword")
+                @*Html.Partial("_ChangePasswordPartial")*@
+            }
+            else
+            { 
+                @Html.Action("SetPassword")
+                @*Html.Partial("_SetPasswordPartial")*@
+            }
+            </section>
+        </div>
+        <div class="tab-pane" id="social">
+            <section class="todoList" id="externalLogins">
+                @Html.Action("RemoveExternalLogins")
 
-    <section class="todoList">
-    @if (ViewBag.HasLocalPassword)
-    {
-        @Html.Partial("_ChangePasswordPartial")
-    }
-    else
-    { 
-        @Html.Partial("_SetPasswordPartial")
-    }
-    </section>
-
-    <section class="todoList" id="externalLogins">
-        @Html.Action("RemoveExternalLogins")
-
-        <h3>Add an external login</h3>
-        @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
-
-        <h3>Delete account</h3>
-        <a href="/account/delete" class="btn btn-default">Delete Account</a>
-    </section>
+                <h3>Add an external login</h3>
+                @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
+            </section>
+        </div>
+        <div class="tab-pane" id="account">
+            <section class="todoList">
+                <h3>Delete account</h3>
+                <a href="/account/delete" class="btn btn-default">Delete Account</a>
+            </section>
+        </div>
+        <br />
+        <p class="message-success">@ViewBag.StatusMessage</p>
+    </div>
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.list-group a').click(function (e) {
+            $(this).tab('show');
+            $('.list-group a').removeClass('active');
+            $(this).addClass('active');
+            $('.message-success').text('');
+        });
+        /* make the appropriate tab active */
+        var $tab = $("#@anchor");
+        /*
+        $tab.tab('show');
+        $('.list-group a').removeClass('active');
+        $tab.addClass('active');
+        */
+    });
+</script>

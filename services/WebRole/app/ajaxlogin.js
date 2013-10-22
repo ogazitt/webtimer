@@ -39,7 +39,7 @@
         e.preventDefault();
     };
 
-    $("#showRegister").click(function () {
+    $(".showRegister").click(function () {
         Events.Track(Events.Categories.LandingPage, Events.LandingPage.SignUpButton);
         $(".loginPanel").fadeOut("fast", function () {
             $("#registerPanel").fadeIn("fast", function () {
@@ -48,7 +48,7 @@
         });
     });
 
-    $("#showLogin").click(function () {
+    $(".showLogin").click(function () {
         Events.Track(Events.Categories.LandingPage, Events.LandingPage.SignInButton);
         $("#registerPanel").fadeOut("fast", function () {
             $(".loginPanel").fadeIn("fast", function () {

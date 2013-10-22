@@ -66,6 +66,17 @@ a.navbar-brand.brand-padding {
     margin-top: 10px;
 }
 
+/* huge landing page button */
+.landing-button {
+    margin-top: 100px;
+    font-size: 3em;
+    padding: 12px 20px 12px 20px;
+    width: 100%;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius: 15px;
+}
+
 /* product info */
 img.screenshot-image {
     width: 100%;
@@ -239,6 +250,28 @@ header {
 .team-member-image {
     max-width: 100%;
     cursor: pointer;
+}
+
+/*
+ * SETTINGS
+ */
+
+.manage .todoList {
+    margin: 0px;
+}
+
+.manage .todoList h3 {
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+    font-size: 1.2em;
+    margin-bottom: 1em;
+    color: #333333;
+}
+
+.validation-summary-errors li {
+    text-align: left;
+    line-height: 16px;
+    font-size: 11px;
+    font-weight: 500;
 }
 
 /* http://cssdeck.com/labs/css3-monochrome-icon-set */

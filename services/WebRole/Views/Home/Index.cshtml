@@ -5,6 +5,7 @@
     var isTablet = BrowserAgent.IsTablet(Request.UserAgent);
 }
 @using WebRole.Helpers;
+@using ServiceHost;
 @functions{
     public string GetAntiForgeryToken()
     {
@@ -42,11 +43,25 @@ else
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 login-container">
             @Html.Partial("_Authentication")
         </div>
+        <div>
+            <div class="col-lg-offset-2 col-lg-3 col-md-offset-1 col-md-4 hidden-sm hidden-xs">
+                <a href="/home/download" onclick="downloadClick" class="btn btn-primary landing-button">Download</a>
+            </div>
+            <div class="col-lg-offset-2 col-lg-3 col-md-offset-2 col-md-4 hidden-sm hidden-xs">
+                <button onclick="signupClick" class="btn btn-success landing-button showRegister">Sign Up</button>
+            </div>
+        </div>
     </div>
     
     <script type="text/javascript">
         function productInfoClick() {
             Events.Track(Events.Categories.LandingPage, Events.LandingPage.LearnMoreButton);
+        }
+        function downloadClick() {
+            Events.Track(Events.Categories.LandingPage, Events.LandingPage.DownloadButton);
+        }
+        function signupClick() {
+            Events.Track(Events.Categories.LandingPage, Events.LandingPage.BigSignUpButton);
         }
     </script>
     
@@ -83,6 +98,11 @@ else
             });
             return false;
         });
+
+        // remove the 'log' button from the toolbar in production
+        @if (HostEnvironment.DeploymentName.Equals("Production", StringComparison.OrdinalIgnoreCase)) {
+        @:$("#toolbarLogButton").addClass("hidden-lg").addClass("hidden-md").addClass("hidden-sm");
+        }
     });
 </script>
 }

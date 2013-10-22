@@ -29,6 +29,7 @@ namespace WebRole.Models
         
         // additional properties
         public string Name { get; set; }
+        public string Phone { get; set; }
     }
 
     public class RegisterExternalLoginModel
@@ -57,6 +58,20 @@ namespace WebRole.Models
         [Display(Name = "Confirm new password")]
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+    }
+
+    public class PersonalInfoModel
+    {
+        [Required]
+        [Display(Name = "Name")]
+        public string Name { get; set; }
+
+        [Required]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Display(Name = "Phone")]
+        public string Phone { get; set; }
     }
 
     public class LoginModel

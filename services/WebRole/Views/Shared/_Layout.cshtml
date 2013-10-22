@@ -4,6 +4,7 @@
     var isMobile = BrowserAgent.IsMobile(Request.UserAgent);
     var enableEvents = HostEnvironment.DeploymentName.Equals("Production", StringComparison.OrdinalIgnoreCase);
     var isLandingPage = !User.Identity.IsAuthenticated && (Request.Url.AbsolutePath == "/" || Request.Url.AbsolutePath.ToLower() == "/home/index");
+    var bodyClass = isLandingPage ? "" : "container";
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -47,7 +48,7 @@
             @Html.Partial("_UserSettings")
         </div>
 
-        <div id="body" class=@isLandingPage ? "" : "container">
+        <div id="body" class="@bodyClass">
             @RenderBody()
         </div>
     }

@@ -17,7 +17,7 @@
             <button class="btn btn-default btn-active" data-ng-class="{ active: isActivePeriod('day')}" data-ng-click="selectDay()">Day</button> 
             <button class="btn btn-default" data-ng-class="{ active: isActivePeriod('week')}" data-ng-click="selectWeek()">Week</button> 
             <button class="btn btn-default" data-ng-class="{ active: isActivePeriod('month')}" data-ng-click="selectMonth()">Month</button> 
-            <a href="#/log" class="btn btn-default hidden-xs">Log</a> 
+            <a id="toolbarLogButton" href="#/log" class="btn btn-default hidden-xs">Log</a> 
             <a data-ng-click="refresh()" class="btn btn-default hidden-xs">Refresh</a>     
         </div>  
     </div>
