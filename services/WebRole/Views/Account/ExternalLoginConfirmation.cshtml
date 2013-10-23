@@ -4,8 +4,7 @@
 }
 
 <hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-    <h2>Associate your @ViewBag.ProviderDisplayName account.</h2>
+    <h2>Register with your @ViewBag.ProviderDisplayName account.</h2>
 </hgroup>
 
 @using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { ReturnUrl = ViewBag.ReturnUrl })) {
@@ -15,19 +14,24 @@
     <fieldset>
         <legend>Association Form</legend>
         <p>
-            You've successfully authenticated with <strong>@ViewBag.ProviderDisplayName</strong>.
-            Please enter a user name for this site below and click the Confirm button to finish
-            logging in.
+            You've successfully authenticated using your @ViewBag.ProviderDisplayName account.
+            Click the Register button to finish registration using your @ViewBag.ProviderDisplayName address.
         </p>
         <ol>
             <li class="name">
                 @Html.LabelFor(m => m.UserName)
-                @Html.TextBoxFor(m => m.UserName)
+                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @readonly = "readonly", @style = "width: 200px; margin-bottom: 10px;" })
                 @Html.ValidationMessageFor(m => m.UserName)
             </li>
         </ol>
         @Html.HiddenFor(m => m.ExternalLoginData)
-        <input type="submit" value="Register" />
+        <br />
+        @if (ViewBag.RegistrationFailure != null && ViewBag.RegistrationFailure) {
+            @:<a class="btn btn-success" href="/">Sign Up</a> &nbsp; with a different email.
+        }      
+        else {
+            <input type="submit" class="btn btn-primary" value="Register" />
+        }      
     </fieldset>
 }
 

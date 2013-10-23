@@ -1,6 +1,8 @@
 ﻿@using WebRole.Helpers;
 @{
     var name = ViewBag.UserName ?? @User.Identity.Name;
+    if (name.Contains(" "))
+        name = name.Split(' ')[0];
 }
 
 <ul class="nav navbar-nav navbar-right">

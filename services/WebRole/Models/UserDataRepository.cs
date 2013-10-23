@@ -69,9 +69,11 @@ namespace WebRole.Models
                 using (var context = new UsersContext())
                 {
                     var user = context.UserProfiles.FirstOrDefault(u => u.UserName == UserId);
-                    if (user != null)
+                    if (user != null && !string.IsNullOrEmpty(user.Name))
                         name = user.Name;
                 }
+                if (name.Contains(' '))
+                    name = name.Split(' ')[0];
 
                 // add the user and the "Shared" bucket
                 var person = new Person()

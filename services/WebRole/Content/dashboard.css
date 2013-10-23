@@ -265,6 +265,7 @@ header {
     font-size: 1.2em;
     margin-bottom: 1em;
     color: #333333;
+    font-weight: 200;
 }
 
 .validation-summary-errors li {
@@ -272,6 +273,13 @@ header {
     line-height: 16px;
     font-size: 11px;
     font-weight: 500;
+}
+
+.explanation {
+    line-height: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 25px;
 }
 
 /* http://cssdeck.com/labs/css3-monochrome-icon-set */

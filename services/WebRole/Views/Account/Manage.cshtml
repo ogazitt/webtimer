@@ -36,14 +36,17 @@
             <section class="todoList" id="externalLogins">
                 @Html.Action("RemoveExternalLogins")
 
-                <h3>Add an external login</h3>
+                <h3>Add a social login</h3>
                 @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
             </section>
         </div>
         <div class="tab-pane" id="account">
             <section class="todoList">
-                <h3>Delete account</h3>
-                <a href="/account/delete" class="btn btn-default">Delete Account</a>
+                <h3>Account information</h3>
+                <p>Account type: Free Beta</p>
+                <a href="/home/upgrade" class="btn btn-default">Upgrade Account</a>
+                <br /><br />
+                <a href="/account/delete" class="btn btn-default btn-danger">Delete Account</a>
             </section>
         </div>
         <br />

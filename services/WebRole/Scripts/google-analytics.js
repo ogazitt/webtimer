@@ -63,8 +63,10 @@ Events.Header.DownloadButton = 'DownloadButton';
 // Footer actions
 Events.Footer = {};
 Events.Footer.AboutButton = 'AboutButton';
+Events.Footer.PricingButton = 'PricingButton';
 Events.Footer.ContactButton = 'ContactButton';
 Events.Footer.TermsButton = 'TermsButton';
+Events.Footer.PrivacyButton = 'PrivacyButton';
 Events.Footer.CopyButton = 'CopyrightButton';
 
 // Wizard actions

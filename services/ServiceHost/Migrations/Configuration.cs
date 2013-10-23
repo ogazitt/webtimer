@@ -10,7 +10,7 @@ namespace ServiceHost.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
 
         protected override void Seed(ServiceHost.UserDataContext context)

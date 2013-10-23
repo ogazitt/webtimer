@@ -59,8 +59,8 @@ namespace ServiceHost
         {
             TraceLog.TraceDetail("Initializing and potentially migrating the UserData database");
 
-            //Database.SetInitializer<UserDataContext>(null);
-            Database.SetInitializer<UserDataContext>(new MigrateDatabaseToLatestVersion<UserDataContext, Configuration>());
+            Database.SetInitializer<UserDataContext>(null);
+            //Database.SetInitializer<UserDataContext>(new MigrateDatabaseToLatestVersion<UserDataContext, Configuration>());
 
             return true;
 

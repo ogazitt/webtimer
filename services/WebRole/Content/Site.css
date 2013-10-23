@@ -78,6 +78,7 @@ header {
 
 #changePersonalInfoForm input,
 #changePasswordForm input,
+#setPasswordForm input,
 #registerForm input,
 #loginForm input {
     border: 1px solid #dedede;
@@ -88,6 +89,7 @@ header {
 
     #changePersonalInfoForm input[type=text],
     #changePasswordForm input[type=text], #changePasswordForm input[type=password],
+    #setPasswordForm input[type=text], #setPasswordForm input[type=password],
     #registerForm input[type=text], #registerForm input[type=password],
     #loginForm input[type=text], #loginForm input[type=password] {
         background: white;
@@ -98,6 +100,7 @@ header {
 }
 
 #changePersonalInfoForm input[type=submit],
+#setPasswordForm input[type=submit],
 #changePasswordForm input[type=submit] {
     margin-bottom: .8em;
 }
@@ -181,10 +184,12 @@ header {
     margin-bottom: 12px;
 }
 
+/*
 #externalLogins {
     text-align: left;
     padding-left: 25px;
 }
+*/
 
 fieldset {
     border: none;

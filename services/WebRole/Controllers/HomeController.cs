@@ -50,6 +50,24 @@ namespace WebRole.Controllers
             return View();
         }
 
+        public ActionResult Privacy()
+        {
+            ViewBag.Message = "Privacy Policy";
+            return View();
+        }
+
+        public ActionResult Pricing()
+        {
+            ViewBag.Message = "Pricing";
+            return View();
+        }
+
+        public ActionResult Upgrade()
+        {
+            ViewBag.Message = "Upgrade";
+            return View("Pricing");
+        }
+
         public ActionResult Download()
         {
             ViewBag.Message = "Download";

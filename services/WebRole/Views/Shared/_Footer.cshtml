@@ -7,8 +7,10 @@
         <div class="container pull-right">
             <ul class="nav navbar-nav" id="menu">
                 <li><a id="aboutButton" href="/home/about"><strong>About</strong></a></li>
+                <li><a id="pricingButton" href="/home/pricing"><strong>Pricing</strong></a></li>
                 <li><a id="contactButton" href="/home/contact"><strong>Contact</strong></a></li>
                 <li><a id="termsButton" href="/home/terms"><strong>Terms</strong></a></li>
+                <li><a id="privacyButton" href="/home/privacy"><strong>Privacy</strong></a></li>
                 @*<li>@Html.ActionLink("API", "Index", "Help", new { area = "HelpPage" }, null)</li>*@
                 <li><a id="copyButton" href="/"><strong>WebTimer LLC &copy; @DateTime.Now.Year</strong></a></li>
             </ul>
@@ -23,6 +25,11 @@
             });
         });
         $(function () {
+            $("#pricingButton").click(function () {
+                Events.Track(Events.Categories.Footer, Events.Footer.PricingButton);
+            });
+        });
+        $(function () {
             $("#contactButton").click(function () {
                 Events.Track(Events.Categories.Footer, Events.Footer.ContactButton);
             });
@@ -30,6 +37,11 @@
         $(function () {
             $("#termsButton").click(function () {
                 Events.Track(Events.Categories.Footer, Events.Footer.TermsButton);
+            });
+        });
+        $(function () {
+            $("#privacyButton").click(function () {
+                Events.Track(Events.Categories.Footer, Events.Footer.PrivacyButton);
             });
         });
         $(function () {

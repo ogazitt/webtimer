@@ -341,7 +341,8 @@ namespace WebRole.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("UserName", "User name already exists. Please enter a different user name.");
+                        ModelState.AddModelError("UserName", "Unfortunately this email has already been registered.  Please delete the existing account or try a different address.");
+                        ViewBag.RegistrationFailure = true;
                     }
                 }
             }
@@ -530,7 +531,7 @@ namespace WebRole.Controllers
                 case ManageMessageId.SetPasswordSuccess:
                     return "Your password has been set.";
                 case ManageMessageId.RemoveLoginSuccess:
-                    return "The external login was removed.";
+                    return "The social login was removed.";
                 case ManageMessageId.ChangePersonalInfoSuccess:
                     return "Your personal information has been changed.";
                 default:

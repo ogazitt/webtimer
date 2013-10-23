@@ -1,0 +1,27 @@
+﻿@using WebRole.Helpers;
+@{
+    ViewBag.Title = "Pricing";
+    var isMobile = BrowserAgent.IsMobile(Request.UserAgent);
+    var containerClass = isMobile ? "" : "jumbotron container main-container";
+}
+<div class="@containerClass">
+@if (!isMobile) {
+    <img class="webtimer-jumbotron" src="~/Content/images/WebTimer_logo.png" alt="WebTimer" />
+    <br />
+}
+    <h2><i>WebTimer</i> is currently in Beta, and free to use.</h2>
+    <h2>Better yet, everyone who signs up during the beta period will receive a free year of service once we start charging for it.</h2>
+    <h2>Sign up now!</h2>
+    <br />
+    <a href="/" class="btn btn-lg btn-success">Sign Up</a>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.list-group a').click(function (e) {
+            $(this).tab('show');
+            $('.list-group a').removeClass('active');
+            $(this).addClass('active');
+        });
+    });
+</script>

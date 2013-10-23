@@ -26,7 +26,15 @@
         [HttpGet]
         public string Metadata()
         {
-            return _repository.Metadata();
+            try
+            {
+                return _repository.Metadata();
+            }
+            catch (Exception ex)
+            {
+                TraceLog.TraceException("Metadata query failed", ex);
+                throw;
+            }
         }
 
         // POST ~/api/Dashboard/SaveChanges

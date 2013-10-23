@@ -2,15 +2,13 @@
 
 @if (Model.Count > 0)
 {
-    <h3>Registered external logins</h3>
-    <table>
-        <tbody>
-        @foreach (WebRole.Models.ExternalLogin externalLogin in Model)
+    <h3>Registered logins</h3>
+    if (ViewBag.ShowRemoveButton) {
+        <p class="explanation">(click to remove)</p>
+    }
+        foreach (WebRole.Models.ExternalLogin externalLogin in Model)
         {
-            <tr>
-                <td>@externalLogin.ProviderDisplayName</td>
-                <td>
-                    @if (ViewBag.ShowRemoveButton)
+                    if (ViewBag.ShowRemoveButton)
                     {
                         using (Html.BeginForm("Disassociate", "Account"))
                         {
@@ -18,17 +16,20 @@
                             <div>
                                 @Html.Hidden("provider", externalLogin.Provider)
                                 @Html.Hidden("providerUserId", externalLogin.ProviderUserId)
-                                <input type="submit" value="Remove" title="Remove this @externalLogin.ProviderDisplayName credential from your account" />
+                                <button class="socialLoginButton" type="submit" name="provider" value="@externalLogin.ProviderDisplayName" title="Remove this @externalLogin.ProviderDisplayName login from your account">
+                                    <img width="32" src="/Content/images/@String.Concat(externalLogin.ProviderDisplayName.ToLower(), "_32.png")" />
+                                </button>
                             </div>
                         }
                     }
                     else
                     {
-                        @: &nbsp;
+                        using (Html.BeginForm("Disassociate", "Account")) // form only used for CSS - there is no submit button
+                        {
+                            <div>
+                                <img width="32" src="/Content/images/@String.Concat(externalLogin.ProviderDisplayName.ToLower(), "_32.png")" />
+                            </div>
+                        }
                     }
-                </td>
-            </tr>
         }
-        </tbody>
-    </table>
 }
