@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "Download";
+}
+<div class="jumbotron">
+    <div class="container">
+        <img class="webtimer-jumbotron" src="~/Content/images/WebTimer_logo.png" alt="WebTimer" />
+        <br />
+        <div class="row">
+            <div class="col-lg-3 col-md-3 center">
+                <h2>Windows</h2>
+                <h4>XP, Vista, 7, 8</h4>
+                <a id="windowsDownload" href="https://webtimerdev1.blob.core.windows.net/download/WebTimerSetup.exe"><img class="download-logo" alt="windows" width="100" src="~/Content/images/windows.png" /></a>
+            </div>
+            <div class="col-lg-3 col-md-3 center">
+                <h2>Mac OS X</h2>
+                <h4>coming soon</h4>
+                <img class="download-logo" alt="mac" src="~/Content/images/mac.png" style="cursor: not-allowed" />
+            </div>
+            <div class="col-lg-3 col-md-3 center">
+                <h2>iOS</h2>
+                <h4>coming soon</h4>
+                <img class="download-logo" alt="iOS" src="~/Content/images/apple-logo.png" style="cursor: not-allowed" />
+            </div>
+            <div class="col-lg-3 col-md-3 center">
+                <h2>Android</h2>
+                <h4>coming soon</h4>
+                <img class="download-logo" alt="android" src="~/Content/images/android.png" style="cursor: not-allowed" />
+            </div>
+        </div>
+
+        <div class="instructions">
+            <div class="platform-instructions" id="windowsInstructions">
+                <div class="row">
+                    <div class="col-lg-3 col-md-3">
+                        <img class="download-instruction" alt="run" src="~/Content/images/windows/download-open.png" />
+                        <h4>1. Open the WebTimer Setup program.</h4>
+                    </div>
+                    <div class="col-lg-3 col-md-3">
+                        <img class="download-instruction" alt="install" src="~/Content/images/windows/setup-install.png" />
+                        <h4>2. Click "Install" to start.</h4>
+                    </div>
+                    <div class="col-lg-3 col-md-3">
+                        <img class="download-instruction" alt="winpcap" src="~/Content/images/windows/winpcap.png" />
+                        <h4>3. Go through WinPcap installation.  Keep the checkbox checked!</h4>
+                    </div>
+                    <div class="col-lg-3 col-md-3">
+                        <img class="download-instruction" alt="settings" src="~/Content/images/windows/settings.png" />
+                        <h4>4. Close the installer, and follow the instructions in the Settings app.</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.platform-instructions').hide();
+        $('#windowsDownload').click(function (e) {
+            $('.platform-instructions').hide();
+            $('#windowsInstructions').show();
+        });
+    });
+</script>

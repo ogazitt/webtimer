@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>3.5</ProductVersion>
+    <ProjectGuid>39f23985-023c-472e-a1d1-9d5908c14358</ProjectGuid>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputName>WebTimer</OutputName>
+    <OutputType>Package</OutputType>
+    <SignOutput>True</SignOutput>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <Name>Setup</Name>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <OutputPath>..\..\..\..\bin\client\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>..\..\..\..\bin\client\$(Configuration)\obj</IntermediateOutputPath>
+    <DefineConstants>Debug</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>..\..\..\..\bin\client\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>..\..\..\..\bin\client\$(Configuration)\obj</IntermediateOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Product.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CaptureService\CaptureService.csproj">
+      <Name>CaptureService</Name>
+      <Project>{eab4e383-b00d-4ed9-83bd-52f0c2ec9ff2}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Client\Client.csproj">
+      <Name>Client</Name>
+      <Project>{21c885f0-b610-4028-8522-255fcbadb98d}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\ConfigEditor\ConfigEditor.csproj">
+      <Name>ConfigEditor</Name>
+      <Project>{3dc7bc63-dfea-438c-b03e-c41a61616834}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\UpdateService\UpdateService.csproj">
+      <Name>UpdateService</Name>
+      <Project>{9d93e2ca-396b-40bd-a736-a28a772da712}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
+      <Name>WixUIExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixUtilExtension">
+      <HintPath>$(WixExtDir)\WixUtilExtension.dll</HintPath>
+      <Name>WixUtilExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixNetFxExtension">
+      <HintPath>$(WixExtDir)\WixNetFxExtension.dll</HintPath>
+      <Name>WixNetFxExtension</Name>
+    </WixExtension>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="WebTimer.ico" />
+  </ItemGroup>
+  <Import Project="$(WixTargetsPath)" />
+  <Target Name="BeforeBuild">
+    <!-- get version of WebTimerClient -->
+    <GetAssemblyIdentity AssemblyFiles="..\..\..\..\bin\client\$(Configuration)\WebTimerClient.dll">
+      <Output TaskParameter="Assemblies" ItemName="AssemblyVersion" />
+    </GetAssemblyIdentity>
+    <PropertyGroup>
+      <!-- set constant for WIX -->
+      <DefineConstants>BuildVersion=%(AssemblyVersion.Version)</DefineConstants>
+    </PropertyGroup>
+    <!-- create version file to identify this version -->
+    <Exec Command="echo %(AssemblyVersion.Version) > &quot;$(TargetDir)version.txt&quot;" />
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  <PropertyGroup>
+    <PostBuildEvent />
+  </PropertyGroup>
+  <!-- Set SignTool path -->
+  <PropertyGroup>
+    <SignTool>"$(ProgramFiles)\Microsoft SDKs\Windows\v7.1A\bin\signtool.exe"</SignTool>
+  </PropertyGroup>
+  <!-- sign the setup with authenticode cert (http://wixtoolset.org/documentation/manual/v3/overview/insignia.html) -->
+  <Target Name="SignCabs">
+    <Exec Command="$(SignTool) sign /f $(ProjectDir)..\webtimer.pfx /p zrc022.. /du http://www.webtimer.co /v /t http://timestamp.comodoca.com/authenticode &quot;%(SignCabs.FullPath)&quot;" />
+  </Target>
+  <Target Name="SignMsi">
+    <Exec Command="$(SignTool) sign /f $(ProjectDir)..\webtimer.pfx /p zrc022.. /du http://www.webtimer.co /v /t http://timestamp.comodoca.com/authenticode &quot;%(SignMsi.FullPath)&quot;" />
+  </Target>
+</Project>

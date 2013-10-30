@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?define Version="$(var.BuildVersion)" ?>
+<?define ProductName="WebTimer Service" ?>
+<?define CompanyName="WebTimer LLC" ?>
+<?define UpgradeCode="6B74A48B-639F-42F9-80C2-7922A968BE8D"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" 
+           Name="$(var.ProductName)" 
+           Language="1033" 
+           Version="$(var.BuildVersion)" 
+           Manufacturer="$(var.CompanyName)" 
+           UpgradeCode="$(var.UpgradeCode)">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <!-- ensure administrator -->
+    <Condition Message="You need to be an administrator to install this product.">
+      Privileged
+    </Condition>
+
+    <!-- ensure windows version -->
+    <Condition Message="You must be running Windows XP SP2 or higher.">
+      (VersionNT = 501 AND ServicePackLevel &gt;= 2) OR VersionNT &gt;= 502
+    </Condition>
+
+    <!-- ensure .NET version -->
+    <PropertyRef Id="NETFRAMEWORK35" />
+    <Condition Message="Please install the .NET Framework 3.5 before installing [ProductName].">
+      <![CDATA[Installed OR NETFRAMEWORK35]]>
+    </Condition>
+    <PropertyRef Id="NETFRAMEWORK30_SP_LEVEL" />
+    <Condition Message="Please install the .NET Framework 3.0 SP2 before installing [ProductName].">
+      <![CDATA[Installed OR (NETFRAMEWORK30_SP_LEVEL AND NOT NETFRAMEWORK30_SP_LEVEL = "#1" AND NOT NETFRAMEWORK30_SP_LEVEL = "#0")]]>
+    </Condition>
+    <PropertyRef Id="NETFRAMEWORK20_SP_LEVEL" />
+    <Condition Message="Please install the .NET Framework 2.0 SP2 before installing [ProductName].">
+      <![CDATA[Installed OR (NETFRAMEWORK20_SP_LEVEL AND NOT NETFRAMEWORK20_SP_LEVEL = "#1" AND NOT NETFRAMEWORK20_SP_LEVEL = "#0")]]>
+    </Condition>
+    
+    <!-- handle major upgrades by disallowing downgrades and uninstalling previous version -->
+    <MajorUpgrade DowngradeErrorMessage="A newer version of the WebTimer Service is already installed." />
+
+    <!-- bind the CMD command -->
+    <Property Id="CMD" Secure="yes">
+      <DirectorySearch Id="Cmddir" Path="[SystemFolder]">
+        <FileSearch Id="CmdExe" Name="cmd.exe" />
+      </DirectorySearch>
+    </Property>
+
+    <!-- embed the cab in the MSI -->
+    <MediaTemplate EmbedCab="yes" />
+
+    <Feature Id="ProductFeature" Title="WebTimer Service" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="LogDir" />
+      <ComponentRef Id="ApplicationShortcut" />
+    </Feature>
+
+    <!-- prevent modify and repair in control panel -->
+    <Property Id="ARPNOREPAIR" Value="yes" Secure="yes" /> 
+    <!--<Property Id="ARPNOMODIFY" Value="yes" Secure="yes" />-->
+
+    <!-- set the product information and icon -->
+    <Property Id="ARPURLINFOABOUT"><![CDATA[http://www.webtimer.co]]></Property>
+    <Property Id="ARPURLUPDATEINFO"><![CDATA[http://www.webtimer.co]]></Property>
+    <Property Id="ARPHELPLINK"><![CDATA[http://www.webtimer.co]]></Property>
+    <Property Id="ARPPRODUCTICON">MainIcon.ico</Property>
+    <Icon Id="MainIcon.ico" SourceFile="WebTimer.ico" />
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <!-- installation folder -->
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="WebTimer" >
+          <Directory Id="LOGFOLDER" Name="Logs" />
+        </Directory>
+      </Directory>
+      
+      <!-- program menu folder -->
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="WebTimer"/>
+      </Directory>
+    </Directory>
+
+
+    <!-- define the shortcut component -->
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="ApplicationShortcut">
+        <Shortcut Id="ApplicationStartMenuShortcut"
+                  Name="WebTimer Configuration"
+                  Description="Configure WebTimer"
+                  Target="[#$(var.ConfigEditor.TargetFileName)]"
+                  WorkingDirectory="INSTALLFOLDER"/>
+        <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\Microsoft\WebTimer" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+
+    <!-- define custom action to remove logs folder -->
+    <CustomAction Id="CA_RemoveLogFolderCmd" Property="CA_RemoveLogFolder" Value="&quot;[CMD]&quot; /c rd /s /q &quot;[INSTALLFOLDER]&quot;" />
+    <CustomAction Id="CA_RemoveLogFolder" BinaryKey="WixCA" DllEntry="CAQuietExec" Execute="deferred" Return="ignore" Impersonate="no" />
+
+    <InstallExecuteSequence>
+      <Custom Action="CA_RemoveLogFolderCmd" After="CostFinalize">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
+      <Custom Action="CA_RemoveLogFolder" Before="ProcessComponents">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
+      <!--<Custom Action="LaunchApplication" After="InstallFinalize">(NOT INSTALLED) AND (NOT (REMOVE="ALL")) AND (NOT UPGRADINGPRODUCTCODE)</Custom>-->
+      <Custom Action="LaunchApplication" After="InstallFinalize"><![CDATA[&ProductFeature=3 and NOT INSTALLED AND NOT UPGRADINGPRODUCTCODE]]></Custom>
+    </InstallExecuteSequence>
+
+    <!-- define minimal UI to launch the application -->
+    <!-- don't need this anymore because launching a custom action from the no-UI installer 
+    <UI Id="UserInterface">
+      <Property Id="WIXUI_INSTALLDIR" Value="TARGETDIR" />
+      <Property Id="WixUI_Mode" Value="Custom" />
+
+      <TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
+      <TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="9" Bold="yes" />
+      <TextStyle Id="WixUI_Font_Title"  FaceName="Tahoma" Size="9" Bold="yes" />
+
+      <Property Id="DefaultUIFont" Value="WixUI_Font_Normal" />
+
+      <DialogRef Id="ProgressDlg" />
+      <DialogRef Id="ErrorDlg" />
+      <DialogRef Id="FilesInUse" />
+      <DialogRef Id="FatalError" />
+      <DialogRef Id="UserExit" />
+
+      <Publish Dialog="ExitDialog"
+          Control="Finish"
+          Event="DoAction"
+          Value="LaunchApplication" Order="999">1</Publish>
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="EndDialog" Value="Return" Order="2"></Publish>
+    </UI>
+    <UIRef Id="WixUI_Common" />
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch WebTimer Setup" />
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOX" Value="1"/>
+    -->
+
+    <!-- define custom action to launch the application -->
+    <Property Id="WixShellExecTarget" Value="[#$(var.ConfigEditor.TargetFileName)]" />
+    <CustomAction Id="LaunchApplication"
+        BinaryKey="WixCA"
+        DllEntry="WixShellExec"
+        Impersonate="yes" />
+    
+  </Product>
+
+  <Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="$(var.CaptureService.TargetFileName)">
+        <File Id="$(var.CaptureService.TargetFileName)"
+              Name="$(var.CaptureService.TargetFileName)"
+              Source="$(var.CaptureService.TargetPath)"
+              Vital="yes"
+              KeyPath="yes" />
+        <File Id="$(var.CaptureService.TargetFileName).config"
+              Name="$(var.CaptureService.TargetFileName).config"
+              Source="$(var.CaptureService.TargetPath).config"
+              Vital="yes"
+              KeyPath="no" />
+        <?if $(var.Configuration) = Debug ?>
+          <!-- DEBUG ONLY -->
+          <File Id="$(var.CaptureService.TargetName).pdb"
+                Name="$(var.CaptureService.TargetName).pdb"
+                Source="$(var.CaptureService.TargetDir)\$(var.CaptureService.TargetName).pdb"
+                Vital="yes"
+                KeyPath="no" />
+        <?endif?>
+        <ServiceInstall
+					Id="CaptureServiceInstaller"
+					Type="ownProcess"
+					Vital="yes"
+					Name="WebTimerCaptureService"
+					DisplayName="WebTimer Capture Service"
+					Description="The WebTimer Capture Service collects and uploads web events to the WebTimer cloud service."
+					Start="auto"
+					Account="LocalSystem"
+					ErrorControl="ignore"
+					Interactive="no"
+              >
+        </ServiceInstall>
+        <ServiceControl Id="StartCaptureService" Start="install" Stop="both" Remove="uninstall" Name="WebTimerCaptureService" Wait="yes" />
+      </Component>
+
+      <Component Id="$(var.UpdateService.TargetFileName)">
+        <File Id="$(var.UpdateService.TargetFileName)"
+              Name="$(var.UpdateService.TargetFileName)"
+              Source="$(var.UpdateService.TargetPath)"
+              Vital="yes"
+              KeyPath="yes" />
+        <File Id="$(var.UpdateService.TargetFileName).config"
+              Name="$(var.UpdateService.TargetFileName).config"
+              Source="$(var.UpdateService.TargetPath).config"
+              Vital="yes"
+              KeyPath="no" />
+        <?if $(var.Configuration) = Debug ?>
+          <!-- DEBUG ONLY -->
+          <File Id="$(var.UpdateService.TargetName).pdb"
+                Name="$(var.UpdateService.TargetName).pdb"
+                Source="$(var.UpdateService.TargetDir)\$(var.UpdateService.TargetName).pdb"
+                Vital="yes"
+                KeyPath="no" />
+        <?endif?>
+        <ServiceInstall
+					Id="UpdateServiceInstaller"
+					Type="ownProcess"
+					Vital="yes"
+					Name="WebTimerUpdateService"
+					DisplayName="WebTimer Update Service"
+					Description="The WebTimer Update Service keeps the WebTimer software up-to-date."
+					Start="auto"
+					Account="LocalSystem"
+					ErrorControl="ignore"
+					Interactive="no"
+              >
+        </ServiceInstall>
+        <ServiceControl Id="StartUpdateService" Start="install" Stop="both" Remove="uninstall" Name="WebTimerUpdateService" Wait="yes" />
+      </Component>
+
+      <Component>
+        <File Id="$(var.Client.TargetFileName)"
+              Name="$(var.Client.TargetFileName)"
+              Source="$(var.Client.TargetPath)"
+              KeyPath="yes" />
+        <?if $(var.Configuration) = Debug ?>
+          <!-- DEBUG ONLY -->
+          <File Id="$(var.Client.TargetName).pdb"
+                Name="$(var.Client.TargetName).pdb"
+                Source="$(var.Client.TargetDir)\$(var.Client.TargetName).pdb"
+                KeyPath="no" />
+        <?endif?>
+      </Component>
+
+      <Component>
+        <File Id="$(var.ConfigEditor.TargetFileName)"
+              Name="$(var.ConfigEditor.TargetFileName)"
+              Source="$(var.ConfigEditor.TargetPath)"
+              KeyPath="yes" />
+        <File Id="$(var.ConfigEditor.TargetFileName).config"
+              Name="$(var.ConfigEditor.TargetFileName).config"
+              Source="$(var.ConfigEditor.TargetPath).config"
+              KeyPath="no" />
+        <?if $(var.Configuration) = Debug ?>
+          <!-- DEBUG ONLY -->
+          <File Id="$(var.ConfigEditor.TargetName).pdb"
+                Name="$(var.ConfigEditor.TargetName).pdb"
+                Source="$(var.ConfigEditor.TargetDir)\$(var.Client.TargetName).pdb"
+                KeyPath="no" />
+        <?endif?>
+      </Component>
+
+      <Component>
+        <File Id="Client.SharpPcapDependency"
+              Name="SharpPcap.dll"
+              Source="$(var.Client.TargetDir)\SharpPcap.dll"
+              KeyPath="yes" />
+      </Component>
+
+      <Component>
+        <File Id="Client.PacketDotNetDependency"
+              Name="PacketDotNet.dll"
+              Source="$(var.Client.TargetDir)\PacketDotNet.dll"
+              KeyPath="yes" />
+      </Component>
+
+      <Component>
+        <File Id="Client.JsonDotNetDependency"
+              Name="Newtonsoft.Json.dll"
+              Source="$(var.Client.TargetDir)\Newtonsoft.Json.dll"
+              KeyPath="yes" />
+      </Component>
+
+    </ComponentGroup>
+
+    <ComponentGroup Id="LogDir">
+      <Component Id="CreateLogsFolder" Directory="LOGFOLDER" Guid="">
+        <CreateFolder />
+      </Component>
+    </ComponentGroup>
+    
+  </Fragment>
+</Wix>

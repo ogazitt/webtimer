@@ -1,0 +1,43 @@
+﻿<Page x:Class="WebTimer.ConfigEditor.Register"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="WebTimer Setup" Height="450" Width="510">
+    <Grid Margin="0,0,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="405*"/>
+            <RowDefinition Height="45*"/>
+        </Grid.RowDefinitions>
+        <!-- graphic -->
+        <Image HorizontalAlignment="Left" VerticalAlignment="Top" Width="360" Margin="-30,70,-30,-70" Source="WebTimer_graphic.png" Opacity="0.07" />
+
+        <!-- page controls -->
+        <TextBlock Text="Create your WebTimer account" HorizontalAlignment="Left" TextAlignment="Center" Height="23" Margin="0,25,0,0" VerticalAlignment="Top" Width="510" FontWeight="Bold" FontSize="16"/>
+        <TextBlock Text="Name:" HorizontalAlignment="Left" TextAlignment="Right" Height="23" Margin="100,88,0,0" VerticalAlignment="Top" Width="95" />
+        <TextBox Name="NameBox" HorizontalAlignment="Left" Height="23" Margin="200,85,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="200" KeyUp="TextBoxKeyUp" />
+        <TextBlock Text="Email:" HorizontalAlignment="Left" TextAlignment="Right" Height="23" Margin="100,118,0,0" VerticalAlignment="Top" Width="95" />
+        <TextBox Name="EmailBox" HorizontalAlignment="Left" Height="23" Margin="200,115,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="200" KeyUp="TextBoxKeyUp" />
+        <TextBlock Text="Password (6 characters or more):" HorizontalAlignment="Left" TextAlignment="Right" Height="23" Margin="19,148,0,0" VerticalAlignment="Top" Width="176" />
+        <PasswordBox Name="PasswordBox" HorizontalAlignment="Left" Height="23" Margin="200,145,0,0" Password="" VerticalAlignment="Top" Width="200" KeyUp="TextBoxKeyUp" />
+        <TextBlock Text="Verify password:" HorizontalAlignment="Left" TextAlignment="Right" Height="23" Margin="100,178,0,0" VerticalAlignment="Top" Width="95" />
+        <PasswordBox Name="VerifyPasswordBox" HorizontalAlignment="Left" Height="23" Margin="200,175,0,0" Password="" VerticalAlignment="Top" Width="200" KeyUp="TextBoxKeyUp" />
+        <TextBlock Text="Computer name:" HorizontalAlignment="Left" TextAlignment="Right" Height="23" Margin="100,228,0,0" VerticalAlignment="Top" Width="95" />
+        <TextBox Name="ComputerNameBox" HorizontalAlignment="Left" Height="23" Margin="200,225,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="200" KeyUp="TextBoxKeyUp" />
+
+        <StackPanel Margin="0,200,0,0" Height="14" Orientation="Horizontal" HorizontalAlignment="Center">
+            <CheckBox Name="TermsBox" HorizontalAlignment="Center" Checked="TextBoxKeyUp" Unchecked="TextBoxKeyUp" />
+            <TextBlock Text="  I have read and agree to the " Margin="0,-2,0,0"/>
+            <TextBlock Margin="0,-2,0,0" >
+                <Hyperlink RequestNavigate="TOS_Click" NavigateUri="http://www.webtimer.co/home/terms">Terms of Service</Hyperlink>
+            </TextBlock>
+            <TextBlock Text="." Margin="0,-2,0,0"/>
+        </StackPanel>
+        <TextBlock Name="StatusBlock" Text="" HorizontalAlignment="Left" TextAlignment="Center" Height="23" Margin="0,375,0,0" VerticalAlignment="Top" Width="510" />
+
+        <!-- navigation buttons -->
+        <Separator HorizontalAlignment="Left"  Margin="0,-2,0,-2" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Top" Width="510" />
+        <Canvas HorizontalAlignment="Left" Height="45" Margin="0,0,0,0" Grid.Row="2" VerticalAlignment="Top" Width="510" Background="#FFF0F0F0">
+            <Button Content="Next" Height="23" Canvas.Left="423" Canvas.Top="12"  Width="72" IsDefault="True" Click="NextButton_Click" IsEnabled="{Binding IsNextEnabled}"/>
+            <Button Content="Previous" Height="23" Canvas.Left="343" Canvas.Top="12"  Width="72" Click="PrevButton_Click" />
+        </Canvas>
+    </Grid>
+</Page>

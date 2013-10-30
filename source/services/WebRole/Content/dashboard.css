@@ -1,0 +1,488 @@
+
+/* navbar brand (logo pic) */
+a.navbar-brand.brand-padding {
+    padding: 2px 10px 2px 10px;
+    height: 50px;
+}
+
+/* main logo on landing page */
+.logo-image-container {
+    margin-top: 20px;
+}
+
+.logo-image {
+    margin-left: -20px;
+    max-width: 100%;
+}
+
+.learn-more-btn {
+    width: 125px;
+    display: block;
+    margin-top: -10px;
+}
+
+/* login / register container */
+.login-container {
+    margin-top: 50px;
+}
+
+/* download page logos */
+.download-logo {
+    width: 150px;
+    margin-top: 20px;
+}
+
+.instructions {
+    margin-top: 40px;
+    border-top: 1px;
+    border-top-color: #a0a0a0;
+    border-top-style: ridge;
+}
+
+.download-instruction {
+    width: 240px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+/* header */
+.navbar .navbar-inner {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/*
+.nav .nav-divider {
+    height: 15px;
+    width: 1px;
+}
+*/
+
+/* footer */
+.footer {
+    line-height: 14px;
+}
+
+    .footer .nav a {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .footer .nav a#facebookButton, .footer .nav a#twitterButton {
+        line-height: 19px;
+        cursor: pointer;
+    }
+
+/*
+ * LANDING PAGE
+ */
+.landing-main {
+    height: 1000px;
+}
+
+/* login / register buttons */
+.signup-button {
+    margin-top: 100px;
+}
+
+.register-signup-button {
+    margin-top: 10px;
+}
+
+/* huge landing page button */
+.landing-button {
+    margin-top: 100px;
+    font-size: 3em;
+    padding: 12px 20px 12px 20px;
+    width: 100%;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius: 15px;
+}
+
+/* product info */
+img.screenshot-image {
+    width: 100%;
+}
+
+/* home pages */
+
+.main-container {
+    margin-top: 20px;
+}
+
+.jumbotron, .jumbotron h1 {
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+}
+
+
+/*
+ * APPLICATION
+ */
+
+/* Landscape phones and down: do not stack navbar elements */
+/*
+@media (max-width: 767px) { 
+    .nav-collapse, .nav-collapse.collapse {
+        overflow: visible;
+    }   
+    .navbar .btn-navbar {
+        display: none;
+    }   
+}*/
+
+/* toolbar */
+@media (min-width: 768px) {
+    .now-button {
+        width: 100px;
+        min-width: 70px;
+    }
+
+    .date-display {
+        width: 100px;
+        min-width: 70px;
+    }
+
+    .people-selector {
+        height: 350px;
+    }
+}
+
+@media (max-width: 767px) {
+    .mobile-menu.navbar-toggle {
+        margin-right: 0px;
+    }
+}
+
+@media (max-width: 480px) {
+    .time-period-controls {
+        display: none;
+    }
+}
+
+.people-selector {
+    display: block;
+}
+
+.btn-overflow-hidden {
+    overflow: hidden;
+}
+
+/* charts on phones - vertical and horizontal */
+@media (max-width: 320px) {
+    .main-chart {
+        height: 380px;
+    }
+}
+
+@media (min-width: 321px) and (max-width: 480px) {
+    .main-chart {
+        height: 150px;
+    }
+}
+
+
+/* people add button */
+.add-button {
+    margin-top: 95px;
+}
+
+.add-button-plus {
+    margin-top: -5px;
+    margin-left: 5px;
+}
+
+.glyphicon-huge {
+    font-size: 4em;
+}
+
+/* people and devices main view */
+.main-view {
+    text-align: center;
+}
+
+.center {
+    text-align: center;
+}
+
+/* adornments on people and devices */
+.person-adornment {
+    margin-top: -50px;
+}
+
+.device-adornment {
+    margin-top: -50px;
+}
+
+/* change font of people/devices title */
+.todoList header input {
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+    font-size: 1.4em;
+}
+/*
+
+button, input[type=submit] {
+    border: 1px solid #dedede;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+header {
+    text-align: center;
+    margin: 0 .7em;
+    position: relative;
+}
+
+    header p {
+        font-size: 2.5em;
+        margin: 0;
+    }
+    */
+
+/*
+ * ABOUT
+ */
+
+.webtimer-jumbotron {
+    margin-top: -50px;
+    margin-left: -50px;
+    max-width: 100%;
+}
+
+.tab-content {
+    min-height: 404px;
+}
+
+.team-members {
+    margin-top: 15px;
+}
+
+.team-member-photo {
+    background: url('/Content/images/frame.png') no-repeat; 
+    /*-moz-box-shadow: 10px 10px 9px rgba(0, 0, 0, 0.22);
+    -webkit-box-shadow: 10px 10px 9px rgba(0, 0, 0, 0.22);
+    box-shadow: 10px 10px 9px rgba(0, 0, 0, 0.22);*/
+
+    margin: 0px 0px 10px 0px;
+    padding: 10px 20px 20px 10px; 
+    height:150px;
+    width:150px;
+}
+
+.team-member-image {
+    max-width: 100%;
+    cursor: pointer;
+}
+
+/*
+ * SETTINGS
+ */
+
+.manage .todoList {
+    margin: 0px;
+}
+
+.manage .todoList h3 {
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+    font-size: 1.2em;
+    margin-bottom: 1em;
+    color: #333333;
+    font-weight: 200;
+}
+
+.validation-summary-errors li {
+    text-align: left;
+    line-height: 16px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.explanation {
+    line-height: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 25px;
+}
+
+/* http://cssdeck.com/labs/css3-monochrome-icon-set */
+
+/* Phone */
+div.icon div.Phone {
+    position: absolute;
+    width: 20px;
+    height: 32px;
+    background-color: #333;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    margin-left: 6px;
+}
+
+div.icon div.Phone:before {
+    position: absolute;
+    content: '';
+    width: 16px;
+    height: 20px;
+    background: #eee;
+    left: 2px;
+    top: 5px;
+}
+
+div.icon div.Phone:after {
+    position: absolute;
+    content: '';
+    background: #eee;
+    width: 3px;
+    height: 3px;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    bottom: 2px;
+    left: 8px;
+}
+
+/* iPod */
+div.icon div.ipod {
+    width: 18px;
+    height: 32px;
+    background: #333;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    position: absolute;
+    left: 7px;
+}
+
+div.icon div.ipod:after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 12px;
+    background: #ddd;
+    left: 2px;
+    top: 2px;
+    -webkit-border-radius: 1px;
+    -moz-border-radius: 1px;
+    border-radius: 1px;
+}
+
+div.icon div.ipod:before {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border: 3px solid #ddd;
+    left: 3px;
+    bottom: 3px;
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    border-radius: 100px;
+}
+
+/* Tab */
+div.icon div.Tablet {
+    position: absolute;
+    width: 28px;
+    height: 32px;
+    background-color: #333;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    left: 5px;
+}
+
+div.icon div.Tablet:before {
+    position: absolute;
+    content: '';
+    width: 24px;
+    height: 23px;
+    background: #eee;
+    left: 2px;
+    top: 2px;
+}
+
+div.icon div.Tablet:after {
+    position: absolute;
+    content: '';
+    background: #eee;
+    width: 3px;
+    height: 3px;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    bottom: 2px;
+    left: 12px;
+}
+
+/* Graph 1 */
+div.icon div.graph1 {
+    width: 28px;
+    height: 28px;
+    border-radius: 0 0 0 5px;
+    -moz-border-radius: 0 0 0 5px;
+    -webkit-border-radius: 0 0 0 5px;
+    border: solid #333;
+    border-width: 0 0 3px 3px;
+}
+
+div.icon div.bars {
+    width: 5px;
+    height: 10px;
+    background: #333;
+    position: absolute;
+    bottom: 5px;
+    right: 3px;
+}
+
+div.icon div.bars:before {
+    position: absolute;
+    content: '';
+    width: 5px;
+    height: 25px;
+    background: #333;
+    position: absolute;
+    right: 6px;
+    bottom: 0px;
+}
+
+div.icon div.bars:after {
+    position: absolute;
+    content: '';
+    width: 5px;
+    height: 18px;
+    background: #333;
+    position: absolute;
+    bottom: 0px;
+    right: 12px;
+}
+
+/* Screen */
+div.icon div.Computer {
+    position: absolute;
+    width: 28px;
+    height: 24px;
+    border: 2px solid #333;
+    background: #eee;
+    left: 5px;
+}
+
+div.icon div.Computer:before {
+    position: absolute;
+    content: '';
+    width: 10px;
+    height: 3px;
+    background: #333;
+    bottom: -4px;
+    left: 7px
+}
+
+div.icon div.Computer:after {
+    position: absolute;
+    content: '';
+    width: 22px;
+    height: 2px;
+    background: #333;
+    bottom: -6px;
+    left: 1px;
+}

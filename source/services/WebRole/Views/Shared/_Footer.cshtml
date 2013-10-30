@@ -1,0 +1,69 @@
+﻿@using WebRole.Helpers;
+@{
+    var isMobile = BrowserAgent.IsMobile(Request.UserAgent);
+}
+@if (!isMobile) {
+    <div class="navbar navbar-inverse navbar-fixed-bottom footer">
+        <div class="navbar-inner">
+            <ul class="nav navbar-nav" id="menu">
+                <li><a id="aboutButton" href="/home/about"><strong>About</strong></a></li>
+                <li><a id="pricingButton" href="/home/pricing"><strong>Pricing</strong></a></li>
+                <li><a id="contactButton" href="/home/contact"><strong>Contact</strong></a></li>
+                <li><a id="termsButton" href="/home/terms"><strong>Terms</strong></a></li>
+                <li><a id="privacyButton" href="/home/privacy"><strong>Privacy</strong></a></li>
+                @*<li>@Html.ActionLink("API", "Index", "Help", new { area = "HelpPage" }, null)</li>*@
+                <li><a id="facebookButton" onclick="window.open('http://www.facebook.com/webtimer')"><img src="/content/images/facebook_20.png"></a></li>
+                <li><a id="twitterButton" onclick="window.open('http://www.twitter.com/webtimerapp')"><img src="/content/images/twitter_20.png"></a></li>
+            </ul>
+            <div class="pull-right hidden-xs">
+                <ul class="nav navbar-nav">
+                    <li><a id="copyButton" href="/"><strong>WebTimer LLC &copy; @DateTime.Now.Year</strong></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        // footer document ready handler
+        $(function () {
+            $("#aboutButton").click(function () {
+                Events.Track(Events.Categories.Footer, Events.Footer.HomeButton);
+            });
+        });
+        $(function () {
+            $("#pricingButton").click(function () {
+                Events.Track(Events.Categories.Footer, Events.Footer.PricingButton);
+            });
+        });
+        $(function () {
+            $("#contactButton").click(function () {
+                Events.Track(Events.Categories.Footer, Events.Footer.ContactButton);
+            });
+        });
+        $(function () {
+            $("#termsButton").click(function () {
+                Events.Track(Events.Categories.Footer, Events.Footer.TermsButton);
+            });
+        });
+        $(function () {
+            $("#privacyButton").click(function () {
+                Events.Track(Events.Categories.Footer, Events.Footer.PrivacyButton);
+            });
+        });
+        $(function () {
+            $("#facebookButton").click(function () {
+                Events.Track(Events.Categories.Footer, Events.Footer.FacebookButton);
+            });
+        });
+        $(function () {
+            $("#twitterButton").click(function () {
+                Events.Track(Events.Categories.Footer, Events.Footer.TwitterButton);
+            });
+        });
+        $(function () {
+            $("#copyButton").click(function () {
+                Events.Track(Events.Categories.Footer, Events.Footer.CopyButton);
+            });
+        });
+    </script>
+}
