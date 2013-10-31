@@ -31,7 +31,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Processor", "services\Proce
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessorWorker", "services\ProcessorWorker\ProcessorWorker.csproj", "{C0869811-376A-47A9-86B5-385901B12905}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectorWorker.Tests", "tests\ProcessorWorker.Tests\CollectorWorker.Tests.csproj", "{BC98039C-E440-4789-9A92-FCCABBAB65F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessorWorker.Tests", "tests\ProcessorWorker.Tests\ProcessorWorker.Tests.csproj", "{BC98039C-E440-4789-9A92-FCCABBAB65F1}"
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "WebTimerSetup", "clients\windows\WebTimerSetup\WebTimerSetup.wixproj", "{60BC2E6C-08C3-4838-AACC-720CE3D29171}"
 EndProject

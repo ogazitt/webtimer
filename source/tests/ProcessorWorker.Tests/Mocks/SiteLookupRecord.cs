@@ -14,6 +14,7 @@ namespace WebTimer.CollectorWorker.Tests
         public string HostName { get; set; }
         public string WebsiteName { get; set; }
         public string Timestamp { get; set; }
+        public int    Duration { get; set; }
         public string UserId { get; set; }
     }
 }
