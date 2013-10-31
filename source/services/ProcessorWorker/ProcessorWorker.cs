@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Processor;
-using ServiceEntities.Collector;
-using ServiceEntities.UserData;
-using ServiceHost;
-using System.Data.Entity.Validation;
+using WebTimer.Processor;
+using WebTimer.ServiceEntities.Collector;
+using WebTimer.ServiceEntities.UserData;
+using WebTimer.ServiceHost;
 
-namespace ProcessorWorker
+namespace WebTimer.ProcessorWorker
 {
     public class ProcessorWorker : IWorker
     {

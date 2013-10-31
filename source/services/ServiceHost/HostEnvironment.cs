@@ -9,7 +9,7 @@ using Azure = Microsoft.WindowsAzure;
 
 using Microsoft.WindowsAzure.ServiceRuntime;
 
-namespace ServiceHost
+namespace WebTimer.ServiceHost
 {
 
     public static class HostEnvironment

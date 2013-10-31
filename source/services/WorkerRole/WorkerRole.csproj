@@ -8,8 +8,8 @@
     <ProjectGuid>{FAEC99AA-9717-4CF6-9B4F-56BB9C18F65F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WorkerRole</RootNamespace>
-    <AssemblyName>WorkerRole</AssemblyName>
+    <RootNamespace>WebTimer.WorkerRole</RootNamespace>
+    <AssemblyName>WebTimer.WorkerRole</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <RoleType>Worker</RoleType>

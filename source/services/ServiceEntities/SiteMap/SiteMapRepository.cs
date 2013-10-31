@@ -6,12 +6,12 @@ using System.Security.Principal;
 using MongoDB.Driver;
 using MongoRepository;
 
-using ServiceEntities.Collector;
-using ServiceEntities.SiteMap;
-using ServiceEntities.UserData;
+using WebTimer.ServiceEntities.Collector;
+using WebTimer.ServiceEntities.SiteMap;
+using WebTimer.ServiceEntities.UserData;
 using System.Text.RegularExpressions;
 
-namespace ServiceEntities.SiteMap
+namespace WebTimer.ServiceEntities.SiteMap
 {
     public class SiteMapRepository 
     {

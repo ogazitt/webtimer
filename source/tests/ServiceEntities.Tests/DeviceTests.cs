@@ -1,9 +1,9 @@
 ﻿using System;
 using NUnit.Framework;
 using FluentAssertions;
-using ServiceEntities.UserData;
+using WebTimer.ServiceEntities.UserData;
 
-namespace ServiceEntities.Tests
+namespace WebTimer.ServiceEntities.Tests
 {
     [TestFixture]
     public class DeviceTests

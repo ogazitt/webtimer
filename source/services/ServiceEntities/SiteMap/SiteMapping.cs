@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using MongoRepository;
-using ServiceEntities;
+using WebTimer.ServiceEntities;
 
-namespace ServiceEntities.SiteMap
+namespace WebTimer.ServiceEntities.SiteMap
 {
     [CollectionName("SiteMappings")]
     public class SiteMapping : Entity

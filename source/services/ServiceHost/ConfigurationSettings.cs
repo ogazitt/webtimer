@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 //using System.Web.Configuration;
 using Microsoft.WindowsAzure.ServiceRuntime;
 
-namespace ServiceHost
+namespace WebTimer.ServiceHost
 {
     public interface IConfigurationSettings
     {

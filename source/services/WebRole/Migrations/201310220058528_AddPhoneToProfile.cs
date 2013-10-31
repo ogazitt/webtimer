@@ -1,4 +1,4 @@
-namespace WebRole.Migrations
+namespace WebTimer.WebRole.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;

@@ -6,11 +6,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-using ServiceEntities.UserData;
-using ServiceHost;
-using WebRole.Models;
+using WebTimer.ServiceEntities.UserData;
+using WebTimer.ServiceHost;
+using WebTimer.WebRole.Models;
 
-namespace WebRole.Controllers
+namespace WebTimer.WebRole.Controllers
 {
     public class OldDashboardController : Controller
     {

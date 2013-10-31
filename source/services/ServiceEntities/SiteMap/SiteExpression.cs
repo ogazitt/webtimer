@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using MongoRepository;
 
-namespace ServiceEntities.SiteMap
+namespace WebTimer.ServiceEntities.SiteMap
 {
     [CollectionName("SiteExpressions")]
     public class SiteExpression : Entity

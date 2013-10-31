@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tests.Shared.Mocks
+namespace WebTimer.Tests.Shared.Mocks
 {
     using MongoRepository;
     using System;

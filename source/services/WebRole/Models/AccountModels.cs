@@ -1,4 +1,4 @@
-﻿using ServiceHost;
+﻿using WebTimer.ServiceHost;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +7,7 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Web.Security;
 
-namespace WebRole.Models
+namespace WebTimer.WebRole.Models
 {
     public class UsersContext : DbContext
     {

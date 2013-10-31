@@ -6,10 +6,10 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 
-using Processor;
-using ServiceEntities.Collector;
+using WebTimer.Processor;
+using WebTimer.ServiceEntities.Collector;
 
-namespace CollectorWorker.Tests
+namespace WebTimer.CollectorWorker.Tests
 {
     /// <summary>
     /// Summary description for CollectorTest

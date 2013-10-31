@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using MongoRepository;
 
-namespace ServiceEntities.Collector
+namespace WebTimer.ServiceEntities.Collector
 {
     [CollectionName("CollectorRecords")]
     public class SiteLookupRecord : Entity, ISiteLookupRecord

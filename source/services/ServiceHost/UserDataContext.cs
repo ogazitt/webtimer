@@ -4,11 +4,11 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 
-using ServiceEntities.UserData;
-using ServiceHost;
-using ServiceHost.Migrations;
+using WebTimer.ServiceEntities.UserData;
+using WebTimer.ServiceHost;
+using WebTimer.ServiceHost.Migrations;
 
-namespace ServiceHost
+namespace WebTimer.ServiceHost
 {
     // You can add custom code to this file. Changes will not be overwritten.
     // 
@@ -17,7 +17,7 @@ namespace ServiceHost
     // code to the Application_Start method in your Global.asax file.
     // Note: this will destroy and re-create your database with every model change.
     // 
-    // System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<ServiceHost.UserDataContext>());
+    // System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<WebTimer.ServiceHost.UserDataContext>());
     public class UserDataContext : DbContext
     {
         public UserDataContext()

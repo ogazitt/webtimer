@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-namespace ServiceEntities.UserData
+namespace WebTimer.ServiceEntities.UserData
 {
     public class Device
     {

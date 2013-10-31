@@ -5,11 +5,11 @@ using System.Security;
 using System.Security.Principal;
 using Breeze.WebApi;
 
-using ServiceHost;
-using ServiceEntities.UserData;
+using WebTimer.ServiceHost;
+using WebTimer.ServiceEntities.UserData;
 
 // ReSharper disable InconsistentNaming
-namespace WebRole.Models
+namespace WebTimer.WebRole.Models
 {
     public class DashboardRepository : EFContextProvider<UserDataContext>
     {

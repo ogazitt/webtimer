@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MongoRepository;
 
-namespace ServiceEntities.SiteMap
+namespace WebTimer.ServiceEntities.SiteMap
 {
     public class SiteMapVersion : Entity
     {

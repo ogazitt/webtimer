@@ -1,4 +1,4 @@
-﻿namespace ServiceHost
+﻿namespace WebTimer.ServiceHost
 {
     public interface IWorker
     {

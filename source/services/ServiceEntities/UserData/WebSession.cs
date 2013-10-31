@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace ServiceEntities.UserData
+namespace WebTimer.ServiceEntities.UserData
 {
     public class WebSession
     {

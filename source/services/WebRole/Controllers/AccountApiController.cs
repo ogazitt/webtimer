@@ -3,13 +3,13 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Security;
 using WebMatrix.WebData;
-using WebRole.Helpers;
-using WebRole.Models;
+using WebTimer.WebRole.Helpers;
+using WebTimer.WebRole.Models;
 using Newtonsoft.Json.Linq;
 
-using ServiceHost;
+using WebTimer.ServiceHost;
 
-namespace WebRole.Controllers
+namespace WebTimer.WebRole.Controllers
 {
     public class AccountApiController : ApiController
     {

@@ -8,9 +8,9 @@ using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Diagnostics;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.Storage;
-using ServiceHost;
+using WebTimer.ServiceHost;
 
-namespace WorkerRole
+namespace WebTimer.WorkerRole
 {
     public class WorkerRole : RoleEntryPoint
     {
@@ -93,7 +93,7 @@ namespace WorkerRole
             var speechWorkerArray = new SpeechWorker.SpeechWorker[speechWorkerCount];
 #endif
             int processorWorkerCount = ConfigurationSettings.GetAsNullableInt(HostEnvironment.ProcessorWorkerCountConfigKey) ?? 0;
-            var processorWorkerArray = new ProcessorWorker.ProcessorWorker[processorWorkerCount];
+            var processorWorkerArray = new WebTimer.ProcessorWorker.ProcessorWorker[processorWorkerCount];
 
             // run an infinite loop doing the following:
             //   check whether the worker services have stopped (indicated by a null reference)
@@ -113,7 +113,7 @@ namespace WorkerRole
                     RestartWorkerThreads<SpeechWorker.SpeechWorker>(speechWorkerArray);
 #endif
                 // start Processor worker in both dev and deployed Azure fabric
-                RestartWorkerThreads<ProcessorWorker.ProcessorWorker>(processorWorkerArray);
+                RestartWorkerThreads<WebTimer.ProcessorWorker.ProcessorWorker>(processorWorkerArray);
 
                 // sleep for the timeout period
                 Thread.Sleep(timeout);

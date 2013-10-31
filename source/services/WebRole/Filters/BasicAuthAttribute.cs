@@ -1,4 +1,4 @@
-﻿using ServiceHost;
+﻿using WebTimer.ServiceHost;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +8,10 @@ using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Security;
 using WebMatrix.WebData;
-using WebRole.Controllers;
-using WebRole.Helpers;
+using WebTimer.WebRole.Controllers;
+using WebTimer.WebRole.Helpers;
 
-namespace WebRole.Filters
+namespace WebTimer.WebRole.Filters
 {
     public class BasicAuthAttribute : System.Web.Http.AuthorizeAttribute
     {

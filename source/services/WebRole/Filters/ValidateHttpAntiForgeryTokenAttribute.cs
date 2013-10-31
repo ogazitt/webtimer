@@ -8,7 +8,7 @@ using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 using System.Web.Mvc;
 // See http://aspnet13.orcsweb.com/web-api/overview/security/preventing-cross-site-request-forgery-(csrf)-attacks
-namespace WebRole.Filters
+namespace WebTimer.WebRole.Filters
 {
     public class ValidateHttpAntiForgeryTokenAttribute : AuthorizationFilterAttribute
     {

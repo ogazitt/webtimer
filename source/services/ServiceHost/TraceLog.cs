@@ -8,7 +8,7 @@ using System.Web;
 using Microsoft.WindowsAzure.Diagnostics;
 using Microsoft.WindowsAzure.ServiceRuntime;
 
-namespace ServiceHost
+namespace WebTimer.ServiceHost
 {
     public class HttpApplicationHeaders
     {

@@ -4,44 +4,39 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EA5B3B6D-9CE8-480E-AA93-D496E7AE5C63}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{372F6D73-FAF0-4618-8AB7-AEAD58D018B9}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WebTimer.Tests.Shared</RootNamespace>
-    <AssemblyName>WebTimer.Tests.Shared</AssemblyName>
+    <RootNamespace>WebTimer.DeployClient</RootNamespace>
+    <AssemblyName>DeployClient</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\bin\tests\$(Configuration)\</OutputPath>
-    <IntermediateOutputPath>..\..\..\bin\tests\$(Configuration)\obj</IntermediateOutputPath>
+    <OutputPath>..\..\..\bin\tools\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>..\..\..\bin\tools\$(Configuration)\obj</IntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\bin\tests\$(Configuration)\</OutputPath>
-    <IntermediateOutputPath>..\..\..\bin\tests\$(Configuration)\obj</IntermediateOutputPath>
+    <OutputPath>..\..\..\bin\tools\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>..\..\..\bin\tools\$(Configuration)\obj</IntermediateOutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MongoDB.Bson">
-      <HintPath>..\..\packages\mongocsharpdriver.1.8.2\lib\net35\MongoDB.Bson.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB.Driver">
-      <HintPath>..\..\packages\mongocsharpdriver.1.8.2\lib\net35\MongoDB.Driver.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoRepository">
-      <HintPath>..\..\packages\MongoRepository.1.5.2\lib\MongoRepository.dll</HintPath>
-    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.StorageClient, Version=1.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -50,17 +45,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mocks\MockMongoRepository.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\services\ServiceEntities\ServiceEntities.csproj">
-      <Project>{4949bfdf-c2d0-45c7-8c87-5c0f31bd1eea}</Project>
-      <Name>ServiceEntities</Name>
-    </ProjectReference>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

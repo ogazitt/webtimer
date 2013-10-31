@@ -1,0 +1,1 @@
+..\..\bin\tools\Debug\DeployClient.exe /p /directory ..\..\bin\client\Release

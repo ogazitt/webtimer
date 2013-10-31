@@ -7,10 +7,10 @@ using System.Data.Entity.Infrastructure;
 using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 
-using ServiceHost;
-using WebRole.Models;
+using WebTimer.ServiceHost;
+using WebTimer.WebRole.Models;
 
-namespace WebRole
+namespace WebTimer.WebRole
 {
     public static class AuthConfig
     {

@@ -7,11 +7,11 @@ using System.Web.Security;
 using DotNetOpenAuth.AspNet;
 using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
-using WebRole.Filters;
-using WebRole.Models;
-using ServiceHost;
+using WebTimer.WebRole.Filters;
+using WebTimer.WebRole.Models;
+using WebTimer.ServiceHost;
 
-namespace WebRole.Controllers
+namespace WebTimer.WebRole.Controllers
 {
     [Authorize]
     public class AccountController : Controller

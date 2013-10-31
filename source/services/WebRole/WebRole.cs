@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using ServiceHost;
+using WebTimer.ServiceHost;
 
-namespace WebRole
+namespace WebTimer.WebRole
 {
     public class WebRoleEntryPoint : Microsoft.WindowsAzure.ServiceRuntime.RoleEntryPoint
     {

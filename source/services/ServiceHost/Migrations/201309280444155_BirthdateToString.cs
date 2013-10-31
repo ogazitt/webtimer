@@ -1,4 +1,4 @@
-namespace ServiceHost.Migrations
+namespace WebTimer.ServiceHost.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;

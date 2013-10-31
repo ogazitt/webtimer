@@ -1,4 +1,4 @@
-﻿using ServiceHost;
+﻿using WebTimer.ServiceHost;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using System.Web.Http.Controllers;
 using System.Web.Security;
 using WebMatrix.WebData;
 
-namespace WebRole.Helpers
+namespace WebTimer.WebRole.Helpers
 {
     public class AuthHelper
     {

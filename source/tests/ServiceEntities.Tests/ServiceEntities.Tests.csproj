@@ -6,8 +6,8 @@
     <ProjectGuid>{1F005512-8F7B-4AED-B38F-388F0EA5AE54}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ServiceEntities.Tests</RootNamespace>
-    <AssemblyName>ServiceEntities.Tests</AssemblyName>
+    <RootNamespace>WebTimer.ServiceEntities.Tests</RootNamespace>
+    <AssemblyName>WebTimer.ServiceEntities.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -38,7 +38,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FluentAssertions">
-      <HintPath>..\packages\FluentAssertions.2.1.0.0\lib\net45\FluentAssertions.dll</HintPath>
+      <HintPath>..\..\packages\FluentAssertions.2.1.0.0\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
     <Reference Include="MongoDB.Bson">
       <HintPath>..\packages\mongocsharpdriver.1.8.2\lib\net35\MongoDB.Bson.dll</HintPath>
@@ -50,7 +50,7 @@
       <HintPath>..\packages\MongoRepository.1.5.2\lib\MongoRepository.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+      <HintPath>..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />

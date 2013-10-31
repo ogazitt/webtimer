@@ -3,7 +3,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace ServiceHost
+namespace WebTimer.ServiceHost
 {
     public class JsonSerializer
     {

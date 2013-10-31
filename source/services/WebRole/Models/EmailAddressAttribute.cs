@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 
-namespace WebRole.Models 
+namespace WebTimer.WebRole.Models 
 { 
  
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)] 

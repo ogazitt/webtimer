@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace WebRole.Helpers
+namespace WebTimer.WebRole.Helpers
 {
     public static class ServerSideInclude
     {

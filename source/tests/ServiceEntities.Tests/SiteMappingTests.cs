@@ -1,11 +1,11 @@
 ﻿using System;
 using NUnit.Framework;
 using FluentAssertions;
-using ServiceEntities.SiteMap;
-using ServiceEntities.UserData;
-using Shared = Tests.Shared;
+using WebTimer.ServiceEntities.SiteMap;
+using WebTimer.ServiceEntities.UserData;
+using Shared = WebTimer.Tests.Shared;
 
-namespace ServiceEntities.Tests
+namespace WebTimer.ServiceEntities.Tests
 {
     [TestFixture]
     public class SiteMappingTests

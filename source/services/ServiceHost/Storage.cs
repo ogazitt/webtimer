@@ -1,7 +1,7 @@
 ﻿using MongoRepository;
-using ServiceEntities.SiteMap;
+using WebTimer.ServiceEntities.SiteMap;
 
-namespace ServiceHost
+namespace WebTimer.ServiceHost
 {
     // ****************************************************************************
     // static class for getting storage contexts

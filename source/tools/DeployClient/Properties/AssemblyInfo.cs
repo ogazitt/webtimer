@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("WebTimer CollectorWorker Tests")]
+[assembly: AssemblyTitle("WebTimer DeployClient")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("WebTimer LLC")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("38c772e9-5d12-49c6-ab74-4cc94975026e")]
+[assembly: Guid("4d08d4f0-e0ef-4fa0-87b6-aa8796ecdb86")]
 
 // Version information for an assembly consists of the following four values:
 //

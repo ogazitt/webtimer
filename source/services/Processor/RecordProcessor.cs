@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using ServiceEntities.Collector;
-using ServiceEntities.SiteMap;
-using ServiceEntities.UserData;
+using WebTimer.ServiceEntities.Collector;
+using WebTimer.ServiceEntities.SiteMap;
+using WebTimer.ServiceEntities.UserData;
 
-namespace Processor
+namespace WebTimer.Processor
 {
     public class RecordProcessor
     {

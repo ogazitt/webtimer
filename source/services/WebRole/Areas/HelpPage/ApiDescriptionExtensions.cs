@@ -3,7 +3,7 @@ using System.Text;
 using System.Web;
 using System.Web.Http.Description;
 
-namespace WebRole.Areas.HelpPage
+namespace WebTimer.WebRole.Areas.HelpPage
 {
     public static class ApiDescriptionExtensions
     {

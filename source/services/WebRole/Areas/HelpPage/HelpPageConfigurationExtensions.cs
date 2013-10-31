@@ -7,9 +7,9 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Description;
-using WebRole.Areas.HelpPage.Models;
+using WebTimer.WebRole.Areas.HelpPage.Models;
 
-namespace WebRole.Areas.HelpPage
+namespace WebTimer.WebRole.Areas.HelpPage
 {
     public static class HelpPageConfigurationExtensions
     {

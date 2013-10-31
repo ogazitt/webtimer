@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 
-namespace WebRole
+namespace WebTimer.WebRole
 {
     public class FilterConfig
     {

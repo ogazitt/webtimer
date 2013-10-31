@@ -7,8 +7,8 @@
     <ProjectGuid>{4949BFDF-C2D0-45C7-8C87-5C0F31BD1EEA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ServiceEntities</RootNamespace>
-    <AssemblyName>ServiceEntities</AssemblyName>
+    <RootNamespace>WebTimer.ServiceEntities</RootNamespace>
+    <AssemblyName>WebTimer.ServiceEntities</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

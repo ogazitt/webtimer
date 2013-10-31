@@ -1,18 +1,18 @@
-namespace WebRole.Migrations
+namespace WebTimer.WebRole.Migrations
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<WebRole.Models.UsersContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<WebTimer.WebRole.Models.UsersContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(WebRole.Models.UsersContext context)
+        protected override void Seed(WebTimer.WebRole.Models.UsersContext context)
         {
             //  This method will be called after migrating to the latest version.
 

@@ -1,7 +1,7 @@
 using System.Web.Http;
 using System.Web.Mvc;
 
-namespace WebRole.Areas.HelpPage
+namespace WebTimer.WebRole.Areas.HelpPage
 {
     public class HelpPageAreaRegistration : AreaRegistration
     {

@@ -3,12 +3,12 @@ using System.Text;
 using System.Collections.Generic;
 using NUnit.Framework;
 using FluentAssertions;
-using Processor;
-using ServiceEntities.Collector;
-using ServiceEntities.SiteMap;
-using Shared = Tests.Shared;
+using WebTimer.Processor;
+using WebTimer.ServiceEntities.Collector;
+using WebTimer.ServiceEntities.SiteMap;
+using Shared = WebTimer.Tests.Shared;
 
-namespace CollectorWorker.Tests
+namespace WebTimer.CollectorWorker.Tests
 {
     /// <summary>
     /// Summary description for CollectorTest

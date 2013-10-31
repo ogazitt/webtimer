@@ -1,4 +1,4 @@
-﻿namespace WebRole.Controllers
+﻿namespace WebTimer.WebRole.Controllers
 {
     using System;
     using System.Linq;
@@ -7,9 +7,9 @@
     using Newtonsoft.Json.Linq;
     using Filters;
     using Models;
-    using ServiceEntities.UserData;
+    using WebTimer.ServiceEntities.UserData;
     using System.Collections.Generic;
-    using ServiceHost;
+    using WebTimer.ServiceHost;
 
     [Authorize]
     [BreezeController]

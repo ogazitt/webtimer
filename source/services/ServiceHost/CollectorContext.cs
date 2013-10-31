@@ -6,11 +6,11 @@ using System.Security.Principal;
 using MongoDB.Driver;
 using MongoRepository;
 
-using ServiceEntities.Collector;
-using ServiceEntities.UserData;
-using ServiceHost;
+using WebTimer.ServiceEntities.Collector;
+using WebTimer.ServiceEntities.UserData;
+using WebTimer.ServiceHost;
 
-namespace ServiceHost
+namespace WebTimer.ServiceHost
 {
     public class CollectorContext : MongoRepository<SiteLookupRecord>
     {

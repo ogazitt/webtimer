@@ -7,8 +7,8 @@
     <ProjectGuid>{6F88F47F-3542-442F-95DA-60BE368053E1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ServiceHost</RootNamespace>
-    <AssemblyName>ServiceHost</AssemblyName>
+    <RootNamespace>WebTimer.ServiceHost</RootNamespace>
+    <AssemblyName>WebTimer.ServiceHost</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

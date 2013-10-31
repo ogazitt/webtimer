@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceEntities.UserData
+namespace WebTimer.ServiceEntities.UserData
 {
     public class HighChartSeries
     {

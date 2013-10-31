@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace ServiceHost
+namespace WebTimer.ServiceHost
 {
     public class EmailProcessor
     {

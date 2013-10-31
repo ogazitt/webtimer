@@ -1,9 +1,9 @@
 using System;
 using System.Web.Http;
 using System.Web.Mvc;
-using WebRole.Areas.HelpPage.Models;
+using WebTimer.WebRole.Areas.HelpPage.Models;
 
-namespace WebRole.Areas.HelpPage.Controllers
+namespace WebTimer.WebRole.Areas.HelpPage.Controllers
 {
     /// <summary>
     /// The controller that will handle requests for the help page.

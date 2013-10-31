@@ -1,10 +1,10 @@
-﻿using ServiceEntities.Collector;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using WebTimer.ServiceEntities.Collector;
 
-namespace CollectorWorker.Tests
+namespace WebTimer.CollectorWorker.Tests
 {
     // mocked SiteLookupRecord, so that the test project doesn't have to link with the MongoRepository
     public class SiteLookupRecord : ISiteLookupRecord

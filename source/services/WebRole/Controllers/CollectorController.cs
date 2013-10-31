@@ -6,13 +6,13 @@ using System.Security.Principal;
 using System.Web.Http;
 using Newtonsoft.Json.Linq;
 
-using ServiceEntities.Collector;
-using ServiceEntities.UserData;
-using ServiceHost;
-using WebRole.Filters;
-using WebRole.Models;
+using WebTimer.ServiceEntities.Collector;
+using WebTimer.ServiceEntities.UserData;
+using WebTimer.ServiceHost;
+using WebTimer.WebRole.Filters;
+using WebTimer.WebRole.Models;
 
-namespace WebRole.Controllers
+namespace WebTimer.WebRole.Controllers
 {
     //[InitializeSimpleMembership]
     [BasicAuth]

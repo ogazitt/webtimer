@@ -1,11 +1,11 @@
-﻿using ServiceHost;
+﻿using WebTimer.ServiceHost;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace WebRole.Controllers
+namespace WebTimer.WebRole.Controllers
 {
     [Authorize]
     public class RecordsController : Controller //, IDisposable
