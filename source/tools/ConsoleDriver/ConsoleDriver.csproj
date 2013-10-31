@@ -18,8 +18,8 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\bin\client\$(Configuration)\</OutputPath>
-    <IntermediateOutputPath>..\..\..\..\bin\client\$(Configuration)\obj</IntermediateOutputPath>
+    <OutputPath>..\..\..\bin\tools\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>..\..\..\bin\tools\$(Configuration)\obj</IntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -29,8 +29,8 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\bin\client\$(Configuration)\</OutputPath>
-    <IntermediateOutputPath>..\..\..\..\bin\client\$(Configuration)\obj</IntermediateOutputPath>
+    <OutputPath>..\..\..\bin\tools\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>..\..\..\bin\tools\$(Configuration)\obj</IntermediateOutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -67,7 +67,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Client\Client.csproj">
+    <ProjectReference Include="..\..\clients\windows\Client\Client.csproj">
       <Project>{21c885f0-b610-4028-8522-255fcbadb98d}</Project>
       <Name>Client</Name>
     </ProjectReference>

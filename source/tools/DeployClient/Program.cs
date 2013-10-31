@@ -17,7 +17,8 @@ namespace WebTimer.DeployClient
         const string StagingConnectionString = "StagingConnectionString";
         const string StagingContainer = "StagingContainer";
 
-        static string[] files = { "WebTimerSetup.exe", "WebTimer.msi", "version.txt" };
+        static string[] Files = { "WebTimerSetup.exe", "WebTimer.msi", "version.txt" };
+        static string[] ContentTypes = { "application/x-msdownload", "application/octet-stream", "text/plain" };
 
         /// <summary>
         /// Usage: DeployClient.exe [/p[rod]] [/directory pathname]
@@ -71,7 +72,7 @@ namespace WebTimer.DeployClient
             Console.WriteLine("Terminate the upload by pressing <enter>");
             Console.WriteLine();
 
-            // start uploading the first file (note files are serialized)
+            // start uploading the first file (note Files are serialized)
             Upload(cloudBlobContainer, directory, 0);
 
             Console.ReadLine();
@@ -92,10 +93,10 @@ namespace WebTimer.DeployClient
         private static void Upload(CloudBlobContainer cloudBlobContainer, string directory, int index)
         {
             // check for last file
-            if (index >= files.Length)
+            if (index >= Files.Length)
                 return;
 
-            var filename = files[index];
+            var filename = Files[index];
             try
             {
                 var blob = cloudBlobContainer.GetBlobReference(filename);
@@ -112,6 +113,8 @@ namespace WebTimer.DeployClient
                         try
                         {
                             stream.Close();
+                            blob.Properties.ContentType = ContentTypes[index];
+                            blob.SetProperties();
                             Console.WriteLine("Successfully uploaded " + uri);
                             Console.WriteLine();
                             index++;
