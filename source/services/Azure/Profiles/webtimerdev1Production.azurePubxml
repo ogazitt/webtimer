@@ -13,7 +13,7 @@
     <AzureHostedServiceName>webtimerdev1</AzureHostedServiceName>
     <AzureEnableIntelliTrace>False</AzureEnableIntelliTrace>
     <AzureEnableProfiling>False</AzureEnableProfiling>
-    <AzureServiceConfiguration>Cloud</AzureServiceConfiguration>
+    <AzureServiceConfiguration>Dev1BS</AzureServiceConfiguration>
     <AzureSolutionConfiguration>Debug</AzureSolutionConfiguration>
     <AzureStorageAccountLabel>webtimerdev1</AzureStorageAccountLabel>
     <AzureStorageAccountName>webtimerdev1</AzureStorageAccountName>

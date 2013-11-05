@@ -1,8 +1,9 @@
-﻿@using WebRole.Helpers;
+﻿@using WebTimer.WebRole.Helpers;
 @{
     var name = ViewBag.UserName ?? @User.Identity.Name;
     if (name.Contains(" "))
         name = name.Split(' ')[0];
+    var isAdmin = ViewBag.IsAdmin ?? false;
 }
 
 <ul class="nav navbar-nav navbar-right">
@@ -16,6 +17,9 @@
         <ul class="dropdown-menu">
             <li><a id="dashboardButton" href="/"><span class="glyphicon glyphicon-stats"></span>&nbsp; Dashboard</a></li>
             <li><a id="settingsButton" href="/Account/Manage"><span class="glyphicon glyphicon-cog"></span>&nbsp; Settings</a></li>
+            @if (isAdmin) {
+                <li><a id="adminButton" href="/Admin/Index"><span class="glyphicon glyphicon-lock"></span>&nbsp; Admin</a></li>
+            }            
             <li class="divider"></li>
             <li><a id="signoutButton" href="javascript:document.getElementById('logoutForm').submit()"><span class="glyphicon glyphicon-off"></span>&nbsp; Sign Out</a></li>
         </ul>

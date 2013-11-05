@@ -1,0 +1,19 @@
+﻿@model WebTimer.WebRole.Models.ImpersonateModel
+
+<h3>Impersonate</h3>
+
+@using (Html.BeginForm("Impersonate", "Admin", FormMethod.Post, new { id = "impersonateForm" }))
+{
+    @Html.AntiForgeryToken()
+    <fieldset>
+        <legend>Impersonate Form</legend>
+        <ol>
+            <li>
+                <p />
+                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "User to impersonate" })
+            </li>
+        </ol>
+        <input type="submit" class="btn btn-primary" value="Impersonate" />
+        @Html.ValidationSummary()
+    </fieldset>
+}

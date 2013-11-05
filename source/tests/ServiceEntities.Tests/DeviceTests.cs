@@ -14,12 +14,5 @@ namespace WebTimer.ServiceEntities.Tests
             var id = Device.CreateDeviceId();
             id.Length.Should().Be(12);
         }
-
-        [Test]
-        public void ValidateIpAddress()
-        {
-            var id = Device.CreateIpAddress();
-            id.Should().Match("*.*.*.*");
-        }
     }
 }

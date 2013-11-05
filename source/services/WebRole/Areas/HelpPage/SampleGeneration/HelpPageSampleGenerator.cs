@@ -122,8 +122,8 @@ namespace WebTimer.WebRole.Areas.HelpPage
         /// <summary>
         /// Search for samples that are provided directly through <see cref="ActionSamples"/>.
         /// </summary>
-        /// <param name="controllerName">Name of the controller.</param>
-        /// <param name="actionName">Name of the action.</param>
+        /// <param name="controllerName">UserName of the controller.</param>
+        /// <param name="actionName">UserName of the action.</param>
         /// <param name="parameterNames">The parameter names.</param>
         /// <param name="type">The CLR type.</param>
         /// <param name="formatter">The formatter.</param>
@@ -171,8 +171,8 @@ namespace WebTimer.WebRole.Areas.HelpPage
         /// Resolves the type of the action parameter or return value when <see cref="HttpRequestMessage"/> or <see cref="HttpResponseMessage"/> is used.
         /// </summary>
         /// <param name="api">The <see cref="ApiDescription"/>.</param>
-        /// <param name="controllerName">Name of the controller.</param>
-        /// <param name="actionName">Name of the action.</param>
+        /// <param name="controllerName">UserName of the controller.</param>
+        /// <param name="actionName">UserName of the action.</param>
         /// <param name="parameterNames">The parameter names.</param>
         /// <param name="sampleDirection">The value indicating whether the sample is for a request or a response.</param>
         /// <param name="formatters">The formatters.</param>

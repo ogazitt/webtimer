@@ -9,6 +9,8 @@ using System.Threading;
 using PacketDotNet;
 using SharpPcap;
 
+using WebTimer.Client.Models;
+
 namespace WebTimer.Client
 {
     public class CollectorClient
@@ -16,6 +18,7 @@ namespace WebTimer.Client
         static List<Record> records = new List<Record>();
         static CaptureDeviceList devices = null;
         static object startingLock = new object();
+        static string deviceId = null;
 
         /// <summary>
         /// Start a network capture
@@ -28,6 +31,14 @@ namespace WebTimer.Client
                 {
                     // Retrieve the device list
                     devices = CaptureDeviceList.Instance;
+
+                    // If no devices were found print an error
+                    if (devices.Count < 1)
+                    {
+                        var error = "No devices were found on this machine";
+                        TraceLog.TraceFatal(error);
+                        throw new Exception(error);
+                    }
 
                     // if capture is started on all devices, nothing to do
                     var started = true;
@@ -45,14 +56,6 @@ namespace WebTimer.Client
                     // Print SharpPcap version
                     string ver = SharpPcap.Version.VersionString;
                     TraceLog.TraceInfo(string.Format("Starting collector with version {0}", ver));
-
-                    // If no devices were found print an error
-                    if (devices.Count < 1)
-                    {
-                        var error = "No devices were found on this machine";
-                        TraceLog.TraceFatal(error);
-                        throw new Exception(error);
-                    }
 
                     foreach (var device in devices)
                     {
@@ -82,6 +85,14 @@ namespace WebTimer.Client
 
                         // Start the capturing process
                         device.StartCapture();
+                    }
+
+                    // get the device ID, and store it if it's not in the config file already
+                    deviceId = ConfigClient.Read(ConfigClient.DeviceId);
+                    if (deviceId == null)
+                    {
+                        deviceId = devices[0].MacAddress.ToString();
+                        ConfigClient.Write(ConfigClient.DeviceId, deviceId);
                     }
                 }
                 catch (Exception ex)
@@ -187,54 +198,51 @@ namespace WebTimer.Client
                         }
 
                         var hostMacAddress = eth.SourceHwAddress.ToString();
-                        var hostIpAddress = "";
-                        var hostName = "";
-                        var destIpAddress = "";
-                        var sourcePort = 0;
-                        var destPort = 0;
 
-                        var ip = packet.PayloadPacket as IPv4Packet;
-                        if (ip != null)
-                        {
-                            hostIpAddress = ip.SourceAddress.ToString();
-                            destIpAddress = ip.DestinationAddress.ToString();
-                            sourcePort = udp.SourcePort;
-                            destPort = udp.DestinationPort;
-                            hostName = hostIpAddress;
-
-                            try
-                            {
-                                IPHostEntry entry = null;
-                                if (Environment.Version.CompareTo(new System.Version(4, 0)) < 0)
-                                    entry = Dns.GetHostByAddress(ip.SourceAddress);
-                                else
-                                    entry = Dns.GetHostEntry(ip.SourceAddress);
-                                if (entry != null)
-                                    hostName = entry.HostName;
-                            }
-                            catch (Exception ex)
-                            {
-                                TraceLog.TraceException(String.Format("GetHostByAddress failed for {0}", hostIpAddress), ex);
-                            }
-                        }
-                        var destMacAddress = eth.DestinationHwAddress.ToString();
-
+#if DEBUG
                         // only log this level of detail if we're logging to the console
                         if (TraceLog.TraceDestination == TraceLog.Destination.Console)
                         {
-                            TraceLog.TraceInfo(String.Format("Source: [{0}; {1}:{2}; {3}]; Dest: [{4}; {5}:{6}; Website: {7}",
-                                hostMacAddress, hostIpAddress, sourcePort, hostName,
-                                destMacAddress, destIpAddress, destPort,
-                                websiteName));
+                            // get the IP packet info
+                            var ip = packet.PayloadPacket as IPv4Packet;
+                            if (ip != null)
+                            {
+                                var hostIpAddress = ip.SourceAddress.ToString();
+                                var destIpAddress = ip.DestinationAddress.ToString();
+                                var sourcePort = udp.SourcePort;
+                                var destPort = udp.DestinationPort;
+                                var hostName = hostIpAddress;
+
+                                try
+                                {
+                                    IPHostEntry entry = null;
+                                    if (Environment.Version.CompareTo(new System.Version(4, 0)) < 0)
+                                        entry = Dns.GetHostByAddress(ip.SourceAddress);
+                                    else
+                                        entry = Dns.GetHostEntry(ip.SourceAddress);
+                                    if (entry != null)
+                                        hostName = entry.HostName;
+                                }
+                                catch (Exception ex)
+                                {
+                                    TraceLog.TraceException(String.Format("GetHostByAddress failed for {0}", hostIpAddress), ex);
+                                }
+
+                                var destMacAddress = eth.DestinationHwAddress.ToString();
+
+                                TraceLog.TraceInfo(String.Format("Source: [{0}; {1}:{2}; {3}]; Dest: [{4}; {5}:{6}; Website: {7}",
+                                    hostMacAddress, hostIpAddress, sourcePort, hostName,
+                                    destMacAddress, destIpAddress, destPort,
+                                    websiteName));
+                            }
                         }
+#endif
 
                         lock (records)
                         {
                             records.Add(new Record()
                             {
                                 HostMacAddress = hostMacAddress,
-                                HostIpAddress = hostIpAddress,
-                                HostName = hostName,
                                 WebsiteName = websiteName,
                                 Timestamp = DateTime.Now.ToString("s")
                             });

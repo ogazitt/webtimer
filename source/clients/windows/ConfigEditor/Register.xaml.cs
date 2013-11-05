@@ -5,7 +5,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Text.RegularExpressions;
+
 using WebTimer.Client;
+using WebTimer.Client.Models;
 
 namespace WebTimer.ConfigEditor
 {
@@ -90,7 +92,7 @@ namespace WebTimer.ConfigEditor
                                     ConfigClient.Write(ConfigClient.Credentials, encodedCreds);
                                     ConfigClient.Write(ConfigClient.Email, username);
                                     ConfigClient.Write(ConfigClient.Name, user.Name);
-                                    ConfigClient.Write(ConfigClient.ComputerName, ComputerNameBox.Text);
+                                    ConfigClient.Write(ConfigClient.DeviceName, ComputerNameBox.Text);
 
                                     NavigationService.Navigate(new Done());
                                 }

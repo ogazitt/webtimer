@@ -1,0 +1,30 @@
+﻿@model WebTimer.WebRole.Models.SupportSettingsModel
+
+<h3>Support settings</h3>
+<p></p>
+@using (Html.BeginForm("ManageSupportSettings", "Account", FormMethod.Post, new { id = "changeSupportSettingsForm" }))
+{
+    @Html.AntiForgeryToken()
+    <fieldset>
+        <legend>Change Support Settings Form</legend>
+        <ol>
+            <li>
+                <p />
+                <!--
+                <span class="btn btn-switch">
+                    <span class="btn-switch-on btn-primary">YES</span>
+                    <span class="btn-switch-off btn-default">NO</span>  
+                </span>
+                @Html.LabelFor(m => m.PermissionToImpersonate, new { @class = "form-control" })
+                @Html.CheckBoxFor(m => m.PermissionToImpersonate, new { @class = "form-control" })
+                    -->
+                <div style="display: inline-block;">
+                @Html.CheckBoxFor(m => m.PermissionToImpersonate)
+                @Html.LabelFor(m => m.PermissionToImpersonate, new { @class = "checkbox" })
+                </div>
+            </li>
+        </ol>
+        <input type="submit" class="btn btn-primary" value="Change" />
+        @Html.ValidationSummary()
+    </fieldset>
+}

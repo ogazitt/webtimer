@@ -73,6 +73,14 @@ a.navbar-brand.brand-padding {
         cursor: pointer;
     }
 
+#copyButton {
+    padding-right: 60px;
+}
+
+.uv-icon {
+    margin-right: 10px;
+}
+
 /*
  * LANDING PAGE
  */

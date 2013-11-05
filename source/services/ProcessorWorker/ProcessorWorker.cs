@@ -82,20 +82,20 @@ namespace WebTimer.ProcessorWorker
                 {
                     DateTime now = DateTime.UtcNow;
 
-                    var newRecords = CollectorContext.GetRecordsToProcess(Me);
-                    if (newRecords.Count() > 0)
+                    var record = CollectorContext.GetRecordToProcess(Me);
+                    if (record != null && record.RecordList.Count() > 0)
                     {
                         try
                         {
                             // get all the in-progress sessions belonging to the userid
-                            var userId = newRecords.First().UserId;
-                            var sessions = UserContext.WebSessions.Where(ws => ws.Device.UserId == userId).OrderBy(ws => ws.Start);
+                            var userId = record.UserId;
+                            var sessions = UserContext.WebSessions.Where(ws => ws.Device.UserId == userId && ws.InProgress == true).OrderBy(ws => ws.Start);
 
                             // process the records against the existing sessions
                             var workingSessions = RecordProcessor.ProcessRecords(
                                 SiteMapRepository, 
                                 sessions.ToList<WebSession>(), 
-                                newRecords.ToList<ISiteLookupRecord>());
+                                record);
 
                             // process the resultant sessions
                             foreach (var session in workingSessions)
@@ -158,23 +158,20 @@ namespace WebTimer.ProcessorWorker
                             // save all the sessions 
                             UserContext.SaveChanges();
 
-                            // mark the records as processed using batch semantics
-                            foreach (var record in newRecords)
-                                record.State = RecordState.Processed;
-                            CollectorContext.Update(newRecords);
+                            // remove the processed record
+                            CollectorContext.Delete(record);
 
-                            TraceLog.TraceInfo(string.Format("Processed {0} records for user {1}", newRecords.Count(), userId));
+                            TraceLog.TraceInfo(string.Format("Processed {0} sessions for user {1}", workingSessions.Count(), userId));
                         }
                         catch (Exception ex)
                         {
                             TraceLog.TraceException("Could not save session changes", ex);
-#if KILL                    // if still debugging this codepath, reset the collector records to New.  BUGBUG - need to harden this with poison message semantics
 
-                            // mark the records as new using batch semantics
-                            foreach (var record in newRecords)
-                                record.State = RecordState.New;
-                            CollectorContext.Update(newRecords);
-#endif
+                            // unlock the record so that it can get processed by the next iteration
+                            record.State = RecordState.New;
+                            CollectorContext.Update(record);
+
+                            // BUGBUG - need to harden this codepath with poison message semantics
                         }
 
                         // keep reading records until they are all processed

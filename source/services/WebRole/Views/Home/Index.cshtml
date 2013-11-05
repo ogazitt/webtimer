@@ -1,11 +1,11 @@
-﻿@model WebRole.Models.LoginModel
+﻿@model WebTimer.WebRole.Models.LoginModel
 @{
     ViewBag.Title = "WebTimer";
     var isMobile = BrowserAgent.IsMobile(Request.UserAgent);
     var isTablet = BrowserAgent.IsTablet(Request.UserAgent);
 }
-@using WebRole.Helpers;
-@using ServiceHost;
+@using WebTimer.WebRole.Helpers;
+@using WebTimer.ServiceHost;
 @functions{
     public string GetAntiForgeryToken()
     {

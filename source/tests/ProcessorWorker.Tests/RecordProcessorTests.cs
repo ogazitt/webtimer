@@ -24,9 +24,9 @@ namespace WebTimer.CollectorWorker.Tests
         {
             var macAddress = macAddresses[0];
             var websiteName = websiteNames[0];
-            var list = CreateRecordList(macAddress, websiteName, sessionCount, recordCount);
+            var record = CreateRecordList(macAddress, websiteName, sessionCount, recordCount);
 
-            var sessions = RecordProcessor.ProcessRecords(siteMapRepository, null, list);
+            var sessions = RecordProcessor.ProcessRecords(siteMapRepository, null, record);
             sessions.Count.Should().Be(sessionCount);
         }
 
@@ -35,8 +35,8 @@ namespace WebTimer.CollectorWorker.Tests
         {
             var macAddress = macAddresses[0];
             var websiteName = websiteNames[0];
-            var list = CreateRecordList(macAddress, websiteName, 1, 1);
-            var sessions = RecordProcessor.ProcessRecords(siteMapRepository, null, list);
+            var record = CreateRecordList(macAddress, websiteName, 1, 1);
+            var sessions = RecordProcessor.ProcessRecords(siteMapRepository, null, record);
             sessions.Count.Should().Be(1);
 
             var session = sessions[0];
@@ -59,34 +59,36 @@ namespace WebTimer.CollectorWorker.Tests
         {
             var macAddress = macAddresses[0];
             var websiteName = websiteNames[0];
-            var list = CreateRecordList(macAddress, websiteName, 1, 2);
-            list = list.OrderByDescending(r => r.Timestamp).ToList();
-            var sessions = RecordProcessor.ProcessRecords(siteMapRepository, null, list);
+            var record = CreateRecordList(macAddress, websiteName, 1, 2);
+            record.RecordList = record.RecordList.OrderByDescending(r => r.Timestamp).ToList();
+            var sessions = RecordProcessor.ProcessRecords(siteMapRepository, null, record);
             sessions.Count.Should().Be(1);
 
             var session = sessions[0];
             session.Duration.Should().BeGreaterOrEqualTo(0);
         }
 
-        private List<ISiteLookupRecord> CreateRecordList(string macAddress, string websiteName, int sessionCount, int recordCount)
+        private CollectorRecord CreateRecordList(string macAddress, string websiteName, int sessionCount, int recordCount)
         {
             var now = DateTime.Now;
-            var list = new List<ISiteLookupRecord>();
-            var ipAddress = ipAddresses[macAddress];
+            var record = new CollectorRecord()
+            {
+                DeviceId = macAddress,
+                DeviceName = macAddress,
+                UserId = macAddress,
+                RecordList = new List<SiteLookupRecord>()
+            };
 
             int sessionBreak = recordCount / sessionCount;
             int runningSessionCount = 1;
 
             for (int i = 1; i <= recordCount; i++)
             {
-                list.Add(new SiteLookupRecord()
+                record.RecordList.Add(new SiteLookupRecord()
                 {
-                    HostMacAddress = macAddress,
-                    HostIpAddress = ipAddress,
-                    HostName = ipAddress,
                     WebsiteName = websiteName,
                     Timestamp = now.ToString("s"),
-                    UserId = macAddress
+                    Duration = 0
                 });
                 if (i % sessionBreak == 0 && runningSessionCount < sessionCount)
                 {
@@ -96,7 +98,7 @@ namespace WebTimer.CollectorWorker.Tests
                 else
                     now += TimeSpan.FromMinutes(2.0);
             }
-            return list;
+            return record;
         }
     }
 }

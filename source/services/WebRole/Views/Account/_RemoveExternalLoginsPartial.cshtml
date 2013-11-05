@@ -1,4 +1,4 @@
-﻿@model ICollection<WebRole.Models.ExternalLogin>
+﻿@model ICollection<WebTimer.WebRole.Models.ExternalLogin>
 
 @if (Model.Count > 0)
 {
@@ -6,7 +6,7 @@
     if (ViewBag.ShowRemoveButton) {
         <p class="explanation">(click to remove)</p>
     }
-        foreach (WebRole.Models.ExternalLogin externalLogin in Model)
+        foreach (WebTimer.WebRole.Models.ExternalLogin externalLogin in Model)
         {
                     if (ViewBag.ShowRemoveButton)
                     {

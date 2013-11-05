@@ -23,7 +23,7 @@ namespace WebTimer.ConfigEditor
         {
             get
             {
-                var computerName = ConfigClient.Read(ConfigClient.ComputerName) ?? System.Net.Dns.GetHostName();
+                var computerName = ConfigClient.Read(ConfigClient.DeviceName) ?? System.Net.Dns.GetHostName();
                 return string.Format("Account information for this computer ({0})", computerName);
             }
         }

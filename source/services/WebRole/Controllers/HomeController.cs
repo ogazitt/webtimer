@@ -24,9 +24,15 @@ namespace WebTimer.WebRole.Controllers
                 {
                     var user = context.UserProfiles.FirstOrDefault(u => u.UserName == User.Identity.Name);
                     if (user != null)
+                    {
                         ViewBag.UserName = user.Name;
+                        ViewBag.IsAdmin = user.IsAdmin;
+                    }
                     else
+                    {
                         ViewBag.UserName = null;
+                        ViewBag.IsAdmin = false;
+                    }
                 }
             }
             return View();

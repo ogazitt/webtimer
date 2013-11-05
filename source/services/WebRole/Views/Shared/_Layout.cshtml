@@ -1,5 +1,5 @@
-﻿@using WebRole.Helpers;
-@using ServiceHost;
+﻿@using WebTimer.WebRole.Helpers;
+@using WebTimer.ServiceHost;
 @{
     var isMobile = BrowserAgent.IsMobile(Request.UserAgent);
     var enableEvents = HostEnvironment.DeploymentName.Equals("Production", StringComparison.OrdinalIgnoreCase);
@@ -58,6 +58,7 @@
     @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/ajaxlogin")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/uservoice")
 
     @RenderSection("scripts", required: false)
 

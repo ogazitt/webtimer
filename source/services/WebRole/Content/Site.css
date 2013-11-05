@@ -76,6 +76,8 @@ header {
 
 /*#region forms */
 
+#impersonateForm input,
+#changeSupportSettingsForm input,
 #changePersonalInfoForm input,
 #changePasswordForm input,
 #setPasswordForm input,
@@ -87,6 +89,8 @@ header {
     border-radius: 5px;
 }
 
+    #impersonateForm input[type=text],
+    #changeSupportSettingsForm input[type=text],
     #changePersonalInfoForm input[type=text],
     #changePasswordForm input[type=text], #changePasswordForm input[type=password],
     #setPasswordForm input[type=text], #setPasswordForm input[type=password],
@@ -99,6 +103,8 @@ header {
     border: none;
 }
 
+#impersonateForm input[type=submit],
+#changeSupportSettingsForm input[type=submit],
 #changePersonalInfoForm input[type=submit],
 #setPasswordForm input[type=submit],
 #changePasswordForm input[type=submit] {

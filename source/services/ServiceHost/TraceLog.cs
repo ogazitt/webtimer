@@ -80,14 +80,14 @@ namespace WebTimer.ServiceHost
             lock (azureLock)
             {
                 // only run the initialization code at initialization time (and outside the w3wp workers)
-                Trace.Listeners.Add(new DiagnosticMonitorTraceListener());
+                //Trace.Listeners.Add(new DiagnosticMonitorTraceListener());
                 if (HttpContext.Current == null)
                 {
                     var config = DiagnosticMonitor.GetDefaultInitialConfiguration();
                     config.Logs.ScheduledTransferPeriod = TimeSpan.FromMinutes(1.0);
                     config.Logs.BufferQuotaInMB = 1000;
-                    //config.Logs.ScheduledTransferLogLevelFilter = Microsoft.WindowsAzure.Diagnostics.LogLevel.Verbose;
-                    config.Logs.ScheduledTransferLogLevelFilter = Microsoft.WindowsAzure.Diagnostics.LogLevel.Information;
+                    config.Logs.ScheduledTransferLogLevelFilter = Microsoft.WindowsAzure.Diagnostics.LogLevel.Verbose;
+                    //config.Logs.ScheduledTransferLogLevelFilter = Microsoft.WindowsAzure.Diagnostics.LogLevel.Information;
                     DiagnosticMonitor.Start("Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString", config);
                 }
             }

@@ -9,8 +9,9 @@ namespace WebTimer.Client
 {
     public class ConfigClient
     {
-        public const string ComputerName = "ComputerName";
         public const string Credentials = "Credentials";
+        public const string DeviceId = "DeviceId";
+        public const string DeviceName = "DeviceName";
         public const string Disabled = "Disabled";
         public const string Email = "Email";
         public const string Name = "Name";

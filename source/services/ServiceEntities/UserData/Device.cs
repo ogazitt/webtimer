@@ -20,9 +20,6 @@ namespace WebTimer.ServiceEntities.UserData
         [Display(Name = "Host Name")]
         public string Hostname { get; set; }
 
-        [Display(Name = "IP Address")]
-        public string IpAddress { get; set; }
-
         [Display(Name = "Device Type")]
         public string DeviceType { get; set; }
 
@@ -47,12 +44,11 @@ namespace WebTimer.ServiceEntities.UserData
 
         public static Device CreateNewDevice(string userName)
         {
-            var ip = CreateIpAddress();
+            var deviceId = CreateDeviceId();
             return new Device()
             {
-                DeviceId = CreateDeviceId(),
-                IpAddress = ip,
-                Hostname = ip,
+                DeviceId = deviceId,
+                Hostname = deviceId,
                 Name = string.Format("{0}'s device", userName),
                 UserId = userName
             };
@@ -65,21 +61,6 @@ namespace WebTimer.ServiceEntities.UserData
             var sb = new StringBuilder();
             for (int i = 0; i < 12; i++)
                 sb.Append(hexDigit.Substring(rand.Next(hexDigit.Length), 1));
-            var addr = sb.ToString();
-            return addr;
-        }
-
-        public static string CreateIpAddress()
-        {
-            var rand = new Random(DateTime.Now.Millisecond);
-
-            var sb = new StringBuilder();
-            for (int i = 0; i < 4; i++)
-            {
-                sb.Append(String.Format("{0}", rand.Next(256)));
-                if (i < 3)
-                    sb.Append('.');
-            }
             var addr = sb.ToString();
             return addr;
         }

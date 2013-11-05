@@ -5,12 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
+using WebTimer.Client.Models;
+
 namespace WebTimer.Client
 {
     public class UploadClient
     {
         static bool uploadFlag = false;
         static string credentials = null;
+        static string deviceId = null;
+        static string deviceName = null;
         static object configLock = new object();
         static bool started = false;
         static object startLock = new object();
@@ -36,8 +40,12 @@ namespace WebTimer.Client
                 {
                     TraceLog.TraceInfo("Starting uploader");
 
+                    // retrieve creds and device ID
                     credentials = ConfigClient.Read(ConfigClient.Credentials);
+                    deviceId = ConfigClient.Read(ConfigClient.DeviceId);
+                    deviceName = ConfigClient.Read(ConfigClient.DeviceName);
 
+                    // start the uploader loop on a new thread
                     ThreadStart ts = new ThreadStart(SendLoop);
                     Thread thread = new Thread(ts);
                     uploadFlag = true;
@@ -82,8 +90,12 @@ namespace WebTimer.Client
                         if (Convert.ToBoolean(disabled))
                             collectionStatus = ControlMessage.SuspendCollection;
 
-                        // refresh the credentials in case the config tool was run
+                        // refresh the credentials, device ID, device name in case the config tool was run
                         credentials = ConfigClient.Read(ConfigClient.Credentials, true);
+                        if (deviceId == null)
+                            deviceId = ConfigClient.Read(ConfigClient.DeviceId);
+                        if (deviceName == null)
+                            deviceName = ConfigClient.Read(ConfigClient.DeviceName);
                         if (credentials != null)
                             Send();
                     }
@@ -131,13 +143,13 @@ namespace WebTimer.Client
                 }
                 
                 // compact the record list
-                var uniqueHosts = recordList.Select(r => r.HostName).Distinct();
+                var uniqueHosts = recordList.Select(r => r.HostMacAddress).Distinct();
                 foreach (var host in uniqueHosts)
                 {
-                    var uniqueDests = recordList.Where(r => r.HostName == host).Select(r => r.WebsiteName).Distinct();
+                    var uniqueDests = recordList.Where(r => r.HostMacAddress == host).Select(r => r.WebsiteName).Distinct();
                     foreach (var dest in uniqueDests)
                     {
-                        var records = recordList.Where(r => r.HostName == host && r.WebsiteName == dest).OrderBy(r => r.Timestamp);
+                        var records = recordList.Where(r => r.HostMacAddress == host && r.WebsiteName == dest).OrderBy(r => r.Timestamp);
 
                         // only keep the first and last record so that the duration calculated on the server will be > 0
                         var firstRecord = records.FirstOrDefault();
@@ -154,7 +166,7 @@ namespace WebTimer.Client
 
                         lock (sendQueue)
                         {
-                            var existingRecord = sendQueue.FirstOrDefault(r => r.HostName == host && r.WebsiteName == dest);
+                            var existingRecord = sendQueue.FirstOrDefault(r => r.HostMacAddress == host && r.WebsiteName == dest);
                             if (existingRecord == null)
                             {
                                 // add the record to the send queue
@@ -189,11 +201,18 @@ namespace WebTimer.Client
                         }
                     }
 
+                    var sendList = new RecordList()
+                    {
+                        DeviceId = deviceId,
+                        DeviceName = deviceName,
+                        Records = recordBuffer
+                    };
+
                     // send the queue to the web service
                     WebServiceHelper.PostRecords(
                         credentials, 
-                        recordBuffer, 
-                        new WebServiceHelper.PostRecordsDelegate((status) =>
+                        sendList, 
+                        new WebServiceHelper.PostRecordsDelegate((response) =>
                         {
                             // a callback means the service processed the records successfully; we can free them now.
                             // note a slight race condition - if the callback takes longer than the sleep interval, we 
@@ -203,7 +222,7 @@ namespace WebTimer.Client
                             {
                                 sendQueue.Clear();
                             }
-                            var msg = (ControlMessage) status;
+                            var msg = (ControlMessage)response.controlMessage;
                             if (collectionStatus == msg)
                                 return;
 
@@ -237,6 +256,10 @@ namespace WebTimer.Client
                         }), 
                         new WebServiceHelper.NetOpDelegate((inProgress, status) =>
                         {
+                            if (status == OperationStatus.Retry)
+                            {
+                                // no need to do anything: next iteration will send original credentials
+                            }
                             // no failure state to clean up
                         }));
                 }

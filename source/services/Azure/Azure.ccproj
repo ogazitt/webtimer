@@ -35,8 +35,10 @@
   <!-- Items for the project -->
   <ItemGroup>
     <ServiceDefinition Include="ServiceDefinition.csdef" />
+    <ServiceConfiguration Include="ServiceConfiguration.Dev1.cscfg" />
+    <ServiceConfiguration Include="ServiceConfiguration.Production.cscfg" />
     <ServiceConfiguration Include="ServiceConfiguration.Local.cscfg" />
-    <ServiceConfiguration Include="ServiceConfiguration.Cloud.cscfg" />
+    <ServiceConfiguration Include="ServiceConfiguration.Dev1BS.cscfg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WebRole\WebRole.csproj">
@@ -70,7 +72,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <PublishProfile Include="Profiles\webtimer dev01.azurePubxml" />
     <PublishProfile Include="Profiles\webtimerdev1Production.azurePubxml" />
+    <PublishProfile Include="Profiles\webtimer production.azurePubxml" />
   </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>

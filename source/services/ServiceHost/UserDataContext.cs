@@ -37,8 +37,7 @@ namespace WebTimer.ServiceHost
         {
             var device = session.Device ?? new Device();
             device.DeviceId = device.DeviceId ?? session.DeviceId;
-            device.IpAddress = device.IpAddress ?? device.DeviceId;
-            device.Hostname = device.Hostname ?? device.IpAddress;
+            device.Hostname = device.Hostname ?? device.DeviceId;
             device.Name = device.Name ?? device.Hostname;
             device.UserId = device.UserId ?? session.UserId;
 

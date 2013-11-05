@@ -43,76 +43,48 @@ namespace WebTimer.WebRole.Controllers
         }
 
         // POST colapi/collector
-        public JToken Post(HttpRequestMessage req, JToken value)
+        public ServiceResponse Post(HttpRequestMessage req, JToken value)
         {
             //BUGBUG - need to do something about CSRF 
 
-            //BUGBUG - clean up userDataRepository collectorContext? apparently no need to with MongoRepository
-            //req.RegisterForDispose(userDataRepository);
+            var obj = value as JObject;
+            var record = new CollectorRecord()
+            {
+                DeviceId = (string) obj[CollectorFields.DeviceId],
+                DeviceName = (string)obj[CollectorFields.DeviceName],
+                UserId = Repository.UserId,
+                State = RecordState.New,
+                RecordList = new List<SiteLookupRecord>()
+            };
 
-            var list = new List<SiteLookupRecord>();
-            var array = value as JArray;
+            var array = obj[CollectorFields.Records] as JArray;
             if (array != null)
             {
                 // extract each object out of the array and create a SiteLookupRecord for each
                 foreach (JObject r in array)
                 {
                     int duration = r["Duration"] != null ? (int)r["Duration"] : 0;
-                    list.Add(new SiteLookupRecord()
+                    record.RecordList.Add(new SiteLookupRecord()
                     {
-                        HostMacAddress = (string)r["HostMacAddress"],
-                        HostIpAddress = (string)r["HostIpAddress"],
-                        HostName = (string)r["HostName"],
                         WebsiteName = (string)r["WebsiteName"],
                         Timestamp = ((DateTime)r["Timestamp"]).ToString("s"),
                         Duration = duration,
-                        UserId = Repository.UserId,
-                        State = RecordState.New
                     });
                 }
 
                 // add all records at once
-                Repository.AddRecords(list);
+                Repository.AddRecord(record);
 
-                TraceLog.TraceInfo(string.Format("Added {0} records for user {1}", list.Count, Repository.UserId));
+                TraceLog.TraceInfo(string.Format("Added {0} records for user {1}", record.RecordList.Count, Repository.UserId));
             }
 
-            return (int)ControlMessage.Normal;
-        }
-
-#if DEBUG
-        // GET colapi/collector/5
-        public int Get(int id)
-        {
-            // THIS API IS FOR TESTING ONLY - it is for creating synthetic records
-
-            var userName = CurrentUser.Identity.Name;
-            using (var userDataRepository = new UserDataRepository(userName))
+            var response = new ServiceResponse()
             {
-                var device = userDataRepository.Devices.FirstOrDefault() ?? Device.CreateNewDevice(userName);
-                var collectorContext = Storage.CollectorContextFor(userName);
-                var list = collectorContext.MockRecords(device, id);
-                collectorContext.AddRecords(list);
-                TraceLog.TraceInfo(string.Format("Added {0} records for user {1}", list.Count, Repository.UserId));
-                return id;
-            }
-        }
+                RecordsProcessed = array != null ? array.Count : 0,
+                ControlMessage = ControlMessage.Normal
+            };
 
-        // GET colapi/collector
-        public int Get()
-        {
-            // THIS API IS FOR TESTING ONLY - it is for creating synthetic records  
-          
-            // create 100 new records
-            return Get(100);
-        }
-#endif
-
-        public enum ControlMessage
-        {
-            Normal = 0,
-            SuspendCollection = 1,
-            DisableDevice = 2
+            return response;
         }
     }
 }

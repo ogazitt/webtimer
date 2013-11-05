@@ -10,6 +10,8 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 
+using WebTimer.Client.Models;
+
 namespace WebTimer.Client
 {
     public class UserAgents
@@ -23,20 +25,6 @@ namespace WebTimer.Client
         // custom Http headers used by application
         public const string Session = "X-WebTimer-Session";
         public const string RequestedWith = "X-Requested-With";
-    }
-
-    public class User
-    {
-        public string UserName { get; set; }
-        public string Password { get; set; }
-    }
-
-    public class RegisterUser
-    {
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public string ConfirmPassword { get; set; }
-        public string Name { get; set; }
     }
 
     public enum OperationStatus
@@ -135,10 +123,10 @@ namespace WebTimer.Client
             InvokeWebServiceRequest(null, url, "GET", null, del, netOpInProgressDel, new AsyncCallback(ProcessVersionString));
         }
 
-        public static void PostRecords(string userCreds, List<Record> records, Delegate del, Delegate netOpInProgressDel)
+        public static void PostRecords(string userCreds, RecordList records, Delegate del, Delegate netOpInProgressDel)
         {
             //InvokeWebServiceRequest(user, BaseUrl + "/colapi/collector", "POST", records, del, netOpInProgressDel, new AsyncCallback(ProcessResponse<List<Record>>));
-            InvokeWebServiceRequest(userCreds, BaseUrl + "/colapi/collector", "POST", records, del, netOpInProgressDel, new AsyncCallback(ProcessResponse<int>));
+            InvokeWebServiceRequest(userCreds, BaseUrl + "/colapi/collector", "POST", records, del, netOpInProgressDel, new AsyncCallback(ProcessResponse<ServiceResponse>));
         }
 
         public static void VerifyAccount(User user, Delegate del, Delegate netOpInProgressDel)
@@ -147,7 +135,7 @@ namespace WebTimer.Client
         }
 
         public delegate void AccountDelegate(string username);
-        public delegate void PostRecordsDelegate(int status);
+        public delegate void PostRecordsDelegate(ServiceResponse response);
         public delegate void NetOpDelegate(bool inProgress, OperationStatus status);
 
         #endregion
@@ -191,7 +179,7 @@ namespace WebTimer.Client
             catch (Exception ex) 
             {
                 TraceLog.TraceException("GetWebResponse: EndGetResponse failed", ex);
-                return null;
+                return resp;
             }
 
             // put auth cookie in static memory

@@ -9,6 +9,7 @@
         <a href="#password" class="list-group-item">Manage Password</a>
         <a href="#social" class="list-group-item">Social Logins</a>
         <a href="#account" class="list-group-item">Account Information</a>
+        <a href="#support" class="list-group-item">Support Settings</a>
     </div>
 
     <div class="tab-content col-lg-8 col-md-8 col-sm-6 manage">
@@ -47,6 +48,11 @@
                 <a href="/home/upgrade" class="btn btn-default">Upgrade Account</a>
                 <br /><br />
                 <a href="/account/delete" class="btn btn-default btn-danger">Delete Account</a>
+            </section>
+        </div>
+        <div class="tab-pane" id="support">
+            <section class="todoList">
+                @Html.Action("ChangeSupportSettings")
             </section>
         </div>
         <br />

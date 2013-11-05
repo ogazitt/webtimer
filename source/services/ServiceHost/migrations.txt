@@ -10,5 +10,5 @@ update-database -ProjectName ServiceHost -StartUpProjectName WebRole -Connection
 select * from WebSessions order by Start OFFSET (11000) ROWS FETCH NEXT (1000) ROWS ONLY;
 
 add-migration AddPhoneToProfile -ProjectName WebRole -StartUpProjectName WebRole -ConnectionStringName SqlAzureUserProfile
-update-database -ProjectName WebRole -StartUpProjectName WebRole -ConnectionStringName SqlAzureUserData
-update-database -ProjectName WebRole -StartUpProjectName WebRole -ConnectionStringName LocalUserData
+update-database -ProjectName WebRole -StartUpProjectName WebRole -ConnectionStringName SqlAzureUserProfile
+update-database -ProjectName WebRole -StartUpProjectName WebRole -ConnectionStringName LocalUserProfile

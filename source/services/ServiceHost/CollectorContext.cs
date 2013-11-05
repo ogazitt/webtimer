@@ -12,7 +12,7 @@ using WebTimer.ServiceHost;
 
 namespace WebTimer.ServiceHost
 {
-    public class CollectorContext : MongoRepository<SiteLookupRecord>
+    public class CollectorContext : MongoRepository<CollectorRecord>
     {
         public CollectorContext() : base(HostEnvironment.MongoUri, HostEnvironment.MongoCollectionName) { }
 
@@ -33,47 +33,14 @@ namespace WebTimer.ServiceHost
         /// <summary>
         /// Add a record to the database
         /// </summary>
-        /// <param name="record">a SiteLookupRecord</param>
+        /// <param name="record">a CollectorRecord</param>
         /// <returns>true for success, false for failure</returns>
-        public bool AddRecord(SiteLookupRecord record)
+        public bool AddRecord(CollectorRecord record)
         {
             if (!ValidateRecord(record))
                 return false;
             this.Add(record);
             return true;
-        }
-
-        /// <summary>
-        /// Add multiple records at the same time using the same connection
-        /// </summary>
-        /// <param name="records">a list of SiteLookupRecords</param>
-        /// <returns>true for success, false for failure</returns>
-        public bool AddRecords(List<SiteLookupRecord> records)
-        {
-            foreach (var record in records)
-                if (!ValidateRecord(record))
-                    return false;
-            this.Add(records);
-            return true;
-        }
-
-        /// <summary>
-        /// Get all the records belonging to this User
-        /// </summary>
-        /// <returns></returns>
-        public List<SiteLookupRecord> GetAllRecords()
-        {
-            try
-            {
-                return this.Where(r =>
-                    r.UserId == UserId).
-                    ToList<SiteLookupRecord>();
-            }
-            catch (MongoConnectionException ex)
-            {
-                TraceLog.TraceException("Cannot connect to Mongo instance", ex);
-                return new List<SiteLookupRecord>();
-            }
         }
 
         /// <summary>
@@ -83,68 +50,43 @@ namespace WebTimer.ServiceHost
         /// </summary>
         /// <param name="workerName"></param>
         /// <returns></returns>
-        public List<SiteLookupRecord> GetRecordsToProcess(string workerName)
+        public CollectorRecord GetRecordToProcess(string workerName)
         {
             var lockString = string.Format("{0}: {1}", RecordState.Locked, workerName);
             try
             {
-                // get a chunk of new (unprocessed) records
-                // BUGBUG: make the record count come from config
-                var list = this.Where(r => 
-                 // r.UserId == UserId &&   // NOTE THAT THIS DOES NOT FILTER BASED ON USERID
-                    r.State == RecordState.New).
-                    OrderBy(r => r.Timestamp).
-                    Take(100).
-                    ToList();
+                // get the next unprocessed record
+                var record = this.FirstOrDefault(r =>
+                    // r.UserId == UserId &&   // NOTE THAT THIS DOES NOT FILTER BASED ON USERID
+                    r.State == RecordState.New);
 
-                // lock the records
-                foreach (var record in list)
-                    record.State = lockString;  
+                if (record != null)
+                {
+                    // lock the record
+                    record.State = lockString;
+                    this.Update(record);
 
-                // update entire list
-                this.Update(list);
-
-                // now retrieve the records that we managed to lock
-                list = this.Where(r => r.State == lockString).ToList();
-                return list;                
+                    // now retrieve the record that we managed to lock
+                    record = this.FirstOrDefault(r => r.State == lockString);
+                    return record;
+                }
+                return null;
             }
             catch (MongoConnectionException ex)
             {
                 TraceLog.TraceException("Cannot connect to Mongo instance", ex);
                 return null;
             }
-        }
-
-        public List<SiteLookupRecord> MockRecords(Device device, int count)
-        {
-            var rand = new Random(DateTime.Now.Millisecond);
-            var now = DateTime.Now;
-
-            var sites = new List<string>()
-            { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j" };
-
-            // create <count> records
-            var list = new List<SiteLookupRecord>();
-            for (int i = 0; i < count; i++)
+            catch (Exception ex)
             {
-                list.Add(new SiteLookupRecord()
-                {
-                    HostMacAddress = device.DeviceId,
-                    HostIpAddress = device.IpAddress,
-                    HostName = device.Hostname,
-                    WebsiteName = sites[rand.Next(sites.Count)],
-                    Timestamp = now.ToString("s"),
-                    UserId = device.UserId,
-                    State = RecordState.New
-                });
-                now += TimeSpan.FromSeconds(30d);
+                TraceLog.TraceException("Getting record from Mongo failed", ex);
+                return null;
             }
-            return list;
         }
 
 #region Helpers
 
-        private bool ValidateRecord(SiteLookupRecord record)
+        private bool ValidateRecord(CollectorRecord record)
         {
             if (string.IsNullOrEmpty(record.UserId))
                 record.UserId = UserId;

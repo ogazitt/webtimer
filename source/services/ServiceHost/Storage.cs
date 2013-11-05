@@ -9,7 +9,7 @@ namespace WebTimer.ServiceHost
     public static class Storage
     {
 #if !DEBUG
-        private static UserContext staticUserContext;
+        private static UserDataContext staticUserContext;
 #endif
 
         public static CollectorContext NewCollectorContext
@@ -47,7 +47,7 @@ namespace WebTimer.ServiceHost
 #else
                 if (staticUserContext == null)
                 {
-                    staticUserContext = new UserContext();
+                    staticUserContext = new UserDataContext();
                 }
                 return staticUserContext;
 #endif

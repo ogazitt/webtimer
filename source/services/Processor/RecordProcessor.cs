@@ -12,16 +12,38 @@ namespace WebTimer.Processor
 {
     public class RecordProcessor
     {
-        const int SessionThreshold = 300;
+        const int SessionThreshold = 300;  // sessions elapse after 5 minutes 
 
-        public static List<WebSession> ProcessRecords(SiteMapRepository siteMapRepository, List<WebSession> sessions, List<ISiteLookupRecord> recordList)
+        public static List<WebSession> ProcessRecords(SiteMapRepository siteMapRepository, List<WebSession> dbSessions, CollectorRecord collectorRecord)
         {
-            if (sessions == null)
-                sessions = new List<WebSession>();
+            // working sessions list
+            var sessions = new List<WebSession>();
 
             // set of WebSession references that have been modified or added
             var resultSessions = new List<WebSession>();
-            recordList = recordList.OrderBy(r => r.UserId).ThenBy(r => r.Timestamp).ToList();
+            var recordList = collectorRecord.RecordList.OrderBy(r => r.Timestamp).ToList();
+
+            // terminate all sessions that aren't "in progress"
+            var firstRecord = recordList.First();
+            var timestamp = Convert.ToDateTime(firstRecord.Timestamp);
+            if (dbSessions != null && dbSessions.Count() > 0)
+            {
+                foreach (var s in dbSessions)
+                {
+                    var sessionStart = Convert.ToDateTime(s.Start);
+                    if (s.InProgress == true && timestamp > sessionStart + TimeSpan.FromSeconds(SessionThreshold))
+                    {
+                        // session is no longer in progress - mark it for update
+                        s.InProgress = false;
+                        resultSessions.Add(s);
+                    }
+                    else
+                    {
+                        // add it to the working session list
+                        sessions.Add(s);
+                    }
+                }
+            }
 
             foreach (var record in recordList)
             {
@@ -32,20 +54,20 @@ namespace WebTimer.Processor
 
                 // find an in-progress session
                 var session = sessions.LastOrDefault(s =>
-                    s.Device.DeviceId == record.HostMacAddress &&
+                    s.Device.DeviceId == collectorRecord.DeviceId &&
                     s.Site == siteMap.Site && 
                     s.InProgress == true);
                 if (session == null)
                 {
                     var newSession = new WebSession()
                     {
-                        UserId = record.UserId,
-                        DeviceId = record.HostMacAddress,
-                        Device = new Device() { DeviceId = record.HostMacAddress, IpAddress = record.HostIpAddress, Hostname = record.HostName, UserId = record.UserId },
+                        UserId = collectorRecord.UserId,
+                        DeviceId = collectorRecord.DeviceId,
+                        Device = new Device() { DeviceId = collectorRecord.DeviceId, Hostname = collectorRecord.DeviceName, UserId = collectorRecord.UserId },
                         Site = siteMap.Site,
                         Category = siteMap.Category,
                         Start = record.Timestamp,
-                        Duration = 0,
+                        Duration = record.Duration,
                         InProgress = true
                     };
                     sessions.Add(newSession);
@@ -68,13 +90,13 @@ namespace WebTimer.Processor
                         // create a new session
                         var newSession = new WebSession()
                         {
-                            UserId = record.UserId,
-                            DeviceId = record.HostMacAddress,
-                            Device = new Device() { DeviceId = record.HostMacAddress, IpAddress = record.HostIpAddress, Hostname = record.HostName, UserId = record.UserId },
+                            UserId = collectorRecord.UserId,
+                            DeviceId = collectorRecord.DeviceId,
+                            Device = new Device() { DeviceId = collectorRecord.DeviceId, Hostname = collectorRecord.DeviceName, UserId = collectorRecord.UserId },
                             Site = siteMap.Site,
                             Category = siteMap.Category,
                             Start = record.Timestamp,
-                            Duration = 0,
+                            Duration = record.Duration,
                             InProgress = true
                         };
                         sessions.Add(newSession);
@@ -83,7 +105,7 @@ namespace WebTimer.Processor
                     else
                     {
                         // extend the session
-                        session.Duration = (int) (recordTimestamp - sessionStart).TotalSeconds;
+                        session.Duration = (int)(recordTimestamp - sessionStart).TotalSeconds + record.Duration;
 
                         // add it to the result session list if not there already
                         if (!resultSessions.Contains(session))

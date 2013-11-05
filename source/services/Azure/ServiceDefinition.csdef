@@ -26,10 +26,30 @@
       <Setting name="MongoCollectionName" />
       <Setting name="AzureLoggingEnabled" />
       <Setting name="SplunkLoggingEnabled" />
+      <Setting name="SplunkServerEndpoint" />
+      <Setting name="SplunkLocalPort" />
     </ConfigurationSettings>
     <Certificates>
       <Certificate name="SSL" storeLocation="LocalMachine" storeName="My" />
     </Certificates>
+    <LocalResources>
+      <LocalStorage name="TraceFolder" sizeInMB="20" cleanOnRoleRecycle="true" />
+    </LocalResources>
+    <Startup>
+      <Task executionContext="elevated" commandLine="startup\Install.cmd">
+        <Environment>
+          <Variable name="EMULATED">
+            <RoleInstanceValue xpath="/RoleEnvironment/Deployment/@emulated" />
+          </Variable>
+          <Variable name="SPLUNKENDPOINT">
+            <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/ConfigurationSettings/ConfigurationSetting[@name='SplunkServerEndpoint']/@value" />
+          </Variable>
+          <Variable name="SPLUNKLOCALPORT">
+            <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/ConfigurationSettings/ConfigurationSetting[@name='SplunkLocalPort']/@value" />
+          </Variable>
+        </Environment>
+      </Task>
+    </Startup>
   </WebRole>
   <WorkerRole name="WorkerRole" vmsize="Small">
     <Imports>
@@ -44,8 +64,28 @@
       <Setting name="MongoCollectionName" />
       <Setting name="AzureLoggingEnabled" />
       <Setting name="SplunkLoggingEnabled" />
+      <Setting name="SplunkServerEndpoint" />
+      <Setting name="SplunkLocalPort" />
       <Setting name="ProcessorWorkerCount" />
       <Setting name="ProcessorWorkerTimeout" />
     </ConfigurationSettings>
+    <LocalResources>
+      <LocalStorage name="TraceFolder" sizeInMB="20" cleanOnRoleRecycle="true" />
+    </LocalResources>
+    <Startup>
+      <Task executionContext="elevated" commandLine="startup\Install.cmd">
+        <Environment>
+          <Variable name="EMULATED">
+            <RoleInstanceValue xpath="/RoleEnvironment/Deployment/@emulated" />
+          </Variable>
+          <Variable name="SPLUNKENDPOINT">
+            <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/ConfigurationSettings/ConfigurationSetting[@name='SplunkServerEndpoint']/@value" />
+          </Variable>
+          <Variable name="SPLUNKLOCALPORT">
+            <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/ConfigurationSettings/ConfigurationSetting[@name='SplunkLocalPort']/@value" />
+          </Variable>
+        </Environment>
+      </Task>
+    </Startup>
   </WorkerRole>
 </ServiceDefinition>

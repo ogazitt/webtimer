@@ -277,6 +277,49 @@ namespace WebTimer.WebRole.Controllers
             return View(model);
         }
 
+        //
+        // POST: /Account/ManageSupportSettings
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ManageSupportSettings(SupportSettingsModel model)
+        {
+            bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
+            ViewBag.HasLocalPassword = hasLocalAccount;
+            ViewBag.ReturnUrl = Url.Action("Manage");
+            if (ModelState.IsValid)
+            {
+                using (var context = new UsersContext())
+                {
+                    var userProfile = context.UserProfiles.FirstOrDefault(u => u.UserName == User.Identity.Name);
+                    if (userProfile != null)
+                    {
+                        try
+                        {
+                            userProfile.PermissionToImpersonate = model.PermissionToImpersonate;
+                            context.SaveChanges();
+                            TraceLog.TraceInfo(string.Format("Changed support settings for user {0}", User.Identity.Name));
+                        }
+                        catch (Exception ex)
+                        {
+                            TraceLog.TraceException("Could not save support settings", ex);
+                            return View(model);
+                        }
+                    }
+                    else
+                    {
+                        TraceLog.TraceError(string.Format("Could not find user {0} to change support settings", User.Identity.Name));
+                        return RedirectToAction("Manage", new { Message = ManageMessageId.ChangeSupportSettingsFailure });
+                    }
+                }
+                return RedirectToAction("Manage", new { Message = ManageMessageId.ChangeSupportSettingsSuccess });
+            }
+            else
+                ModelState.AddModelError("", "One of the values is invalid.");
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
 
         //
         // POST: /Account/ExternalLogin
@@ -406,6 +449,20 @@ namespace WebTimer.WebRole.Controllers
 
         [AllowAnonymous]
         [ChildActionOnly]
+        public ActionResult ChangeSupportSettings(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            var settings = new SupportSettingsModel();
+            using (var context = new UsersContext())
+            {
+                var profile = context.UserProfiles.FirstOrDefault(u => u.UserName == User.Identity.Name);
+                settings.PermissionToImpersonate = profile.PermissionToImpersonate;
+            }
+            return PartialView("_ChangeSupportSettingsPartial", settings);
+        }
+
+        [AllowAnonymous]
+        [ChildActionOnly]
         public ActionResult ChangePassword()
         {
             return PartialView("_ChangePasswordPartial");
@@ -486,6 +543,8 @@ namespace WebTimer.WebRole.Controllers
             RemoveLoginSuccess,
             ChangePersonalInfoSuccess,
             ChangePersonalInfoFailure,
+            ChangeSupportSettingsSuccess,
+            ChangeSupportSettingsFailure,
         }
 
         internal class ExternalLoginResult : ActionResult
@@ -564,6 +623,10 @@ namespace WebTimer.WebRole.Controllers
                     return "Your personal information has been changed.";
                 case ManageMessageId.ChangePersonalInfoFailure:
                     return "Your personal information could not be saved.  Please contact support@webtimer.co.";
+                case ManageMessageId.ChangeSupportSettingsSuccess:
+                    return "Your support settings have been changed.";
+                case ManageMessageId.ChangeSupportSettingsFailure:
+                    return "Your support settings could not be saved.  Please contact support@webtimer.co.";
                 default:
                     return "";
             }

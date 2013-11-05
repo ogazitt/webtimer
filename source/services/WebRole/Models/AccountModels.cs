@@ -30,6 +30,8 @@ namespace WebTimer.WebRole.Models
         // additional properties
         public string Name { get; set; }
         public string Phone { get; set; }
+        public bool IsAdmin { get; set; }
+        public bool PermissionToImpersonate { get; set; }
     }
 
     public class RegisterExternalLoginModel
@@ -60,10 +62,24 @@ namespace WebTimer.WebRole.Models
         public string ConfirmPassword { get; set; }
     }
 
+    public class SupportSettingsModel
+    {
+        [Required]
+        [Display(Name = "OK to impersonate?")]
+        public bool PermissionToImpersonate { get; set; }
+    }
+
+    public class ImpersonateModel
+    {
+        [Required]
+        [Display(Name = "User to impersonate")]
+        public string UserName { get; set; }
+    }
+
     public class PersonalInfoModel
     {
         [Required]
-        [Display(Name = "Name")]
+        [Display(Name = "UserName")]
         public string Name { get; set; }
 
         [Required]
@@ -107,7 +123,7 @@ namespace WebTimer.WebRole.Models
         public string ConfirmPassword { get; set; }
 
         [Required]
-        [Display(Name = "Name")]
+        [Display(Name = "UserName")]
         public string Name { get; set; }
     }
 

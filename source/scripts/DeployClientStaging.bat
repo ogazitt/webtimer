@@ -1,1 +1,1 @@
-..\..\bin\tools\Debug\DeployClient.exe /directory ..\..\bin\client\Debug
+..\..\bin\tools\DeployClient.exe /directory ..\..\bin\client\Debug

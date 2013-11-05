@@ -98,11 +98,18 @@
     <CustomAction Id="CA_RemoveLogFolderCmd" Property="CA_RemoveLogFolder" Value="&quot;[CMD]&quot; /c rd /s /q &quot;[INSTALLFOLDER]&quot;" />
     <CustomAction Id="CA_RemoveLogFolder" BinaryKey="WixCA" DllEntry="CAQuietExec" Execute="deferred" Return="ignore" Impersonate="no" />
 
+    <Property Id="CONFIGFILEEXISTS">
+      <DirectorySearch Id="CheckFileDir" Path="INSTALLFOLDER" Depth="0">
+        <FileSearch Id="CheckFile" Name="webtimer.config" />
+      </DirectorySearch>
+    </Property>
+
     <InstallExecuteSequence>
       <Custom Action="CA_RemoveLogFolderCmd" After="CostFinalize">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
       <Custom Action="CA_RemoveLogFolder" Before="ProcessComponents">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
       <!--<Custom Action="LaunchApplication" After="InstallFinalize">(NOT INSTALLED) AND (NOT (REMOVE="ALL")) AND (NOT UPGRADINGPRODUCTCODE)</Custom>-->
-      <Custom Action="LaunchApplication" After="InstallFinalize"><![CDATA[&ProductFeature=3 and NOT INSTALLED AND NOT UPGRADINGPRODUCTCODE]]></Custom>
+      <!--<Custom Action="LaunchApplication" After="InstallFinalize"><![CDATA[&ProductFeature=3 and NOT INSTALLED AND NOT UPGRADINGPRODUCTCODE]]></Custom>-->
+      <Custom Action="LaunchApplication" After="InstallFinalize">NOT Installed AND NOT WIX_UPGRADE_DETECTED AND NOT WIX_DOWNGRADE_DETECTED</Custom>
     </InstallExecuteSequence>
 
     <!-- define minimal UI to launch the application -->

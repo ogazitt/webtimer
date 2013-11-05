@@ -5,7 +5,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+
 using WebTimer.Client;
+using WebTimer.Client.Models;
+
 
 namespace WebTimer.ConfigEditor
 {
@@ -77,7 +80,7 @@ namespace WebTimer.ConfigEditor
                                     string encodedCreds = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(credentials));
                                     ConfigClient.Write(ConfigClient.Credentials, encodedCreds);
                                     ConfigClient.Write(ConfigClient.Email, username);
-                                    ConfigClient.Write(ConfigClient.ComputerName, ComputerNameBox.Text);
+                                    ConfigClient.Write(ConfigClient.DeviceName, ComputerNameBox.Text);
 
                                     NavigationService.Navigate(new Done());
                                 }

@@ -29,7 +29,7 @@ namespace WebTimer.WebRole
                         "~/app/ajaxlogin.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/extras").Include(
-                        "~/Scripts/jquery.colorPicker.min.js",
+                        "~/Scripts/jquery.colorPicker.js",
                         "~/Scripts/angular-colorpicker.js",
                         "~/Scripts/date.js"));
 
@@ -43,13 +43,8 @@ namespace WebTimer.WebRole
                         "~/Scripts/highcharts/highstock.js",
                         "~/Scripts/angular-highcharts.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/todo").Include(
-                        "~/app/todo/todo.main.js", // must be first
-                        "~/app/todo/todo.model.js",
-                        "~/app/todo/todo.datacontext.js",
-                        "~/app/todo/todo.controller.js",
-                        "~/app/todo/about.controller.js",
-                        "~/app/todo/about.logger.js"));
+            bundles.Add(new ScriptBundle("~/bundles/uservoice").Include(
+                        "~/Scripts/uservoice.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/dashboard").Include(
                         "~/app/dashboard/dashboard.js", // must be first
