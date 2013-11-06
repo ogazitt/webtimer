@@ -43,7 +43,7 @@ namespace WebTimer.AnalyticsWorker
 
                     var today = DateTime.Now.Date;
                     var currentRecord = context.Snapshots.FirstOrDefault(s => s.Date == today) ??
-                        new StatSnapshot() { Date = today };
+                        context.Snapshots.Add(new StatSnapshot() { Date = today });
 
                     currentRecord.Devices = context.Devices.Count();
                     currentRecord.People = context.People.Count();

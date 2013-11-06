@@ -111,6 +111,9 @@ namespace WebTimer.WorkerRole
                 if (!HostEnvironment.IsAzureDevFabric)
                     RestartWorkerThreads<SpeechWorker.SpeechWorker>(speechWorkerArray);
 #endif
+                // start Analytics worker in both dev and deployed Azure fabric
+                RestartWorkerThreads<WebTimer.AnalyticsWorker.AnalyticsWorker>(analyticsWorkerArray);
+
                 // start Processor worker in both dev and deployed Azure fabric
                 RestartWorkerThreads<WebTimer.ProcessorWorker.ProcessorWorker>(processorWorkerArray);
 
