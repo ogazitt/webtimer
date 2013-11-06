@@ -21,6 +21,8 @@ namespace WebTimer.ServiceHost
         public const string SpeechWorkerCountConfigKey = "SpeechWorkerCount";
         public const string WorkflowWorkerTimeoutConfigKey = "WorkflowWorkerTimeout";
         public const string WorkflowWorkerCountConfigKey = "WorkflowWorkerCount";
+        public const string AnalyticsWorkerTimeoutConfigKey = "AnalyticsWorkerTimeout";
+        public const string AnalyticsWorkerCountConfigKey = "AnalyticsWorkerCount";
         public const string ProcessorWorkerTimeoutConfigKey = "ProcessorWorkerTimeout";
         public const string ProcessorWorkerCountConfigKey = "ProcessorWorkerCount";
 

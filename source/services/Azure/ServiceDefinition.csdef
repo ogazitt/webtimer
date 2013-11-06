@@ -66,6 +66,8 @@
       <Setting name="SplunkLoggingEnabled" />
       <Setting name="SplunkServerEndpoint" />
       <Setting name="SplunkLocalPort" />
+      <Setting name="AnalyticsWorkerCount" />
+      <Setting name="AnalyticsWorkerTimeout" />
       <Setting name="ProcessorWorkerCount" />
       <Setting name="ProcessorWorkerTimeout" />
     </ConfigurationSettings>

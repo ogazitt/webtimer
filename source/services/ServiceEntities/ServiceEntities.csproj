@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UserData\StatSnapshot.cs" />
     <Compile Include="Collector\CollectorRecord.cs" />
     <Compile Include="SiteMap\UnknownSite.cs" />
     <Compile Include="SiteMap\SiteExpression.cs" />

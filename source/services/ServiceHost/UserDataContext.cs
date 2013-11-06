@@ -32,6 +32,7 @@ namespace WebTimer.ServiceHost
         public DbSet<Device> Devices { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<WebSession> WebSessions { get; set; }
+        public DbSet<StatSnapshot> Snapshots { get; set; }
 
         public static Device CreateDeviceFromSession(WebSession session)
         {

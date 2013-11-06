@@ -88,10 +88,9 @@ namespace WebTimer.WorkerRole
             var timerWorkerArray = new TimerWorker.TimerWorker[timerWorkerCount];
             int mailWorkerCount = ConfigurationSettings.GetAsNullableInt(HostEnvironment.MailWorkerCountConfigKey) ?? 0;
             var mailWorkerArray = new MailWorker.MailWorker[mailWorkerCount];
-            int speechWorkerCount = ConfigurationSettings.GetAsNullableInt(HostEnvironment.SpeechWorkerCountConfigKey) ?? 0;
-            speechWorkerCount = speechWorkerCount > 0 ? 1 : 0;  // maximum number of speech worker threads is 1
-            var speechWorkerArray = new SpeechWorker.SpeechWorker[speechWorkerCount];
 #endif
+            int analyticsWorkerCount = ConfigurationSettings.GetAsNullableInt(HostEnvironment.AnalyticsWorkerCountConfigKey) ?? 0;
+            var analyticsWorkerArray = new WebTimer.AnalyticsWorker.AnalyticsWorker[analyticsWorkerCount];
             int processorWorkerCount = ConfigurationSettings.GetAsNullableInt(HostEnvironment.ProcessorWorkerCountConfigKey) ?? 0;
             var processorWorkerArray = new WebTimer.ProcessorWorker.ProcessorWorker[processorWorkerCount];
 

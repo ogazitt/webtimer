@@ -1,14 +1,16 @@
-﻿Enable-Migrations -ContextTypeName ServiceHost.UserDataContext -ProjectName ServiceHost -StartUpProjectName WebRole -ConnectionStringName SqlAzureUserData
+﻿Enable-Migrations -ContextTypeName ServiceHost.UserDataContext -ProjectName ServiceHost -StartUpProjectName WebRole -ConnectionStringName ProductionUserData
 
 MUST CHANGE CHANGE_THIS_NOW!!!!
 
-add-migration CHANGE_THIS_NOW -ProjectName ServiceHost -StartUpProjectName WebRole -ConnectionStringName SqlAzureUserData
+add-migration CHANGE_THIS_NOW -ProjectName ServiceHost -StartUpProjectName WebRole -ConnectionStringName Dev1UserData
 
-update-database -ProjectName ServiceHost -StartUpProjectName WebRole -ConnectionStringName SqlAzureUserData
+update-database -ProjectName ServiceHost -StartUpProjectName WebRole -ConnectionStringName Dev1UserData
 update-database -ProjectName ServiceHost -StartUpProjectName WebRole -ConnectionStringName LocalUserData
+update-database -ProjectName ServiceHost -StartUpProjectName WebRole -ConnectionStringName ProductionUserData
 
 select * from WebSessions order by Start OFFSET (11000) ROWS FETCH NEXT (1000) ROWS ONLY;
 
-add-migration AddPhoneToProfile -ProjectName WebRole -StartUpProjectName WebRole -ConnectionStringName SqlAzureUserProfile
-update-database -ProjectName WebRole -StartUpProjectName WebRole -ConnectionStringName SqlAzureUserProfile
+add-migration AddPhoneToProfile -ProjectName WebRole -StartUpProjectName WebRole -ConnectionStringName Dev1UserProfile
+update-database -ProjectName WebRole -StartUpProjectName WebRole -ConnectionStringName Dev1UserProfile
 update-database -ProjectName WebRole -StartUpProjectName WebRole -ConnectionStringName LocalUserProfile
+update-database -ProjectName WebRole -StartUpProjectName WebRole -ConnectionStringName ProductionUserProfile
