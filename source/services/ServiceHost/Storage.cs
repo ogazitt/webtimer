@@ -30,10 +30,10 @@ namespace WebTimer.ServiceHost
         public static SiteMapRepository NewSiteMapRepository
         {
             get { return new SiteMapRepository(
-                new MongoRepository<SiteMapping>(HostEnvironment.MongoUri),
-                new MongoRepository<SiteExpression>(HostEnvironment.MongoUri),
-                new MongoRepository<UnknownSite>(HostEnvironment.MongoUri),
-                new MongoRepository<SiteMapVersion>(HostEnvironment.MongoUri));
+                new MongoRepository<SiteMapping>(HostEnvironment.MongoUri, HostEnvironment.MongoSiteMapCollectionName),
+                new MongoRepository<SiteExpression>(HostEnvironment.MongoUri, HostEnvironment.MongoSiteExpressionCollectionName),
+                new MongoRepository<UnknownSite>(HostEnvironment.MongoUri, HostEnvironment.MongoUnknownSiteCollectionName),
+                new MongoRepository<SiteMapVersion>(HostEnvironment.MongoUri, HostEnvironment.MongoSiteMapVersionCollectionName));
             }
         }
 

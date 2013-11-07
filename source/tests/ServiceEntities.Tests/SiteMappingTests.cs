@@ -41,5 +41,13 @@ namespace WebTimer.ServiceEntities.Tests
             map.Site.Should().Be("foo");
             map.Category.Should().Be("bar"); // not "baz"
         }
+
+        [Test]
+        public void CatchAllRule()
+        {
+            var map = siteMapRepository.GetSiteMapping("abcdefg.foobarbaz.com");
+            map.Should().NotBe(null);
+            map.Site.Should().Be("foobarbaz.com");
+        }
     }
 }

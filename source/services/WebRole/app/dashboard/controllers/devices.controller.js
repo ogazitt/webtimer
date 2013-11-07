@@ -18,6 +18,7 @@ dashboard.controller('DevicesController',
         $scope.endEdit = endEdit;
         $scope.endEditPerson = endEditPerson;
         $scope.clearErrorMessage = clearErrorMessage;
+        $scope.noDevices = false;
 
         // load Devices immediately (from cache if possible)
         getDevices();
@@ -28,6 +29,9 @@ dashboard.controller('DevicesController',
                 .then(getSucceeded).fail(failed).fin(refreshView);
             function getSucceeded(data) {
                 $scope.devices = data;
+                if (data.length == 0) {
+                    $scope.noDevices = true;
+                }
             }
         }
         function getPeople() {

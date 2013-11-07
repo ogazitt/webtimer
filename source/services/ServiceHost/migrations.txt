@@ -14,3 +14,5 @@ add-migration AddPhoneToProfile -ProjectName WebRole -StartUpProjectName WebRole
 update-database -ProjectName WebRole -StartUpProjectName WebRole -ConnectionStringName Dev1UserProfile
 update-database -ProjectName WebRole -StartUpProjectName WebRole -ConnectionStringName LocalUserProfile
 update-database -ProjectName WebRole -StartUpProjectName WebRole -ConnectionStringName ProductionUserProfile
+
+update-database -TargetMigration:Analytics -ProjectName ServiceHost -StartUpProjectName WebRole -ConnectionStringName Dev1UserData

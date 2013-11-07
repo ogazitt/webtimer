@@ -62,6 +62,10 @@
       <Setting name="UserProfileConnectionString" />
       <Setting name="MongoUri" />
       <Setting name="MongoCollectionName" />
+      <Setting name="MongoSiteMapCollectionName" />
+      <Setting name="MongoSiteExpressionCollectionName" />
+      <Setting name="MongoUnknownSiteCollectionName" />
+      <Setting name="MongoSiteMapVersionCollectionName" />
       <Setting name="AzureLoggingEnabled" />
       <Setting name="SplunkLoggingEnabled" />
       <Setting name="SplunkServerEndpoint" />

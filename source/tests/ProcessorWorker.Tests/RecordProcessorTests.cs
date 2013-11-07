@@ -43,7 +43,7 @@ namespace WebTimer.CollectorWorker.Tests
             session.DeviceId.Should().Be(macAddress);
             session.Duration.Should().BeGreaterOrEqualTo(0);
             session.Start.Should().NotBeNullOrEmpty();
-            session.Site.Should().Be(websiteName);
+            websiteName.Should().Contain(session.Site);  // in case the site got tructated from a.b.com to b.com)
             session.UserId.Should().NotBeNullOrEmpty();
 
             if (session.Device != null)

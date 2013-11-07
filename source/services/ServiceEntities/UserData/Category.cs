@@ -19,10 +19,13 @@ namespace WebTimer.ServiceEntities.UserData
 
         public class Categories
         {
-            public const string Suppressed = "Suppressed";
-            public const string Social = "Social";
-            public const string Video = "Video";
             public const string Educational = "Educational";
+            public const string Email = "Email";
+            public const string Entertainment = "Entertainment";
+            public const string Retail = "Retail";
+            public const string Social = "Social";
+            public const string Suppressed = "Suppressed";
+            public const string Video = "Video";
         };
 
         public static List<Category> GetCategories()
@@ -32,6 +35,9 @@ namespace WebTimer.ServiceEntities.UserData
                 new Category() { Name = Categories.Social, Color = Colors.Red },
                 new Category() { Name = Categories.Video, Color = Colors.Blue },
                 new Category() { Name = Categories.Educational, Color = Colors.Green },
+                new Category() { Name = Categories.Entertainment, Color = Colors.Yellow },
+                new Category() { Name = Categories.Email, Color = Colors.Orange },
+                new Category() { Name = Categories.Retail, Color = Colors.Purple },
             };
         }
     }

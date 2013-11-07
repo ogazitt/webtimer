@@ -172,9 +172,12 @@ namespace WebTimer.ServiceEntities.SiteMap
             // run catchall site expression which converts *.foo.com to foo.com
             var catchall = @".*\.(.*)\.(com|edu|net|org|co|io)";
             var match = Regex.Match(site, catchall);
-            if (match != null && match.Groups[0].Success)
+            if (match != null)
             {
-                return new SiteExpression() { Regex = catchall, Site = match.Groups[0].Value };
+                if (match.Groups.Count == 3)
+                    return new SiteExpression() { Regex = catchall, Site = string.Format("{0}.{1}", match.Groups[1].Value, match.Groups[2].Value) };
+                if (match.Groups[0].Success)
+                    return new SiteExpression() { Regex = catchall, Site = match.Groups[0].Value };
             }
             return null;
         }

@@ -49,8 +49,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeployClient", "tools\Deplo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{4B5EE47D-9F11-4566-B24B-E46B4063EE58}"
 	ProjectSection(SolutionItems) = preProject
-		scripts\DeployClientProduction.bat = scripts\DeployClientProduction.bat
-		scripts\DeployClientStaging.bat = scripts\DeployClientStaging.bat
+		scripts\DeployClientDev1BSDownload.bat = scripts\DeployClientDev1BSDownload.bat
+		scripts\DeployClientDev1BSStaging.bat = scripts\DeployClientDev1BSStaging.bat
+		scripts\DeployClientDev1Download.bat = scripts\DeployClientDev1Download.bat
+		scripts\DeployClientDev1Staging.bat = scripts\DeployClientDev1Staging.bat
+		scripts\DeployClientProductionDownload.bat = scripts\DeployClientProductionDownload.bat
+		scripts\DeployClientProductionStaging.bat = scripts\DeployClientProductionStaging.bat
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleDriver", "tools\ConsoleDriver\ConsoleDriver.csproj", "{50AE9553-46BC-41B7-9340-7FBFC5B86379}"

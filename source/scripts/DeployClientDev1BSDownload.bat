@@ -1,0 +1,1 @@
+..\..\bin\tools\DeployClient.exe /directory ..\..\bin\client\Release /dev1bs /download

@@ -2,6 +2,10 @@
 <div class="main-view">
     <p class="error" data-ng-show="error">{{error}}</p>
     <br/>
+    <div data-ng-show="noDevices">
+        <h1>You have no devices yet...</h1>
+        <h3><a href="/home/download">Download</a> and install the client software to get things rolling.</h3>
+    </div>
     <article class="todoList" data-ng-repeat="device in devices">
         <div class="icon">
             <div data-ng-class="device.deviceType" />
@@ -43,12 +47,6 @@
                 <label class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">Hostname</label>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <p class="form-control-static pull-left" data-ng-bind="device.hostname" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-lg-5 col-md-5 col-sm-5 col-xs-5">IP Address</label>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <p class="form-control-static pull-left" data-ng-bind="device.ipAddress" />
                 </div>
             </div>
             <div class="form-group">

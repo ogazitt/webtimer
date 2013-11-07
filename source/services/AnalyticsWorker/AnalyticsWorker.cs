@@ -23,7 +23,7 @@ namespace WebTimer.AnalyticsWorker
             {
                 if (!timeout.HasValue)
                 {
-                    timeout = ConfigurationSettings.GetAsNullableInt(HostEnvironment.ProcessorWorkerTimeoutConfigKey);
+                    timeout = ConfigurationSettings.GetAsNullableInt(HostEnvironment.AnalyticsWorkerTimeoutConfigKey);
                     if (timeout == null)
                         timeout = 60 * 60 * 1000;  // default to 60 minutes
                     else

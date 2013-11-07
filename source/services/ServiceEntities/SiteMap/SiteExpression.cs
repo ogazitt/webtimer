@@ -20,11 +20,39 @@ namespace WebTimer.ServiceEntities.SiteMap
             new SiteExpression() { Regex = @"^fbexternal-.*\.akamaihd\.net$", Site = "facebook.com" },
             new SiteExpression() { Regex = @".*\.facebook\.com$", Site = "facebook.com" },
             new SiteExpression() { Regex = @".*\.fbcdn\.net$", Site = "facebook.com" },
+            // tumblr
+            new SiteExpression() { Regex = @".*\.tumblr\.com$", Site = "tumblr.com" },
+            // twitter
+            new SiteExpression() { Regex = @".*\.twitter\.com$", Site = "twitter.com" },
+            // wordpress
+            new SiteExpression() { Regex = @".*\.wordpress\.com$", Site = "wordpress.com" },
+            // pinterest
+            new SiteExpression() { Regex = @".*\.pinterest\.com$", Site = "pinterest.com" },
+            // netflix
+            new SiteExpression() { Regex = @".*\.netflix\.com$", Site = "netflix.com" },
+            // hulu
+            new SiteExpression() { Regex = @".*\.hulu\.com$", Site = "hulu.com" },
+            new SiteExpression() { Regex = @".*\.huluim\.com$", Site = "hulu.com" },
             // youtube
             new SiteExpression() { Regex = @".*\.youtube\.com$", Site = "youtube.com" },
             new SiteExpression() { Regex = @".*\.ytimg\.com$", Site = "youtube.com" },
-            // tumblr
-            new SiteExpression() { Regex = @".*\.tumblr\.com$", Site = "tumblr.com" },
+            // yahoo mail
+            new SiteExpression() { Regex = @".*\.mail\.yahoo\.com$", Site = "mail.yahoo.com" },
+            // gmail
+            new SiteExpression() { Regex = @"^mail\.google\.com$", Site = "mail.google.com" },
+            // hotmail
+            new SiteExpression() { Regex = @"^mail\.live\.com$", Site = "mail.live.com" },
+            new SiteExpression() { Regex = @"^Scalendar\.live\.com$", Site = "calendar.live.com" },
+            // msn
+            new SiteExpression() { Regex = @".*\.msn\.com$", Site = "msn.com" },
+            // yahoo
+            new SiteExpression() { Regex = @".*\.yahoo\.com$", Site = "www.yahoo.com" },
+            new SiteExpression() { Regex = @".*\.yimg\.com$", Site = "www.yahoo.com" },
+            // amazon
+            new SiteExpression() { Regex = @".*\.amazon\.com$", Site = "amazon.com" },
+            new SiteExpression() { Regex = @"^www\.amazon\.*", Site = "amazon.com" },
+            // ebay
+            new SiteExpression() { Regex = @".*\.ebay\.com$", Site = "ebay.com" },
             // noise
             new SiteExpression() { Regex = @".*\.gstatic\.com$", Site = "suppress" },
             new SiteExpression() { Regex = @"^maps\.amung\.us$", Site = "suppress" },

@@ -29,16 +29,26 @@ namespace WebTimer.WebRole.Controllers
             CurrentUser = User;
         }
 
-        //private RecordRepository userDataRepository = new RecordRepository();
-        private CollectorContext _repository;
+        private UserDataRepository _userDataRepository;
+        private CollectorContext _collectorRepository;
 
-        public CollectorContext Repository
+        public UserDataRepository UserDataRepository
         {
             get
             {
-                if (_repository == null)
-                    _repository = new CollectorContext(CurrentUser);
-                return _repository;
+                if (_userDataRepository == null)
+                    _userDataRepository = new UserDataRepository(CurrentUser);
+                return _userDataRepository;
+            }
+        }
+
+        public CollectorContext CollectorRepository
+        {
+            get
+            {
+                if (_collectorRepository == null)
+                    _collectorRepository = new CollectorContext(CurrentUser);
+                return _collectorRepository;
             }
         }
 
@@ -47,44 +57,62 @@ namespace WebTimer.WebRole.Controllers
         {
             //BUGBUG - need to do something about CSRF 
 
-            var obj = value as JObject;
-            var record = new CollectorRecord()
+            try
             {
-                DeviceId = (string) obj[CollectorFields.DeviceId],
-                DeviceName = (string)obj[CollectorFields.DeviceName],
-                UserId = Repository.UserId,
-                State = RecordState.New,
-                RecordList = new List<SiteLookupRecord>()
-            };
-
-            var array = obj[CollectorFields.Records] as JArray;
-            if (array != null)
-            {
-                // extract each object out of the array and create a SiteLookupRecord for each
-                foreach (JObject r in array)
+                var obj = value as JObject;
+                var record = new CollectorRecord()
                 {
-                    int duration = r["Duration"] != null ? (int)r["Duration"] : 0;
-                    record.RecordList.Add(new SiteLookupRecord()
-                    {
-                        WebsiteName = (string)r["WebsiteName"],
-                        Timestamp = ((DateTime)r["Timestamp"]).ToString("s"),
-                        Duration = duration,
-                    });
+                    DeviceId = (string)obj[CollectorFields.DeviceId],
+                    DeviceName = (string)obj[CollectorFields.DeviceName],
+                    UserId = CollectorRepository.UserId,
+                    State = RecordState.New,
+                    RecordList = new List<SiteLookupRecord>()
+                };
+
+                // store device software version and timestamp (if this isn't a new device)
+                var device = UserDataRepository.Devices.FirstOrDefault(d => d.DeviceId == record.DeviceId);
+                if (device != null)
+                {
+                    if (obj[CollectorFields.SoftwareVersion] != null)
+                        device.SoftwareVersion = (string)obj[CollectorFields.SoftwareVersion];
+                    device.Timestamp = DateTime.UtcNow;
+                    UserDataRepository.SaveChanges();
                 }
 
-                // add all records at once
-                Repository.AddRecord(record);
+                var array = obj[CollectorFields.Records] as JArray;
+                if (array != null)
+                {
+                    // extract each object out of the array and create a SiteLookupRecord for each
+                    foreach (JObject r in array)
+                    {
+                        int duration = r["Duration"] != null ? (int)r["Duration"] : 0;
+                        record.RecordList.Add(new SiteLookupRecord()
+                        {
+                            WebsiteName = (string)r["WebsiteName"],
+                            Timestamp = ((DateTime)r["Timestamp"]).ToString("s"),
+                            Duration = duration,
+                        });
+                    }
 
-                TraceLog.TraceInfo(string.Format("Added {0} records for user {1}", record.RecordList.Count, Repository.UserId));
+                    // add all records at once
+                    CollectorRepository.AddRecord(record);
+
+                    TraceLog.TraceInfo(string.Format("Added {0} records for user {1}", record.RecordList.Count, CollectorRepository.UserId));
+                }
+
+                var response = new ServiceResponse()
+                {
+                    RecordsProcessed = array != null ? array.Count : 0,
+                    ControlMessage = ControlMessage.Normal
+                };
+
+                return response;
             }
-
-            var response = new ServiceResponse()
+            catch (Exception ex)
             {
-                RecordsProcessed = array != null ? array.Count : 0,
-                ControlMessage = ControlMessage.Normal
-            };
-
-            return response;
+                TraceLog.TraceException("Collector Post failed", ex);
+                throw;
+            }
         }
     }
 }

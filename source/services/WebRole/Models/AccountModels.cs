@@ -79,7 +79,7 @@ namespace WebTimer.WebRole.Models
     public class PersonalInfoModel
     {
         [Required]
-        [Display(Name = "UserName")]
+        [Display(Name = "Name")]
         public string Name { get; set; }
 
         [Required]
@@ -123,7 +123,7 @@ namespace WebTimer.WebRole.Models
         public string ConfirmPassword { get; set; }
 
         [Required]
-        [Display(Name = "UserName")]
+        [Display(Name = "Name")]
         public string Name { get; set; }
     }
 

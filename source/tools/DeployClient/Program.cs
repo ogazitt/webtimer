@@ -13,8 +13,9 @@ namespace WebTimer.DeployClient
     class Program
     {
         const string ProductionConnectionString = "ProductionConnectionString";
-        const string ProductionContainer = "ProductionContainer";
-        const string StagingConnectionString = "StagingConnectionString";
+        const string Dev1ConnectionString = "Dev1ConnectionString";
+        const string Dev1BSConnectionString = "Dev1BSConnectionString";
+        const string DownloadContainer = "DownloadContainer";
         const string StagingContainer = "StagingContainer";
 
         static string[] Files = { "WebTimerSetup.exe", "WebTimer.msi", "version.txt" };
@@ -26,7 +27,7 @@ namespace WebTimer.DeployClient
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            var connectionString = StagingConnectionString;
+            var connectionString = Dev1ConnectionString;
             var container = StagingContainer;
             var directory = Directory.GetCurrentDirectory();
 
@@ -38,13 +39,25 @@ namespace WebTimer.DeployClient
                     case "/?":
                         Usage();
                         return;
-                    case "/p":
-                    case "/prod":
-                        connectionString = ProductionConnectionString;
-                        container = ProductionContainer;
+                    case "/d":
+                    case "/download":
+                        container = DownloadContainer;
+                        break;
+                    case "/s":
+                    case "/staging":
+                        container = StagingContainer;
                         break;
                     case "/directory":
                         directory = args[++i];
+                        break;
+                    case "/dev1":
+                        connectionString = Dev1ConnectionString;
+                        break;
+                    case "/dev1bs":
+                        connectionString = Dev1BSConnectionString;
+                        break;
+                    case "/production":
+                        connectionString = ProductionConnectionString;
                         break;
                 }
             }
@@ -54,7 +67,7 @@ namespace WebTimer.DeployClient
             Console.WriteLine("DeployClient Utility");
             Console.WriteLine("====================");
             Console.WriteLine();
-            Console.WriteLine(string.Format("Uploading into {0} from directory {1}", container, directory));
+            Console.WriteLine(string.Format("Uploading into {0}/{1} from directory {2}", connectionString, container, directory));
 
             CloudStorageAccount.SetConfigurationSettingPublisher((configName, configSetter) =>
             {

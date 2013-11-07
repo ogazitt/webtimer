@@ -46,6 +46,9 @@ namespace WebTimer.WebRole
             bundles.Add(new ScriptBundle("~/bundles/uservoice").Include(
                         "~/Scripts/uservoice.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/spin").Include(
+                        "~/Scripts/spin.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/dashboard").Include(
                         "~/app/dashboard/dashboard.js", // must be first
                         "~/app/dashboard/dashboard.datacontext.js", 

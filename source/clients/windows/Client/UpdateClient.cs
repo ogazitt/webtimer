@@ -22,17 +22,17 @@ namespace WebTimer.Client
 
 #if DEBUG  // 1 minute update intervals, download and version URL's in staging container
         const int timeout = 60 * 1000; // 1 minute
-        const string downloadUrl = "https://webtimerdev1.blob.core.windows.net/staging/WebTimer.msi";
-        const string versionUrl = "https://webtimerdev1.blob.core.windows.net/staging/version.txt";
+        const string downloadUrl = "https://webtimer.blob.core.windows.net/staging/WebTimer.msi";
+        const string versionUrl = "https://webtimer.blob.core.windows.net/staging/version.txt";
 #else
         const int timeout = 10 * 60 * 1000; // 10 minutes
-        const string downloadUrl = "https://webtimerdev1.blob.core.windows.net/download/WebTimer.msi";
-        const string versionUrl = "https://webtimerdev1.blob.core.windows.net/download/version.txt";
+        const string downloadUrl = "https://webtimer.blob.core.windows.net/download/WebTimer.msi";
+        const string versionUrl = "https://webtimer.blob.core.windows.net/download/version.txt";
 #endif
         static string appSettingsDownloadUrl = null;
         static string appSettingsVersionUrl = null;
 
-        static Version CurrentVersion
+        public static Version CurrentVersion
         {
             get
             {

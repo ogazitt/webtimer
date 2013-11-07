@@ -167,7 +167,8 @@ namespace WebTimer.Client
                         lock (sendQueue)
                         {
                             var existingRecord = sendQueue.FirstOrDefault(r => r.HostMacAddress == host && r.WebsiteName == dest);
-                            if (existingRecord == null)
+                            if (existingRecord == null || 
+                                Convert.ToDateTime(firstRecord.Timestamp) - (Convert.ToDateTime(existingRecord.Timestamp) + TimeSpan.FromSeconds(existingRecord.Duration)) >= TimeSpan.FromSeconds(300.0)) // more than 5 minutes between records
                             {
                                 // add the record to the send queue
                                 sendQueue.Add(firstRecord);
@@ -175,7 +176,7 @@ namespace WebTimer.Client
                             else
                             {
                                 // augment existing record with new duration
-                                duration = Convert.ToDateTime(existingRecord.Timestamp) - Convert.ToDateTime(firstRecord.Timestamp);
+                                duration = Convert.ToDateTime(firstRecord.Timestamp) - Convert.ToDateTime(existingRecord.Timestamp) + TimeSpan.FromSeconds(firstRecord.Duration);
                                 existingRecord.Duration = (int)duration.TotalSeconds;
                             }
                         }
@@ -205,6 +206,7 @@ namespace WebTimer.Client
                     {
                         DeviceId = deviceId,
                         DeviceName = deviceName,
+                        SoftwareVersion = UpdateClient.CurrentVersion.ToString(),
                         Records = recordBuffer
                     };
 

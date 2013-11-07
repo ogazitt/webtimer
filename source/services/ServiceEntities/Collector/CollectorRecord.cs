@@ -39,6 +39,7 @@ namespace WebTimer.ServiceEntities.Collector
         public const string DeviceId = "DeviceId";
         public const string DeviceName = "DeviceName";
         public const string Records = "Records";
+        public const string SoftwareVersion = "SoftwareVersion";
     }
 
     public class ServiceResponse

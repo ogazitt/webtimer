@@ -30,6 +30,12 @@ namespace WebTimer.ServiceEntities.UserData
             public const string Tablet = "Tablet";
         }
 
+        [Display(Name = "Version")]
+        public string SoftwareVersion { get; set; }
+
+        [Display(Name = "Timestamp")]
+        public DateTime? Timestamp { get; set; }
+
         [ForeignKey("Person")]
         public int? PersonId { get; set; }
         public virtual Person Person { get; set; }

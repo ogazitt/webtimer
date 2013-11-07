@@ -29,6 +29,10 @@ namespace WebTimer.ServiceHost
         const string DeploymentNameConfigKey = "DeploymentName";
         const string MongoUriConfigKey = "MongoUri";
         const string MongoCollectionNameConfigKey = "MongoCollectionName";
+        const string MongoSiteMapCollectionNameConfigKey = "MongoSiteMapCollectionName";
+        const string MongoSiteExpressionCollectionNameConfigKey = "MongoSiteExpressionCollectionName";
+        const string MongoUnknownSiteCollectionNameConfigKey = "MongoUnknownSiteCollectionName";
+        const string MongoSiteMapVersionCollectionNameConfigKey = "MongoSiteMapVersionCollectionName";
         const string UserDataConnectionStringConfigKey = "UserDataConnectionString";
         const string UserProfileConnectionStringConfigKey = "UserProfileConnectionString";
         const string DataServicesConnectionConfigKey = "DataServicesConnection";
@@ -49,6 +53,10 @@ namespace WebTimer.ServiceHost
         static RoleSize? azureRoleSize;
         static string mongoUri;
         static string mongoCollectionName;
+        static string mongoSiteMapCollectionName;
+        static string mongoSiteExpressionCollectionName;
+        static string mongoUnknownSiteCollectionName;
+        static string mongoSiteMapVersionCollectionName;
         static string deploymentName;
         static string userDataConnection;
         static string userProfileConnection;
@@ -202,6 +210,54 @@ namespace WebTimer.ServiceHost
             }
         }
 
+        public static string MongoSiteMapCollectionName
+        {
+            get
+            {
+                if (mongoSiteMapCollectionName == null)
+                {
+                    mongoSiteMapCollectionName = ConfigurationSettings.Get(MongoSiteMapCollectionNameConfigKey);
+                }
+                return mongoSiteMapCollectionName;
+            }
+        }
+
+        public static string MongoSiteExpressionCollectionName
+        {
+            get
+            {
+                if (mongoSiteExpressionCollectionName == null)
+                {
+                    mongoSiteExpressionCollectionName = ConfigurationSettings.Get(MongoSiteExpressionCollectionNameConfigKey);
+                }
+                return mongoSiteExpressionCollectionName;
+            }
+        }
+
+        public static string MongoUnknownSiteCollectionName
+        {
+            get
+            {
+                if (mongoUnknownSiteCollectionName == null)
+                {
+                    mongoUnknownSiteCollectionName = ConfigurationSettings.Get(MongoUnknownSiteCollectionNameConfigKey);
+                }
+                return mongoUnknownSiteCollectionName;
+            }
+        }
+
+        public static string MongoSiteMapVersionCollectionName
+        {
+            get
+            {
+                if (mongoSiteMapVersionCollectionName == null)
+                {
+                    mongoSiteMapVersionCollectionName = ConfigurationSettings.Get(MongoSiteMapVersionCollectionNameConfigKey);
+                }
+                return mongoSiteMapVersionCollectionName;
+            }
+        }
+
         public static string DeploymentName
         {
             get
@@ -211,6 +267,24 @@ namespace WebTimer.ServiceHost
                     deploymentName = ConfigurationSettings.Get(DeploymentNameConfigKey);
                 }
                 return deploymentName;
+            }
+        }
+
+        public static string DownloadUrl
+        {
+            get
+            {
+                switch (DeploymentName)
+                {
+                    case "Dev1":
+                        return "http://webtimerdev01.blob.core.windows.net/download/WebTimerSetup.exe";
+                    case "Dev1BS":
+                        return "http://webtimerdev1.blob.core.windows.net/download/WebTimerSetup.exe";
+                    case "Production":
+                    case "Dev1Local":
+                    default:
+                        return "https://webtimer.blob.core.windows.net/download/WebTimerSetup.exe";
+                }
             }
         }
 

@@ -125,7 +125,7 @@ namespace WebTimer.WebRole.Models
 
         // "this.Context" is reserved for Breeze save only!
         // A second, lazily instantiated DbContext will be used
-        // for _repository access during custom save validation. 
+        // for _collectorRepository access during custom save validation. 
         // See this stackoverflow question and reply for an explanation:
         // http://stackoverflow.com/questions/14517945/using-this-datacontext-inside-beforesaveentity
         private UserDataContext ValidationContext

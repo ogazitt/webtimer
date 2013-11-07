@@ -23,8 +23,9 @@
                 @Html.LabelFor(m => m.Name)
                 @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
             </li>
-            <li>
-                <button type="submit" class="btn btn-primary register-signup-button">Sign up</button>
+            <li class="register-signup-button">
+                <button type="submit" class="btn btn-primary">Sign up</button>
+                <span id="registerSpinner"></span>
             </li>
         </ol>
         @Html.ValidationSummary()

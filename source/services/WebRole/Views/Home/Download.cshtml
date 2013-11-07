@@ -1,5 +1,7 @@
-﻿@{
+﻿@using WebTimer.ServiceHost
+@{
     ViewBag.Title = "Download";
+    var downloadUrl = HostEnvironment.DownloadUrl;
 }
 <div class="jumbotron">
     <div class="container">
@@ -9,7 +11,7 @@
             <div class="col-lg-3 col-md-3 center">
                 <h2>Windows</h2>
                 <h4>XP, Vista, 7, 8</h4>
-                <a id="windowsDownload" href="https://webtimerdev1.blob.core.windows.net/download/WebTimerSetup.exe"><img class="download-logo" alt="windows" width="100" src="~/Content/images/windows.png" /></a>
+                <a id="windowsDownload" href="@downloadUrl"><img class="download-logo" alt="windows" width="100" src="~/Content/images/windows.png" /></a>
             </div>
             <div class="col-lg-3 col-md-3 center">
                 <h2>Mac OS X</h2>
@@ -58,6 +60,12 @@
         $('#windowsDownload').click(function (e) {
             $('.platform-instructions').hide();
             $('#windowsInstructions').show();
+            $("html, body").animate({
+                scrollTop: $("#windowsInstructions").offset().top + "px"
+            }, {
+                duration: 500,
+                easing: "swing"
+            });
         });
     });
 </script>

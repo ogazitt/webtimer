@@ -6,6 +6,7 @@ namespace WebTimer.Client.Models
     {
         public string DeviceId { get; set; }
         public string DeviceName { get; set; }
+        public string SoftwareVersion { get; set; }
         public List<Record> Records { get; set; }
     }
 }
