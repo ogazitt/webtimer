@@ -11,11 +11,11 @@ dashboard.value('breeze', window.breeze)
 // Configure routes
 dashboard.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.
-        when('/', { templateUrl: 'app/dashboard/views/day.view.html', controller: 'DayController' }).
-        when('/detail', { templateUrl: 'app/dashboard/views/detail.day.view.html', controller: 'DetailController' }).
-        when('/people', { templateUrl: 'app/dashboard/views/people.view.html', controller: 'PeopleController' }).
-        when('/devices', { templateUrl: 'app/dashboard/views/devices.view.html', controller: 'DevicesController' }).
-        when('/log', { templateUrl: 'app/dashboard/views/log.view.html', controller: 'LogController' }).
+        when('/', { templateUrl: 'app/views/day.view.html', controller: 'DayController' }).
+        when('/detail', { templateUrl: 'app/views/detail.day.view.html', controller: 'DetailController' }).
+        when('/people', { templateUrl: 'app/views/people.view.html', controller: 'PeopleController' }).
+        when('/devices', { templateUrl: 'app/views/devices.view.html', controller: 'DevicesController' }).
+        when('/log', { templateUrl: 'app/views/log.view.html', controller: 'LogController' }).
         otherwise({ redirectTo: '/' });
 }]);
 

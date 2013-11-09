@@ -41,6 +41,7 @@ namespace WebTimer.ServiceHost
             device.Hostname = device.Hostname ?? device.DeviceId;
             device.Name = device.Name ?? device.Hostname;
             device.UserId = device.UserId ?? session.UserId;
+            device.Enabled = true;
 
             if (!device.PersonId.HasValue)
             {

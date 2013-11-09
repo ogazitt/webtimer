@@ -55,11 +55,16 @@
 
     @Html.Partial("_Footer")
 
+    @Html.Partial("_ModalMessage")
+    @Html.Partial("_ModalPrompt")
+
+
     @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/ajaxlogin")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/uservoice")
     @Scripts.Render("~/bundles/spin")
+    @Scripts.Render("~/bundles/controls")
 
     @RenderSection("scripts", required: false)
 

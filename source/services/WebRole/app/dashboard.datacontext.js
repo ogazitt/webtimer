@@ -57,6 +57,7 @@ dashboard.factory('datacontext',
             createDevice:       createDevice,
             removeDevice:       removeDevice,
             deletePerson:       deletePerson,
+            deleteDevice:       deleteDevice,
             saveEntity:         saveEntity
         };
         model.initialize(datacontext);
@@ -268,6 +269,11 @@ dashboard.factory('datacontext',
             //devices.forEach(function (entity) { entity.person = null; });
             person.entityAspect.setDeleted();
             return saveEntity(person);
+        }
+
+        function deleteDevice(device) {
+            device.entityAspect.setDeleted();
+            return saveEntity(device);
         }
 
         function saveEntity(masterEntity) {

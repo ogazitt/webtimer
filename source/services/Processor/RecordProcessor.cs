@@ -105,7 +105,22 @@ namespace WebTimer.Processor
                     else
                     {
                         // extend the session
-                        session.Duration = (int)(recordTimestamp - sessionStart).TotalSeconds + record.Duration;
+                        int duration = 0;
+                        if (recordTimestamp < sessionStart)
+                        {
+                            // handle the case where the current record somehow predates the existing session
+                            session.Start = record.Timestamp;
+                            sessionStart = recordTimestamp;
+                            duration = session.Duration > record.Duration ? session.Duration : record.Duration;
+                        }
+                        else
+                        {
+                            // normal processing - just calculate the delta between the new record timestamp and the session start, and add the duration
+                            // also ensure that the resulting duration isn't smaller than the existing session duration
+                            var delta = (int)(recordTimestamp - sessionStart).TotalSeconds + record.Duration;
+                            duration = delta > session.Duration ? delta : session.Duration;
+                        }
+                        session.Duration = duration;
 
                         // add it to the result session list if not there already
                         if (!resultSessions.Contains(session))

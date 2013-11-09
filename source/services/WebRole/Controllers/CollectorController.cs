@@ -59,6 +59,8 @@ namespace WebTimer.WebRole.Controllers
 
             try
             {
+                var controlMessage = ControlMessage.Normal;
+
                 var obj = value as JObject;
                 var record = new CollectorRecord()
                 {
@@ -69,10 +71,29 @@ namespace WebTimer.WebRole.Controllers
                     RecordList = new List<SiteLookupRecord>()
                 };
 
+                // reject messages from a null device ID or UserID
+                if (string.IsNullOrEmpty(record.DeviceId) || string.IsNullOrEmpty(record.UserId))
+                {
+                    TraceLog.TraceError(string.Format("Rejecting invalid record: {0}", obj.ToString()));
+                    return new ServiceResponse() { ControlMessage = controlMessage, RecordsProcessed = -1 };
+                }
+
                 // store device software version and timestamp (if this isn't a new device)
                 var device = UserDataRepository.Devices.FirstOrDefault(d => d.DeviceId == record.DeviceId);
                 if (device != null)
                 {
+                    // this device is marked for deletion
+                    if (device.Enabled == null)
+                    {
+                        TraceLog.TraceInfo(string.Format("Deleting suspended device {0} for user {1}", device.Name, device.UserId));
+                        UserDataRepository.DeleteDevice(device);
+                        return new ServiceResponse() { ControlMessage = ControlMessage.DisableDevice, RecordsProcessed = 0 };
+                    }
+
+                    // tell the client to suspend collection if the device was disabled by the user
+                    if (!device.Enabled.Value)
+                        controlMessage = ControlMessage.SuspendCollection;
+
                     if (obj[CollectorFields.SoftwareVersion] != null)
                         device.SoftwareVersion = (string)obj[CollectorFields.SoftwareVersion];
                     device.Timestamp = DateTime.UtcNow;
@@ -80,7 +101,7 @@ namespace WebTimer.WebRole.Controllers
                 }
 
                 var array = obj[CollectorFields.Records] as JArray;
-                if (array != null)
+                if (array != null && array.Count > 0)
                 {
                     // extract each object out of the array and create a SiteLookupRecord for each
                     foreach (JObject r in array)
@@ -103,7 +124,7 @@ namespace WebTimer.WebRole.Controllers
                 var response = new ServiceResponse()
                 {
                     RecordsProcessed = array != null ? array.Count : 0,
-                    ControlMessage = ControlMessage.Normal
+                    ControlMessage = controlMessage
                 };
 
                 return response;

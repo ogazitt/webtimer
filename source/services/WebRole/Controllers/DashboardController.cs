@@ -49,7 +49,7 @@
         [HttpGet]
         public IQueryable<Device> Devices()
         {
-            return _repository.Devices;
+            return _repository.Devices.Where(d => d.Enabled != null);
         }
 
         // GET ~/api/Dashboard/People

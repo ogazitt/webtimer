@@ -117,6 +117,21 @@ namespace WebTimer.WebRole.Models
 
         private bool BeforeSaveDevice(Device device, EntityInfo info)
         {
+            if (info.EntityState == EntityState.Deleted)
+            {
+                // when the client tries to delete a device, instead of deleting it we mark it with an
+                // enabled status of NULL.  this is so that the next time the client Posts records, the 
+                // ControlMessage returned can instruct the device to dissasociate.  at that point, the 
+                // device is actually removed.
+                var dbDevice = ValidationRepository.Devices.FirstOrDefault(d => d.DeviceId == device.DeviceId);
+                if (dbDevice != null)
+                {
+                    dbDevice.Enabled = null;
+                    ValidationRepository.SaveChanges();
+                    return false;
+                }
+            }
+
             var person = device.PersonId.HasValue ? ValidationContext.People.Find(device.PersonId) : null;
             return (null != person)
                        ? UserId == person.UserId || throwPersonDoesNotBelongToThisUser(person.UserId)

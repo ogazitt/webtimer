@@ -146,6 +146,14 @@ namespace WebTimer.Client
             {
                 lock (records)
                 {
+                    // get the device ID, and store it if it's not in the config file already
+                    deviceId = ConfigClient.Read(ConfigClient.DeviceId, true);
+                    if (deviceId == null)
+                    {
+                        deviceId = devices[0].MacAddress.ToString();
+                        ConfigClient.Write(ConfigClient.DeviceId, deviceId);
+                    }
+
                     var recordList = new List<Record>(records);
                     records.Clear();
                     return recordList;

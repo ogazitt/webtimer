@@ -102,6 +102,10 @@
     <Compile Include="Migrations\201311070637413_DeviceSoftwareAndTimestamp.Designer.cs">
       <DependentUpon>201311070637413_DeviceSoftwareAndTimestamp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201311080055078_DeviceEnabled.cs" />
+    <Compile Include="Migrations\201311080055078_DeviceEnabled.Designer.cs">
+      <DependentUpon>201311080055078_DeviceEnabled.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage.cs" />
@@ -144,6 +148,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201311070637413_DeviceSoftwareAndTimestamp.resx">
       <DependentUpon>201311070637413_DeviceSoftwareAndTimestamp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201311080055078_DeviceEnabled.resx">
+      <DependentUpon>201311080055078_DeviceEnabled.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

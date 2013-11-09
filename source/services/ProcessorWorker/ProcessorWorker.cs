@@ -56,6 +56,9 @@ namespace WebTimer.ProcessorWorker
                 versionString,
                 stopwatch.ElapsedMilliseconds / 1000));
 
+            string lastRecordId = null;
+            bool isPoisonMessage = false;
+
             // run an infinite loop doing the following:
             //   grab records from the collector database
             //   process records into session records in the user database
@@ -87,9 +90,31 @@ namespace WebTimer.ProcessorWorker
                     {
                         try
                         {
+                            // poison message processing
+                            if (record.Id == lastRecordId)
+                            {
+                                // was this a suspected poison message (meaning, this is the third time we've seen it?)
+                                if (isPoisonMessage)
+                                {
+                                    TraceLog.TraceInfo(string.Format("Detected poison message {0} for user {1}", record.Id, record.UserId));
+                                    CollectorContext.Delete(record);
+                                    isPoisonMessage = false;
+                                    lastRecordId = null;
+                                    continue;
+                                }
+                                else
+                                    isPoisonMessage = true;
+                            }
+                            else
+                            {
+                                // new record ID
+                                lastRecordId = record.Id;
+                                isPoisonMessage = false;
+                            }
+
                             // get all the in-progress sessions belonging to the userid
                             var userId = record.UserId;
-                            var sessions = UserContext.WebSessions.Where(ws => ws.Device.UserId == userId && ws.InProgress == true).OrderBy(ws => ws.Start);
+                            var sessions = UserContext.WebSessions.Where(ws => ws.Device.UserId == userId && ws.Device.DeviceId == record.DeviceId && ws.InProgress == true).OrderBy(ws => ws.Start);
 
                             // process the records against the existing sessions
                             var workingSessions = RecordProcessor.ProcessRecords(
@@ -171,7 +196,7 @@ namespace WebTimer.ProcessorWorker
                             record.State = RecordState.New;
                             CollectorContext.Update(record);
 
-                            // BUGBUG - need to harden this codepath with poison message semantics
+                            // poison message detection and processing is done at the start of the while block
                         }
 
                         // keep reading records until they are all processed

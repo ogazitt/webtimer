@@ -137,6 +137,14 @@ namespace WebTimer.WebRole.Models
             base.SaveChanges();
         }
 
+        public void DeleteDevice(Device device)
+        {
+            if (device == null)
+                return;
+            base.Devices.Remove(device);
+            base.SaveChanges();
+        }
+
         public void RemoveUserData()
         {
             try

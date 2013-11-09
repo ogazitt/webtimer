@@ -140,7 +140,8 @@ Events.People.BirthdateChange = 'PeopleBirthdateChange';
 // Devices actions
 Events.Devices = {};
 Events.Devices.Delete = 'DevicesDelete';
-Events.People.Change = 'DevicesChange';
+Events.Devices.Change = 'DevicesChange';
+Events.Devices.EnabledChange = 'DevicesEnabledChange';
 Events.Devices.NameChange = 'DevicesNameChange';
 Events.Devices.TypeChange = 'DevicesTypeChange';
 

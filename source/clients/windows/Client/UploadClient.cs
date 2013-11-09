@@ -96,8 +96,12 @@ namespace WebTimer.Client
                             deviceId = ConfigClient.Read(ConfigClient.DeviceId);
                         if (deviceName == null)
                             deviceName = ConfigClient.Read(ConfigClient.DeviceName);
-                        if (credentials != null)
+                        
+                        // if the device isn't associated with credentials, clear the queue, otherwise send the records
+                        if (credentials != null && deviceId != null)
                             Send();
+                        else
+                            sendQueue.Clear();
                     }
                 }
                 catch (Exception ex)
@@ -246,6 +250,8 @@ namespace WebTimer.Client
                                     case ControlMessage.DisableDevice:
                                         TraceLog.TraceInfo("Disabling the device by wiping the config");
                                         collectionStatus = msg;
+                                        deviceId = null;
+                                        deviceName = null;
                                         // wipe the config
                                         ConfigClient.Clear();
                                         break;

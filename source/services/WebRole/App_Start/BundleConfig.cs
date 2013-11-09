@@ -49,18 +49,21 @@ namespace WebTimer.WebRole
             bundles.Add(new ScriptBundle("~/bundles/spin").Include(
                         "~/Scripts/spin.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/dashboard").Include(
-                        "~/app/dashboard/dashboard.js", // must be first
-                        "~/app/dashboard/dashboard.datacontext.js", 
-                        "~/app/dashboard/dashboard.model.js",
-                        "~/app/dashboard/logger.js",
-                        "~/app/dashboard/controllers/day.controller.js",
-                        "~/app/dashboard/controllers/detail.day.controller.js",
-                        "~/app/dashboard/controllers/devices.controller.js",
-                        "~/app/dashboard/controllers/people.controller.js",
-                        "~/app/dashboard/controllers/log.controller.js",
-                        "~/app/dashboard/controllers/header.controller.js",
-                        "~/app/dashboard/controllers/toolbar.controller.js"));
+            bundles.Add(new ScriptBundle("~/bundles/controls").Include(
+                        "~/Scripts/controls.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/app").Include(
+                        "~/app/dashboard.js", // must be first
+                        "~/app/dashboard.datacontext.js", 
+                        "~/app/dashboard.model.js",
+                        "~/app/logger.js",
+                        "~/app/controllers/day.controller.js",
+                        "~/app/controllers/detail.day.controller.js",
+                        "~/app/controllers/devices.controller.js",
+                        "~/app/controllers/people.controller.js",
+                        "~/app/controllers/log.controller.js",
+                        "~/app/controllers/header.controller.js",
+                        "~/app/controllers/toolbar.controller.js"));
 
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're

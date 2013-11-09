@@ -47,7 +47,7 @@
                 <p>Account type: Free Beta</p>
                 <a href="/home/upgrade" class="btn btn-default">Upgrade Account</a>
                 <br /><br />
-                <a href="/account/delete" class="btn btn-default btn-danger">Delete Account</a>
+                <a id="deleteAccount" href="/account/delete" class="btn btn-default btn-danger">Delete Account</a>
             </section>
         </div>
         <div class="tab-pane" id="support">
@@ -79,5 +79,19 @@
         $('.list-group a').removeClass('active');
         $tab.addClass('active');
         */
+
+        // delete account button
+        $('a#deleteAccount').click(function (e) {
+            // grab the target of the anchor
+            var href = $(this).attr('href');
+            Control.confirm('Are you sure you want to delete this account?', 'Delete Account',
+                function $deleteOK() {
+                    // navigate to the target
+                    window.location = href || location.href;
+                },
+                function $deleteCancel() {
+                });
+            e.preventDefault();
+        });
     });
 </script>

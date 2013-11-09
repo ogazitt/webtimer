@@ -18,6 +18,9 @@
                         data-on-enter="endEdit(device)"/> 
             </form>
         </header>
+
+        <a href="#/devices" class="deletelist" data-ng-click="deleteDevice(device)">X</a>
+
         <form class="form-horizontal" role="form">
             <div class="form-group">
                 <label class="control-label col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-4 col-sm-offset-1 col-sm-4 col-xs-offset-1 col-xs-4">Type</label>
@@ -41,6 +44,15 @@
                             data-ng-click="clearErrorMessage(device)" 
                             data-on-change="endEditPerson(device)">
                     </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-4 col-sm-offset-1 col-sm-4 col-xs-offset-1 col-xs-4">Enabled</label>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    <span class="btn btn-switch" data-ng-click="toggleEnabled(device)" data-ng-model="device.enabled">
+                        <span class="btn-switch-on btn-primary" data-ng-show="device.enabled">YES</span>
+                        <span class="btn-switch-off btn-default" data-ng-hide="device.enabled">NO</span>  
+                    </span>
                 </div>
             </div>
             <div class="form-group">

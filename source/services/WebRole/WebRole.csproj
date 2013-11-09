@@ -294,24 +294,25 @@
     <Compile Include="WebRole.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app\dashboard\controllers\detail.day.controller.js" />
-    <Content Include="app\dashboard\controllers\header.controller.js" />
-    <Content Include="app\dashboard\views\header.mobile.view.html" />
-    <Content Include="app\dashboard\views\detail.day.view.html" />
-    <Content Include="app\dashboard\views\header.view.html" />
-    <Content Include="app\dashboard\controllers\devices.controller.js" />
-    <Content Include="app\dashboard\views\devices.view.html" />
-    <Content Include="app\dashboard\dashboard.datacontext.js" />
-    <Content Include="app\dashboard\views\people.view.html" />
-    <Content Include="app\dashboard\controllers\people.controller.js" />
-    <Content Include="app\dashboard\views\toolbar.view.html" />
-    <Content Include="app\dashboard\controllers\toolbar.controller.js" />
-    <Content Include="app\dashboard\controllers\day.controller.js" />
-    <Content Include="app\dashboard\dashboard.js" />
-    <Content Include="app\dashboard\views\day.view.html" />
-    <Content Include="app\dashboard\views\log.view.html" />
-    <Content Include="app\dashboard\controllers\log.controller.js" />
-    <Content Include="app\dashboard\logger.js" />
+    <Content Include="Scripts\controls.js" />
+    <Content Include="app\controllers\detail.day.controller.js" />
+    <Content Include="app\controllers\header.controller.js" />
+    <Content Include="app\views\header.mobile.view.html" />
+    <Content Include="app\views\detail.day.view.html" />
+    <Content Include="app\views\header.view.html" />
+    <Content Include="app\controllers\devices.controller.js" />
+    <Content Include="app\views\devices.view.html" />
+    <Content Include="app\dashboard.datacontext.js" />
+    <Content Include="app\views\people.view.html" />
+    <Content Include="app\controllers\people.controller.js" />
+    <Content Include="app\views\toolbar.view.html" />
+    <Content Include="app\controllers\toolbar.controller.js" />
+    <Content Include="app\controllers\day.controller.js" />
+    <Content Include="app\dashboard.js" />
+    <Content Include="app\views\day.view.html" />
+    <Content Include="app\views\log.view.html" />
+    <Content Include="app\controllers\log.controller.js" />
+    <Content Include="app\logger.js" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap\bootstrap-theme.css" />
     <Content Include="Content\bootstrap\bootstrap-theme.min.css" />
@@ -753,6 +754,8 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\q.js" />
     <Content Include="Scripts\q.min.js" />
+    <Content Include="Scripts\spin.js" />
+    <Content Include="Scripts\spin.min.js" />
     <Content Include="Scripts\uservoice.js" />
     <Content Include="Startup\7z.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -769,6 +772,12 @@
     <Content Include="Startup\Microsoft.WindowsAzure.StorageClient.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\Shared\_ModalMessage.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Shared\_ModalPrompt.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -779,7 +788,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="app\ajaxlogin.js" />
-    <Content Include="app\dashboard\dashboard.model.js" />
+    <Content Include="app\dashboard.model.js" />
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\TodoList.css" />

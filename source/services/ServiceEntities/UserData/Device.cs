@@ -33,6 +33,9 @@ namespace WebTimer.ServiceEntities.UserData
         [Display(Name = "Version")]
         public string SoftwareVersion { get; set; }
 
+        [Display(Name = "Enabled")]
+        public bool? Enabled { get; set; }
+
         [Display(Name = "Timestamp")]
         public DateTime? Timestamp { get; set; }
 
@@ -56,6 +59,7 @@ namespace WebTimer.ServiceEntities.UserData
                 DeviceId = deviceId,
                 Hostname = deviceId,
                 Name = string.Format("{0}'s device", userName),
+                Enabled = true,
                 UserId = userName
             };
         }

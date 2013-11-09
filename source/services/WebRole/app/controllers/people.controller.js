@@ -41,11 +41,6 @@ dashboard.controller('PeopleController',
             $scope.error = error.message;
         }
         function refreshView() {
-            /*
-            $(".pick-a-color").each(function (index) {
-                alert($(this).text());
-            });
-            */
             $scope.$apply();
         }
         function endEdit(entity) {

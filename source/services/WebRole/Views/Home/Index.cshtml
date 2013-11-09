@@ -21,7 +21,7 @@
 <!-- main dashboard div, which contains the app views -->
     <div class="dashboard">
         <!-- toolbar -->
-        @Html.Include("~/app/dashboard/views/toolbar.view.html")
+        @Html.Include("~/app/views/toolbar.view.html")
 
         <!-- view -->
         <div data-ng-view=""></div> 
@@ -80,7 +80,7 @@ else
         @Scripts.Render("~/bundles/breeze")
         @Scripts.Render("~/bundles/extras")
         @Scripts.Render("~/bundles/highcharts")
-        @Scripts.Render("~/bundles/dashboard")
+        @Scripts.Render("~/bundles/app")
     }
     
 }
