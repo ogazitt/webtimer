@@ -6,11 +6,11 @@
 var _gaq = _gaq || [];       // global Google Analytics Queue (required for async Events to work)
 Events = {};
 
-Events.googleAnalyticsScriptUri = '//www.google-analytics.com/analytics.js';
+Events.googleAnalyticsNewScriptUri = '//www.google-analytics.com/analytics.js';
 Events.googleAnalyticsOldScriptUri = '.google-analytics.com/ga.js';
 Events.googleAnalyticsAppID = 'UA-44959542-1';
 
-Events.Enable = function Events$Enable() {
+Events.EnableNew = function Events$EnableNew() {
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -21,10 +21,10 @@ Events.Enable = function Events$Enable() {
     Events.enabled = true;
 }
 
-Events.Push = function (event) {
+Events.PushNew = function (event) {
     if (Events.enabled == true) { ga(event); }
 }
-Events.Track = function (category, action, optional) {
+Events.TrackNew = function (category, action, optional) {
     if (Events.enabled == true) {
         if (optional != null) { ga(['send', 'event', category, action, optional]); }
         else { ga(['send', 'event', category, action]); }
@@ -52,6 +52,12 @@ Events.TrackOld = function (category, action, optional) {
         else { _gaq.push(['_trackEvent', category, action]); }
     }
 }
+
+// set to old google analytics
+Events.googleAnalyticsScriptUri = Events.googleAnalyticsOldScriptUri;
+Events.Enable = Events.EnableOld;
+Events.Push = Events.PushOld;
+Events.Track = Events.TrackOld;
 
 Events.Categories = {};
 
