@@ -155,3 +155,12 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+
+# ============
+# Config files
+# ============
+source/tools/ConsoleDriver/app.config
+source/services/Azure/*.cscfg
+source/services/ServiceHost/app.config
+source/services/WebRole/web.config
+source/services/WorkerRole/app.config
