@@ -14,7 +14,7 @@ Events.EnableNew = function Events$EnableNew() {
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script',Events.googleAnalyticsScriptUri,'ga');
+    })(window,document,'script',Events.googleAnalyticsNewScriptUri,'ga');
 
     ga('create', Events.googleAnalyticsAppID, 'webtimer.co');
     ga('send', 'pageview');
@@ -54,7 +54,6 @@ Events.TrackOld = function (category, action, optional) {
 }
 
 // set to old google analytics
-Events.googleAnalyticsScriptUri = Events.googleAnalyticsOldScriptUri;
 Events.Enable = Events.EnableOld;
 Events.Push = Events.PushOld;
 Events.Track = Events.TrackOld;
@@ -64,6 +63,7 @@ Events.Categories = {};
 // Category names
 Events.Categories.LandingPage = 'LandingPage';
 Events.Categories.AboutPage = 'AboutPage';
+Events.Categories.DownloadPage = 'DownloadPage';
 Events.Categories.Header = 'Header';
 Events.Categories.Footer = 'Footer';
 Events.Categories.Wizard = 'Wizard';
@@ -99,6 +99,9 @@ Events.Footer.PrivacyButton = 'PrivacyButton';
 Events.Footer.FacebookButton = 'FacebookButton';
 Events.Footer.TwitterButton = 'TwitterButton';
 Events.Footer.CopyButton = 'CopyrightButton';
+
+Events.DownloadPage = {};
+Events.DownloadPage.Windows = "Windows";
 
 // Wizard actions
 Events.Wizard = {};

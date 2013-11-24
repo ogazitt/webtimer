@@ -38,17 +38,17 @@ else
     <div class="container main-container landing-main">
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 logo-image-container">
             <img class="logo-image" src="~/Content/images/WebTimer_tagline.png" alt="Stay on top of how your kids use the Web." />
-            <a href="#product-info" onClick="productInfoClick()" class="btn btn-primary btn-lg learn-more-btn topLink">Learn more</a>
+            <a href="#product-info" onclick="productInfoClick()" class="btn btn-primary btn-lg learn-more-btn topLink">Learn more</a>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 login-container">
             @Html.Partial("_Authentication")
         </div>
         <div>
             <div class="col-lg-offset-2 col-lg-3 col-md-offset-1 col-md-4 hidden-sm hidden-xs">
-                <a href="/home/download" onclick="downloadClick" class="btn btn-primary landing-button">Download</a>
+                <a href="/home/download" onclick="downloadClick()" class="btn btn-primary landing-button">Download</a>
             </div>
             <div class="col-lg-offset-2 col-lg-3 col-md-offset-2 col-md-4 hidden-sm hidden-xs">
-                <button onclick="signupClick" class="btn btn-success landing-button showRegister">Sign Up</button>
+                <button onclick="signupClick()" class="btn btn-success landing-button showRegister">Sign Up</button>
             </div>
         </div>
     </div>

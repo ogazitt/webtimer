@@ -60,6 +60,7 @@
         $('#windowsDownload').click(function (e) {
             $('.platform-instructions').hide();
             $('#windowsInstructions').show();
+            Events.Track(Events.Categories.DownloadPage, Events.DownloadPage.Windows);
             $("html, body").animate({
                 scrollTop: $("#windowsInstructions").offset().top + "px"
             }, {
