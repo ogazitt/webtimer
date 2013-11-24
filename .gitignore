@@ -159,7 +159,7 @@ $RECYCLE.BIN/
 # ============
 # Config files
 # ============
-source/tools/ConsoleDriver/app.config
+source/tools/DeployClient/app.config
 source/services/Azure/*.cscfg
 source/services/ServiceHost/app.config
 source/services/WebRole/web.config
